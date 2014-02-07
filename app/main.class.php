@@ -217,7 +217,42 @@ class abstracter extends Smarty {
 	
 	function insert_row($table,$data)
 	{
+		$this->openDb();
+		$colLen = count($data);
+		$col_str = "";
+		$col_val = "";
+		$i=0;
+		foreach ($data as $key=>$value)
+		{
+			if (($i+1) < $colLen)
+			{
+				$col_str .="`{$key}`,";
+				$col_val .= "'{$value}',";
+			}
+			else
+			{
+				$col_str .="`{$key}`";
+				$col_val .= "'{$value}'";
+			}
+				
+			$i++;
+		}
+		$sql = sprintf("INSERT INTO `%s` (%s) VALUES (%s) 
+				ON DUPLICATE KEY UPDATE
+				
+				",$table,$col_str,$col_val);
 		
+		if (!mysql_query($sql))
+		{
+			$this->write_page('error',$sql."-".mysql_error());
+			$this->closeDb();
+			return FALSE;
+		}
+		else
+		{
+			$this->closeDb();
+			return TRUE;
+		}
 	}
 	
 	
