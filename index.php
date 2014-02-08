@@ -1,8 +1,7 @@
 <?php 
-require_once('app/main.class.php');
-$app = new abstracter();
-$data = array();
-$data = $_REQUEST;
-$app->start($data);
+	require_once 'app/init.class.php';
+	
+	$app = new mainapp();
+	$app->start($_REQUEST);
 
 ?>

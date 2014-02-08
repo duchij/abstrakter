@@ -6,7 +6,7 @@
 </head>
 
 <body>
-{$error_msg}
+	{$error_msg}
  
 </body>
 
