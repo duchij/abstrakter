@@ -1,43 +1,45 @@
 <?php 
+//require_once 'db.php';
+
 class db {
 	
-	var $dbLink = null;
+	private $mysqli;
 	var $server = '';
 	var $user = '';
 	var $passwd = '';
 	var $dbase ='';
+	//var $conn = new stdClass();
 	
-	public function __counstruct($server,$dbase,$user,$passwd)
+	function __construct($mysqli)
 	{
-		$this->server = $server;
-		$this->user = $user;
-		$this->passwd = $passwd;
-		$this->dbase = $dbase;
-	}
-	
-	private function openDb()
-	{
-		$this->dbLink = mysql_connect($this->server, $this->user ,$this->passwd);
-		if (!$this->dbLink)
-		{
-			die('Spojenie sa nevydarilo: ' . mysql_error());
-		}
-		mysql_select_db($this->dbase,$this->dbLink);
+		
+		$this->mysqli = $mysqli;
 	}
 	
 	private function closeDb()
 	{
-		mysql_close($this->dbLink);
+		//$this->conn->close();
 	}
 	
 	public function sql_table($sql)
 	{
-		$this->openDb();
-		$tmp = mysql_query($sql, $this->dbLink);
 		$result = array();
-		$num_rows = mysql_num_rows($tmp);
-	
-		while ($row = mysql_fetch_assoc($tmp))
+		$tmp = $this->mysqli->query($sql);
+		$num_rows =$tmp->num_rows;
+		
+		for ($i=0; $i<$num_rows; $i++)
+		{
+			$tmp->data_seek($i);
+			$result[$i] = array();
+			while ($row = $tmp->fetch_assoc())
+			{
+				foreach ($row as $key=>$value)
+				{
+					$result[$i][$key] = $value;
+				}
+			}
+		}
+	/*	while ($row = $mpp->fetch_assoc($tmp))
 		{
 			for ($i=0; $i<$num_rows; $i++)
 			{
@@ -48,30 +50,45 @@ class db {
 				}
 			}
 		}
-		$this->closeDb();
+		$this->closeDb();*/
 		return $result;
 	
 	}
 	
+	public function sql_count_rows($sql)
+	{
+		$result = array();
+		if ($tmp = $this->mysqli->query($sql))
+		{
+			$result['rows'] = $tmp->num_rows;
+			
+		}
+		else
+		{
+			$result['error'] = "Error SQL: {$sql}, ".$this->mysqli->error;
+		}
+		
+		//print_r($result);
+		return $result;
+	}
+	
 	public function sql_row($sql)
 	{
-		$this->openDb();
-		$tmp = mysql_query($sql, $this->dbLink);
 		$result = array();
-		$num_rows = mysql_num_rows($tmp);
-	
-		if ($num_rows == 1)
+		if ($tmp = $this->mysqli->query($sql))
 		{
-			while ($row = mysql_fetch_assoc($tmp))
+			$row = $tmp->fetch_assoc();
+			foreach ($row as $key=>$value)
 			{
-				foreach ($row as $key=>$value)
-				{
 				$result[$key] = $value;
-				}
 			}
-					
 		}
-		$this->closeDb();
+		else
+		{
+			$result['error'] = "Error SQL: {$sql}, ".$this->mysqli->error;
+		}
+		
+		//print_r($result);
 		return $result;
 	
 	}
@@ -100,9 +117,9 @@ class db {
 		}
 		$sql = sprintf("INSERT INTO `%s` (%s) VALUES (%s)",$table,$col_str,$col_val);
 	
-		if (!mysql_query($sql))
+		if (!mysqli_query($this->dbLink,$sql))
 		{
-			$this->write_page('error',$sql."-".mysql_error());
+			$this->write_page('error',$sql."-".mysqli_error());
 			$this->closeDb();
 			return FALSE;
 		}
@@ -116,39 +133,51 @@ class db {
 	
 	function insert_row($table,$data)
 	{
-		$this->openDb();
+		
+		$result = array();
 		$colLen = count($data);
 		$col_str = "";
 		$col_val = "";
+		$col_update = "";
 		$i=0;
+		
 		foreach ($data as $key=>$value)
 		{
 			if (($i+1) < $colLen)
 			{
 				$col_str .="`{$key}`,";
-				$col_val .= "'{$value}',";
+				$col_val .= "'{$this->mysqli->real_escape_string($value)}',";
+				$col_update .= sprintf(" `%s` = VALUES(`%s`), ",$key,$key);
 			}
 			else
 			{
 				$col_str .="`{$key}`";
-				$col_val .= "'{$value}'";
+				$col_val .= "'{$this->mysqli->real_escape_string($value)}'";
+				$col_update .= sprintf(" `%s` = VALUES(`%s`)",$key,$key);
 			}
-	
 			$i++;
 		}
-		$sql = sprintf("INSERT INTO `%s` (%s) VALUES (%s) ON DUPLICATE KEY UPDATE",$table,$col_str,$col_val);
-	
-		if (!mysql_query($sql))
+		
+		$sql = sprintf("INSERT INTO `%s` (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s",$table,$col_str,$col_val,$col_update);
+		
+		//$sql = $this->mysqli->real_escape_string($sql);
+		
+		//echo $sql;
+		//return;
+		
+		if (!$tmp = $this->mysqli->query($sql))
 		{
-			$this->write_page('error',$sql."-".mysql_error());
+			$result['error'] = trigger_error('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error, E_USER_ERROR);
+			$result['status'] = FALSE;
 			$this->closeDb();
-			return FALSE;
 		}
 		else
 		{
+			$result['status'] = TRUE;
+			$result['last_id'] = $this->mysqli->insert_id;
 			$this->closeDb();
-			return TRUE;
 		}
+		return $result;
 	}
 }
 

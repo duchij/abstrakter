@@ -6,11 +6,14 @@
 </head>
 
 <body>
-<form method='post' action="index.php?registration=1">
-Email: <input type="text" name="email"><br />
-Heslo: <input type="password" name="password"><br />
-Re-Heslo: <input type="password" name="password2">
-<input type="submit" value="Zaregistruj">
+<h1> Registrácia nového užívateľa do aplikácie ABSTRAKTER</h1>
+<hr />
+<form method='post' action="app.php">
+	<input type="hidden" name="afterreg" value="1">
+	Email: <input type="text" name="email"><br />
+	Heslo: <input type="password" name="password"><br />
+	Re-Heslo: <input type="password" name="password2">
+	<input type="submit" value="Zaregistruj...">
 </form> 
 </body>
 
