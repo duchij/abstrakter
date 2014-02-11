@@ -16,14 +16,17 @@ class db {
 		$this->mysqli = $mysqli;
 	}
 	
-	private function closeDb()
+	private function modifStr($sql)
 	{
-		//$this->conn->close();
+		$what = array("[","]");
+		return str_replace($what,"`",$sql);
 	}
 	
 	public function sql_table($sql)
 	{
 		$result = array();
+		$sql = $this->modifStr($sql);
+		
 		if ($tmp = $this->mysqli->query($sql))
 		{
 			$num_rows =$tmp->num_rows;
@@ -50,6 +53,7 @@ class db {
 	public function sql_count_rows($sql)
 	{
 		$result = array();
+		$sql = $this->modifStr($sql);
 		if ($tmp = $this->mysqli->query($sql))
 		{
 			$result['rows'] = $tmp->num_rows;
@@ -67,6 +71,7 @@ class db {
 	public function sql_row($sql)
 	{
 		$result = array();
+		$sql = $this->modifStr($sql);
 		if ($tmp = $this->mysqli->query($sql))
 		{
 			$row = $tmp->fetch_assoc();
@@ -77,6 +82,7 @@ class db {
 		}
 		else
 		{
+			trigger_error("Error SQL: {$sql}, ".$this->mysqli->error);
 			$result['error'] = "Error SQL: {$sql}, ".$this->mysqli->error;
 		}
 		$tmp->free_result();

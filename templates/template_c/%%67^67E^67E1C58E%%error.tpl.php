@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-08 20:39:41
+<?php /* Smarty version 2.6.28, created on 2014-02-11 18:52:19
          compiled from error.tpl */ ?>
 <!DOCTYPE html>
 <html>
@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<?php echo $this->_tpl_vars['error_msg']; ?>
+	<?php echo $this->_tpl_vars['error_msg']; ?>
 
  
 </body>

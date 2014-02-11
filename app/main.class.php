@@ -29,217 +29,246 @@ class abstracter {
 	
 	function startPage($data)
 	{
-		
-		$this->run_fnc($data);
-		
-		if (isset($data['run']) && $data['run']==1)
+		//var_dump($data);
+		if (!$this->run_fnc($data))
 		{
-			$result = $this->loginUser($_SESSION['abstrakter']['user_id']);
-			
-			$this->smarty->assign('contact_email',$result['email']);
-			$this->smarty->assign('titul_pred',$result['titul_pred']);
-			$this->smarty->assign('titul_za',$result['titul_za']);
-			$this->smarty->assign('meno',$result['meno']);
-			$this->smarty->assign('priezvisko',$result['priezvisko']);
-			$this->smarty->assign('adresa',$result['adresa']);
-			
-			//$this->getUserRegistrations($_SESSION['abstrakter']['user_id']);
-			
-			$this->smarty->assign('regbyuser',$this->getUserRegistrations($_SESSION['abstrakter']['user_id']));
-					
+		
+			if (isset($data['run']) && $data['run']==1)
+			{
+				$result = $this->loginUser($_SESSION['abstrakter']['user_id']);
+				
+				$this->smarty->assign('contact_email',$result['email']);
+				$this->smarty->assign('titul_pred',$result['titul_pred']);
+				$this->smarty->assign('titul_za',$result['titul_za']);
+				$this->smarty->assign('meno',$result['meno']);
+				$this->smarty->assign('priezvisko',$result['priezvisko']);
+				$this->smarty->assign('adresa',$result['adresa']);
+				
+				//$this->getUserRegistrations($_SESSION['abstrakter']['user_id']);
+				
+				$this->smarty->assign('regbyuser',$this->getUserRegistrations($_SESSION['abstrakter']['user_id']));
 	
-			$this->smarty->display("userdata.tpl");
-			
-		}
-		else if (isset($data['logout']) && $data['logout'] == 1)
-		{
-			//session_start();
-			session_destroy();
-			$this->smarty->display('index.tpl');
-		}
-			
-		else if (isset($data['insdat']) && $data['insdat'] == 1)
-		{
-			$insData = array();
-			//print_r($_SESSION['abstrakter']);
-			$insData['user_id'] 	= $_SESSION['abstrakter']['user_id'];;
-			$insData['meno'] 		= $data['meno'];
-			$insData['priezvisko'] 	= $data['priezvisko'];
-			$insData['titul_pred']	= $data['titul_pred'];
-			$insData['titul_za']	= $data['titul_za'];
-			$insData['adresa']		= $data['adresa'];
-			$insData['contact_email']		= $data['contact_email'];
-			
-			$result = $this->db->insert_row('usersdata',$insData);
-			
-			if ($result['status'])
-			{
-				$this->smarty->assign('contact_email',$insData['contact_email']);
-				$this->smarty->assign('titul_pred',$insData['titul_pred']);
-				$this->smarty->assign('titul_za',$insData['titul_za']);
-				$this->smarty->assign('meno',$insData['meno']);
-				$this->smarty->assign('priezvisko',$insData['priezvisko']);
-				$this->smarty->assign('adresa',$insData['adresa']);
-				$this->smarty->assign('message',"Aktualizácia prebehla v poriadku....");
-				
+				$this->smarty->assign('avab_kongres',$this->avabKongres());
+		
 				$this->smarty->display("userdata.tpl");
-			}
-			else
-			{
-				$this->smarty->assign('error',$result['error']);
-				$this->smarty->display("error.tpl");
-			}
-		}
-		else if (isset($data['editcon']) && intval($data['editcon']) > 0)
-		{
-		
-			$insData = array();
-			
 				
-			$today = date("Y-m-d");
-				
-			$sql = sprintf("SELECT * FROM `kongressdata` WHERE `item_id` = %d",intval($data['editcon']));
-			$table = $this->db->sql_row($sql);
-			foreach ($table as $key=>$value)
-			{
-				$insData[$key]=$value;
 			}
-			
-			$insData['avakon'] = array();
-				
-			$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` > '%s'",$today);
-			$table = $this->db->sql_table($sql);
-			$insData['avakon'] = $table;
-			$this->smarty->assign('data',$insData);
-			$this->smarty->display('kongress.tpl');
-		}
-		else if (isset($data['addcon']) && intval($data['addcon']) == 1)
-		{
-			$insData = array();
-			$insData['avakon'] = array();
-			
-			$today = date("Y-m-d");
-			
-			$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` > '%s'",$today);
-			$table = $this->db->sql_table($sql);
-			$insData['avakon'] = $table;
-			$this->smarty->assign('data',$insData);
-			$this->smarty->display('kongress.tpl');
-			//$this->insertKongress($data);
-		}
-		
-		else if (isset($data['inscongress']) && intval($data['inscongress']) == 1)
-		{
-			$this->insertKongress($data);
-		}
-		else if (isset($data['register']) && intval($data['register']) > 0)
-		{
-			$congress= $this->getKongressByID(intval($data['register']));
-			$insData = array();
-			$insData['congress'] = $congress;
-			$this->smarty->assign('data',$insData);
-			$this->smarty->display("abstraktreg.tpl");
-		}
-		else if (isset($data['regabstr']) && intval($data['regabstr']) == 1 )
-		{
-			$insData = array(
-					"user_id"			=>$data['user_id'],
-					"congress_id"		=>$data['congress_id'],
-					"participation"		=>$data['particip'],
-					"abstract_titul"	=>$data['abstract_titul'],
-					"abstract_main_autor"=>$data['abstract_main_autor'],
-					"abstract_autori"	=>$data['abstract_autori'],
-					"abstract_adresy"	=>$data['abstract_adresy'],
-					"abstract_text"		=>$data['abstract_text']
-					);
-			$res = $this->db->insert_row("registration",$insData);
-			
-			if ($res['status'])
+			else if (isset($data['logout']) && $data['logout'] == 1)
 			{
-				$tmp = array();
-				$tmp['congress'] = $this->getKongressByID($data['congress_id']);
-				$tmp['abstract'] = $insData;
-				$tmp['message'] = "Vasa ucast bol zaregistrovana...";
-				
-				$this->smarty->assign('data',$tmp);
-				$this->smarty->display('abstraktreg.tpl');
+				//session_start();
+				session_destroy();
+				$this->smarty->display('index.tpl');
 			}
-			
-			
-		}
-		
-		else if (isset($data['afterreg']) && intval($data['afterreg']) == 1)
-		{
-			//print_r($_REQUEST);
-			if (filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL))
+				
+			else if (isset($data['insdat']) && $data['insdat'] == 1)
 			{
-				if (!$this->checkReg($_REQUEST['email']) == true)
+				$insData = array();
+				//print_r($_SESSION['abstrakter']);
+				$insData['user_id'] 	= $_SESSION['abstrakter']['user_id'];;
+				$insData['meno'] 		= $data['meno'];
+				$insData['priezvisko'] 	= $data['priezvisko'];
+				$insData['titul_pred']	= $data['titul_pred'];
+				$insData['titul_za']	= $data['titul_za'];
+				$insData['adresa']		= $data['adresa'];
+				$insData['contact_email']		= $data['contact_email'];
+				
+				$result = $this->db->insert_row('usersdata',$insData);
+				
+				if ($result['status'])
 				{
-					$passwd1 = hash('md5',$_REQUEST['password']);
-					$passwd2 = hash('md5',$_REQUEST['password2']);
-						
-					if ($passwd1 === $passwd2)
-					{
-						$insData = array();
-		
-						$insData['email'] = $_REQUEST['email'];
-						$insData['password'] = $passwd1;
-		
-						$res = $this->db->insert_row("users",$insData);
-		
-						if ($res['status'])
-						{
-							//var_dump($res);
-							//return;
-							$_SESSION['abstrakter']['user_id'] = $res['last_id'];
-								
-							header("location:app.php?run=1");
-						}
-						else
-						{
-							$this->smarty->assign('error',$res['error']);
-							$this->smarty->display('error.tpl');
-						}
-		
-					}
-					else
-					{
-						$this->smarty->assign('error',"Heslá sa nerovnajú");
-						$this->smarty->display('error.tpl');
-					}
+					$this->smarty->assign('contact_email',$insData['contact_email']);
+					$this->smarty->assign('titul_pred',$insData['titul_pred']);
+					$this->smarty->assign('titul_za',$insData['titul_za']);
+					$this->smarty->assign('meno',$insData['meno']);
+					$this->smarty->assign('priezvisko',$insData['priezvisko']);
+					$this->smarty->assign('adresa',$insData['adresa']);
+					$this->smarty->assign('message',"Aktualizácia prebehla v poriadku....");
+					
+					$this->smarty->display("userdata.tpl");
 				}
 				else
 				{
-					$this->smarty->assign('error',"Toto nie je správna email adresa");
+					$this->smarty->assign('error',$result['error']);
+					$this->smarty->display("error.tpl");
+				}
+			}
+			else if (isset($data['editcon']) && intval($data['editcon']) > 0)
+			{
+			
+				$insData = array();
+				
+					
+				$today = date("Y-m-d");
+					
+				$sql = sprintf("SELECT * FROM `kongressdata` WHERE `item_id` = %d",intval($data['editcon']));
+				$table = $this->db->sql_row($sql);
+				foreach ($table as $key=>$value)
+				{
+					$insData[$key]=$value;
+				}
+				
+				$insData['avakon'] = array();
+					
+				$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` > '%s'",$today);
+				$table = $this->db->sql_table($sql);
+				$insData['avakon'] = $table;
+				$this->smarty->assign('data',$insData);
+				$this->smarty->display('kongress.tpl');
+			}
+			else if (isset($data['addcon']) && intval($data['addcon']) == 1)
+			{
+				$insData = array();
+				$insData['avakon'] = array();
+				
+				$today = date("Y-m-d");
+				
+				$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` > '%s'",$today);
+				$table = $this->db->sql_table($sql);
+				$insData['avakon'] = $table;
+				$this->smarty->assign('data',$insData);
+				$this->smarty->display('kongress.tpl');
+				//$this->insertKongress($data);
+			}
+			
+			else if (isset($data['inscongress']) && intval($data['inscongress']) == 1)
+			{
+				$this->insertKongress($data);
+			}
+			else if (isset($data['register']) && intval($data['register']) > 0)
+			{
+				$congress= $this->getKongressByID(intval($data['register']));
+				$insData = array();
+				$insData['congress'] = $congress;
+				$this->smarty->assign('data',$insData);
+				$this->smarty->display("abstraktreg.tpl");
+			}
+			else if (isset($data['regabstr']) && intval($data['regabstr']) == 1 )
+			{
+				$insData = array(
+						"user_id"			=>$data['user_id'],
+						"congress_id"		=>$data['congress_id'],
+						"participation"		=>$data['particip'],
+						"abstract_titul"	=>$data['abstract_titul'],
+						"abstract_main_autor"=>$data['abstract_main_autor'],
+						"abstract_autori"	=>$data['abstract_autori'],
+						"abstract_adresy"	=>$data['abstract_adresy'],
+						"abstract_text"		=>$data['abstract_text']
+						);
+				$res = $this->db->insert_row("registration",$insData);
+				
+				if ($res['status'])
+				{
+					$tmp = array();
+					$tmp['congress'] = $this->getKongressByID($data['congress_id']);
+					$tmp['abstract'] = $insData;
+					$tmp['message'] = "Vasa ucast bol zaregistrovana...";
+					
+					$this->smarty->assign('data',$tmp);
+					$this->smarty->display('abstraktreg.tpl');
+				}
+				
+				
+			}
+			
+			else if (isset($data['afterreg']) && intval($data['afterreg']) == 1)
+			{
+				//print_r($_REQUEST);
+				if (filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL))
+				{
+					if (!$this->checkReg($_REQUEST['email']) == true)
+					{
+						$passwd1 = hash('md5',$_REQUEST['password']);
+						$passwd2 = hash('md5',$_REQUEST['password2']);
+							
+						if ($passwd1 === $passwd2)
+						{
+							$insData = array();
+			
+							$insData['email'] = $_REQUEST['email'];
+							$insData['password'] = $passwd1;
+			
+							$res = $this->db->insert_row("users",$insData);
+			
+							if ($res['status'])
+							{
+								//var_dump($res);
+								//return;
+								$_SESSION['abstrakter']['user_id'] = $res['last_id'];
+									
+								header("location:app.php?run=1");
+							}
+							else
+							{
+								$this->smarty->assign('error',$res['error']);
+								$this->smarty->display('error.tpl');
+							}
+			
+						}
+						else
+						{
+							$this->smarty->assign('error',"Heslá sa nerovnajú");
+							$this->smarty->display('error.tpl');
+						}
+					}
+					else
+					{
+						$this->smarty->assign('error',"Toto nie je správna email adresa");
+						$this->smarty->display('error.tpl');
+					}
+				}
+				else{
+					$this->smarty->assign('error',"Emailová adresa je už zaregistrovaná, alebo má nesprávny formát");
 					$this->smarty->display('error.tpl');
 				}
 			}
-			else{
-				$this->smarty->assign('error',"Emailová adresa je už zaregistrovaná, alebo má nesprávny formát");
-				$this->smarty->display('error.tpl');
+			else
+			{
+				
+				$this->smarty->display('index.tpl');
 			}
 		}
-		else
-		{
-			
-			$this->smarty->display('index.tpl');
-		}
+		
 	}
 	
 	private function run_fnc($data)
 	{
+		$result = false;
 		foreach ($data as $key=>$value)
 		{
 			if (strpos($key,"_fnc")!==false)
 			{
+				$result = true;
 				$this->$key($value);
 			}
 		}
+		return $result;
+	}
+	
+	private function avabKongres()
+	{
+		$today = date("Y-m-d");
+		$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` >= '%s' AND `congress_reguntil` > '%s' ",$today,$today);
+		//$sql = sprintf("SELECT * FROM `kongressdata` ");
+		$table = $this->db->sql_table($sql);
+		
+		return $table;
+	}
+	
+	private function regKongresForUser_fnc($kongres_id)
+	{
+		$insData = array();
+		
+		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [item_id] = %d ",intval($kongres_id));
+		//$sql = sprintf("SELECT * FROM `kongressdata` ");
+		$insData['congress'] = $this->db->sql_row($sql);
+		$insData['congress']['user_id'] = $_SESSION['abstrakter']['user_id'];
+		$this->smarty->assign('data',$insData);
+		$this->smarty->display('abstraktreg.tpl');
+				
 	}
 	
 	private function editAbstr_fnc($data)
 	{
-		
 		
 		$this->smarty->assign('error',$data);
 		$this->smarty->display('error.tpl');
@@ -248,23 +277,31 @@ class abstracter {
 	private function getUserRegistrations($user_id)
 	{
 		$today = date("Y-m-d");
-		$sql = sprintf(" SELECT * FROM `registration`
-							INNER JOIN `users` ON `users`.`id` = `registration`.`user_id`
-							INNER JOIN `kongressdata` ON `kongressdata`.`item_id` = `registration`.`congress_id`
-							WHERE `registration`.`user_id` = %d
-								AND `kongressdata`.`congress_from` > '%s'	
+		$sql = sprintf("SELECT 
+						[registration].[item_id] AS [registr_id], [kongressdata].[item_id] AS [kongr_id],
+						[registration].[user_id] AS [reg_user_id], [registration].[participation] AS [reg_participation],
+						[registration].[abstract_titul] AS [abstract_titul],  [registration].[abstract_main_autor] AS [reg_main_autor],
+						[registration].[abstract_autori] AS [reg_abstract_autori], [registration].[abstract_adresy] AS [reg_abstract_adresy],
+						[registration].[abstract_text] AS [reg_abstract_text],[kongressdata].[congress_titel] AS [congress_titel],
+						[kongressdata].[congress_subtitel] AS [congress_subtitel],[kongressdata].[congress_venue] AS [congress_venue]
+						
+					FROM [registration]
+							INNER JOIN [users] ON [users].[id] = [registration].[user_id]
+							INNER JOIN [kongressdata] ON [kongressdata].[item_id] = [registration].[congress_id]
+							WHERE [registration].[user_id] = %d
+								AND [kongressdata].[congress_from] > '%s'	
 		
 							",$user_id,$today);
 		
 		$res = $this->db->sql_table($sql);
-		
+		//var_dump($res);
 		return $res;
 	}
 	
 	private function checkReg($email)
 	{
 		$result = false;
-		$sql = sprintf("SELECT * FROM `users` WHERE `email` = '%s'",$email);
+		$sql = sprintf("SELECT * FROM [users] WHERE [email] = '%s'",$email);
 		$res = $this->db->sql_count_rows($sql);
 	
 		if (intval($res['rows']) > 0)
@@ -293,7 +330,7 @@ class abstracter {
 		
 		$today = date("Y-m-d");
 		
-		$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` >= '%s' ",$today);
+		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s' ",$today);
 		//$sql = sprintf("SELECT * FROM `kongressdata` ");
 		$table = $this->db->sql_table($sql);
 		
@@ -384,9 +421,9 @@ class abstracter {
 	{
 		$sql = sprintf("
 				SELECT *
-				FROM `users`
-				LEFT JOIN `usersdata` ON `usersdata`.`user_id` = `users`.`id`
-				WHERE `users`.`id` = %d
+					FROM [users]
+				LEFT JOIN [usersdata] ON [usersdata].[user_id] = [users].[id]
+					WHERE [users].[id] = %d
 				",$id);
 	
 		$result = $this->db->sql_row($sql);
@@ -395,56 +432,7 @@ class abstracter {
 	
 	
 	}
-	
-	private function insert_new_user($data)
-	{
-		$sql = sprintf("SELECT COUNT(*) AS pocet FROM `users` WHERE `email` = '%s'",$data['email']);
-	
-		$result = $this->db->sql_row($sql);
-	
-		if ($result['pocet'] == 0)
-		{
-			$passwd_hashed = hash('md5', $data['password']);
-			$ins = array();
-			$ins['email'] = $data['email'];
-			$ins['password'] = $passwd_hashed;
-				
-			$result = $this->db->insert_row('users',$ins);
-				
-			//print_r($result);
-			if ($result['status'])
-			{
-				$newData =array(
-						"email"=>$data['email'],
-						"new_reg_msg" => "Boli ste zaregistrovaný, táto registrácia
-						Vám umožnuje vkladať abstrakty na súčasnú aj nasledujúce kongresy, konferencie a pod...",
-	
-				);
-				//echo $result['last_id'];
-				if ($result['last_id'] > 0)
-				{
-					$_SESSION['abstrakter']['user_id'] = $result['last_id'];
-					$this->write_page("new_user",$newData);
-				}
-				else
-				{
-					$this->write_page("error",'Užívateľ už existuje....');
-				}
-			}
-			else
-			{
-				$this->write_page("error",$result['error']);
-			}
-		}
-		else
-		{
-			$this->write_page("error",'Užívateľ už existuje....');
-			//echo 'Tento užívateľ už existuje....';
-		}
-		//print_r($result);
-	
-	}
-	
+		
 	
 }
 

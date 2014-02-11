@@ -23,6 +23,7 @@
 		<input type="submit" value="Vloz">
 	</form>
  {include file="regbyuser.tpl"}
+ {include file="avabkongres.tpl"}
 </body>
 
 </html>
