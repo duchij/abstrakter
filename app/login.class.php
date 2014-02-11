@@ -14,9 +14,6 @@ class login{
 		$_SESSION['abstrakter']['item_id'] = 0;
 		$_SESSION['abstrakter']['user_email'] = '';
 		//$_SESSION['abstrakter'] = parse_ini_file("$this->iniDir/database.ini");
-		
-		
-		
 		$this->db = new db(new mysqli($_SESSION['abstrakter']['server'],$_SESSION['abstrakter']['user'], $_SESSION['abstrakter']['password'],$_SESSION['abstrakter']['db']));
 		
 		$this->smarty = new Smarty();
@@ -24,7 +21,6 @@ class login{
 		$this->smarty->compile_dir = './templates/template_c';
 		$this->smarty->cache_dir = './templates/cache';
 		$this->smarty->config_dir = './templates/configs';
-		
 	}
 	
 	public function start()
@@ -54,8 +50,6 @@ class login{
 		
 	}
 	
-	
-	
 	private function loginUser($data)
 	{
 		$passwd = hash('md5', $data['password']);
@@ -73,11 +67,7 @@ class login{
 		//print_r($result);
 	
 		return $result;
-	
-	
 	}
-	
-	
 }
 
 

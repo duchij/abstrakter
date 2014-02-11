@@ -9,6 +9,7 @@
 	<h1>Kontaktne údaje...</h1>
 	<a href="app.php?addcon=1">Pridaj kongress..</a>
 	<a href="app.php?logout=1">Logout</a>
+	
 	<h3>{$new_reg_msg}</h3>
 	{$message}<br />
 	<form method='post' action="app.php">
@@ -21,7 +22,7 @@
 		Adresa pracoviska: <textarea cols="100" rows="5" name="adresa">{$adresa}</textarea>
 		<input type="submit" value="Vloz">
 	</form>
- 
+ {include file="regbyuser.tpl"}
 </body>
 
 </html>

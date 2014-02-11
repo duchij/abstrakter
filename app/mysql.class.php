@@ -24,33 +24,25 @@ class db {
 	public function sql_table($sql)
 	{
 		$result = array();
-		$tmp = $this->mysqli->query($sql);
-		$num_rows =$tmp->num_rows;
-		
-		for ($i=0; $i<$num_rows; $i++)
+		if ($tmp = $this->mysqli->query($sql))
 		{
-			$tmp->data_seek($i);
-			$result[$i] = array();
-			while ($row = $tmp->fetch_assoc())
+			$num_rows =$tmp->num_rows;
+			
+			for ($i=0; $i<$tmp->num_rows; $i++)
 			{
-				foreach ($row as $key=>$value)
-				{
-					$result[$i][$key] = $value;
-				}
+				$tmp->data_seek($i);
+				$row = $tmp->fetch_array(MYSQL_ASSOC);
+				array_push($result,$row);
 			}
 		}
-	/*	while ($row = $mpp->fetch_assoc($tmp))
+		else
 		{
-			for ($i=0; $i<$num_rows; $i++)
-			{
-				$result[$i] = array();
-				foreach ($row as $key=>$value)
-				{
-					$result[$i][$key] = $value;
-				}
-			}
+			trigger_error('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error, E_USER_ERROR);
+			$result['status'] = false;
+			$result['error'] = "SQL:{$sql},error:{$this->mysqli->error}";
 		}
-		$this->closeDb();*/
+		$tmp->free_result();
+		//$tmp->close();
 		return $result;
 	
 	}
@@ -87,7 +79,7 @@ class db {
 		{
 			$result['error'] = "Error SQL: {$sql}, ".$this->mysqli->error;
 		}
-		
+		$tmp->free_result();
 		//print_r($result);
 		return $result;
 	

@@ -1,7 +1,7 @@
 <?php 
 require_once './smarty/Smarty.class.php';
 require_once 'mysql.class.php';
-
+session_start();
 
 
 class abstracter {
@@ -14,22 +14,23 @@ class abstracter {
 	function __construct ()
 	{
 		
-		$this->user_id = 	$_SESSION['abstrakter']['user_id'];
+		$this->user_id = $_SESSION['abstrakter']['user_id'];
 		
 			
 		$this->smarty = new Smarty;
 	
 		$this->smarty->template_dir = './templates';
-		$this->smarty->compile_dir = './smarty/template_c';
-		$this->smarty->cache_dir = './smarty/cache';
-		$this->smarty->config_dir = './smarty/configs';
+		$this->smarty->compile_dir = './templates/template_c';
+		$this->smarty->cache_dir = './templates/cache';
+		$this->smarty->config_dir = './templates/configs';
 	
 		$this->db = new db(new mysqli($_SESSION['abstrakter']['server'],$_SESSION['abstrakter']['user'], $_SESSION['abstrakter']['password'],$_SESSION['abstrakter']['db']));
 	}
 	
 	function startPage($data)
 	{
-		echo $_SESSION['abstrakter']['user_id'];
+		
+		$this->run_fnc($data);
 		
 		if (isset($data['run']) && $data['run']==1)
 		{
@@ -41,6 +42,11 @@ class abstracter {
 			$this->smarty->assign('meno',$result['meno']);
 			$this->smarty->assign('priezvisko',$result['priezvisko']);
 			$this->smarty->assign('adresa',$result['adresa']);
+			
+			//$this->getUserRegistrations($_SESSION['abstrakter']['user_id']);
+			
+			$this->smarty->assign('regbyuser',$this->getUserRegistrations($_SESSION['abstrakter']['user_id']));
+					
 	
 			$this->smarty->display("userdata.tpl");
 			
@@ -84,7 +90,83 @@ class abstracter {
 				$this->smarty->display("error.tpl");
 			}
 		}
+		else if (isset($data['editcon']) && intval($data['editcon']) > 0)
+		{
 		
+			$insData = array();
+			
+				
+			$today = date("Y-m-d");
+				
+			$sql = sprintf("SELECT * FROM `kongressdata` WHERE `item_id` = %d",intval($data['editcon']));
+			$table = $this->db->sql_row($sql);
+			foreach ($table as $key=>$value)
+			{
+				$insData[$key]=$value;
+			}
+			
+			$insData['avakon'] = array();
+				
+			$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` > '%s'",$today);
+			$table = $this->db->sql_table($sql);
+			$insData['avakon'] = $table;
+			$this->smarty->assign('data',$insData);
+			$this->smarty->display('kongress.tpl');
+		}
+		else if (isset($data['addcon']) && intval($data['addcon']) == 1)
+		{
+			$insData = array();
+			$insData['avakon'] = array();
+			
+			$today = date("Y-m-d");
+			
+			$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` > '%s'",$today);
+			$table = $this->db->sql_table($sql);
+			$insData['avakon'] = $table;
+			$this->smarty->assign('data',$insData);
+			$this->smarty->display('kongress.tpl');
+			//$this->insertKongress($data);
+		}
+		
+		else if (isset($data['inscongress']) && intval($data['inscongress']) == 1)
+		{
+			$this->insertKongress($data);
+		}
+		else if (isset($data['register']) && intval($data['register']) > 0)
+		{
+			$congress= $this->getKongressByID(intval($data['register']));
+			$insData = array();
+			$insData['congress'] = $congress;
+			$this->smarty->assign('data',$insData);
+			$this->smarty->display("abstraktreg.tpl");
+		}
+		else if (isset($data['regabstr']) && intval($data['regabstr']) == 1 )
+		{
+			$insData = array(
+					"user_id"			=>$data['user_id'],
+					"congress_id"		=>$data['congress_id'],
+					"participation"		=>$data['particip'],
+					"abstract_titul"	=>$data['abstract_titul'],
+					"abstract_main_autor"=>$data['abstract_main_autor'],
+					"abstract_autori"	=>$data['abstract_autori'],
+					"abstract_adresy"	=>$data['abstract_adresy'],
+					"abstract_text"		=>$data['abstract_text']
+					);
+			$res = $this->db->insert_row("registration",$insData);
+			
+			if ($res['status'])
+			{
+				$tmp = array();
+				$tmp['congress'] = $this->getKongressByID($data['congress_id']);
+				$tmp['abstract'] = $insData;
+				$tmp['message'] = "Vasa ucast bol zaregistrovana...";
+				
+				$this->smarty->assign('data',$tmp);
+				$this->smarty->display('abstraktreg.tpl');
+			}
+			
+			
+		}
 		
 		else if (isset($data['afterreg']) && intval($data['afterreg']) == 1)
 		{
@@ -144,6 +226,41 @@ class abstracter {
 		}
 	}
 	
+	private function run_fnc($data)
+	{
+		foreach ($data as $key=>$value)
+		{
+			if (strpos($key,"_fnc")!==false)
+			{
+				$this->$key($value);
+			}
+		}
+	}
+	
+	private function editAbstr_fnc($data)
+	{
+		
+		
+		$this->smarty->assign('error',$data);
+		$this->smarty->display('error.tpl');
+	}
+	
+	private function getUserRegistrations($user_id)
+	{
+		$today = date("Y-m-d");
+		$sql = sprintf(" SELECT * FROM `registration`
+							INNER JOIN `users` ON `users`.`id` = `registration`.`user_id`
+							INNER JOIN `kongressdata` ON `kongressdata`.`item_id` = `registration`.`congress_id`
+							WHERE `registration`.`user_id` = %d
+								AND `kongressdata`.`congress_from` > '%s'	
+		
+							",$user_id,$today);
+		
+		$res = $this->db->sql_table($sql);
+		
+		return $res;
+	}
+	
 	private function checkReg($email)
 	{
 		$result = false;
@@ -157,7 +274,63 @@ class abstracter {
 		return $result;
 	}
 	
+	private function getKongressByID($id)
+	{
+		$sql = sprintf("SELECT * FROM `kongressdata` WHERE `item_id` = '%s'", $id);
+		$row =$this->db->sql_row($sql);
+		$congress = array();
+		foreach ($row  as $key=>$value)
+		{
+			$congress[$key]=$value;
+		}
+		$congress['user_id'] = $_SESSION['abstrakter']['user_id'];
+		
+		return $congress;
+	}
 	
+	private function insertKongress($data)
+	{
+		
+		$today = date("Y-m-d");
+		
+		$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` >= '%s' ",$today);
+		//$sql = sprintf("SELECT * FROM `kongressdata` ");
+		$table = $this->db->sql_table($sql);
+		
+		$insData = array();
+
+		$insData['congress_titel'] = $data['congress_titel'];
+		$insData['congress_subtitel'] = $data['congress_subtitel'];
+		$insData['congress_url'] = $data['congress_url'];
+		$insData['congress_url'] = $data['congress_url'];
+		$insData['congress_venue'] = $data['congress_venue'];
+		
+		$insData['congress_from'] = "{$data['kondateOd_Year']}-{$data['kondateOd_Month']}-{$data['kondateOd_Day']}";
+		$insData['congress_until'] = "{$data['kondateDo_Year']}-{$data['kondateDo_Month']}-{$data['kondateDo_Day']}";
+		
+		
+		$insData['congress_regfrom'] = "{$data['dateOd_Year']}-{$data['dateOd_Month']}-{$data['dateOd_Day']}";
+		$insData['congress_reguntil'] = "{$data['dateDo_Year']}-{$data['dateDo_Month']}-{$data['dateDo_Day']}";
+		
+		$res = $this->db->insert_row('kongressdata',$insData);
+		
+		if ($res['status'])
+		{
+			$_SESSION['abstrakter']['selected_congress'] = $res['last_id'];
+			session_commit();
+			$this->smarty->assign('data',$insData);
+			$this->smarty->display('kongress.tpl');
+					
+		}
+		else
+		{
+			$this->assign('error',$res['error']);
+			$this->display('error.tpl');
+		}
+		
+		//var_dump($_SESSION['abstrakter']);
+		
+	}
 	private function write_page($id,$data)
 	{
 		if ($id === 'login')
