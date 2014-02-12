@@ -1,2 +1,2 @@
-Kongres manager, KDCH LF UK a DFNsP<br>
+<strong>Kongres manager</strong>, KDCH LF UK a DFNsP<br>
 Scripting and Design by Boris Duchaj, 2014

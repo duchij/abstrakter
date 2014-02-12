@@ -2,26 +2,11 @@
 <html>
 
 <head>
-<link rel="stylesheet" type="text/css" href="http://doma.local/abstrakter/css/layout.css">
+<link rel="stylesheet" type="text/css" href="css/layout.css">
+
 <meta charset="UTF-8">
 <title>Abstrakter - Pridaj kongress</title>
-<script language="javascript">
-{literal}
-
-function test(st)
-{
-	var block = document.getElementById("block");
-	if (st === '0')
-	{
-		block.style.visibility = "hidden";
-	}
-	else
-	{
-		block.style.visibility = "visible";
-	}
-}
-{/literal}
-</script>
+<script src="js/abstracter.js"></script>
 
 </head>
 

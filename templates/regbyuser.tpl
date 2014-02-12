@@ -5,8 +5,8 @@
 	<strong>{$reg_row.abstract_titul}</strong><br />,{$reg_row.congress_titel}, {$reg_row.congress_venue}<br />
 	
 		<button name="editAbstr_fnc" value="{$reg_row.registr_id}">Edituj</button>
-		
 		<button name="deleteAbstr_fnc" value="{$reg_row.congress_id}" >Zmaž</button>
+		
 		<hr />
 	
 	{/foreach}

@@ -1,32 +1,16 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-12 14:00:25
+<?php /* Smarty version 2.6.28, created on 2014-02-12 18:22:58
          compiled from abstraktreg.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 50, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 35, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 
 <head>
-<link rel="stylesheet" type="text/css" href="http://doma.local/abstrakter/css/layout.css">
+<link rel="stylesheet" type="text/css" href="css/layout.css">
+
 <meta charset="UTF-8">
 <title>Abstrakter - Pridaj kongress</title>
-<script language="javascript">
-<?php echo '
-
-function test(st)
-{
-	var block = document.getElementById("block");
-	if (st === \'0\')
-	{
-		block.style.visibility = "hidden";
-	}
-	else
-	{
-		block.style.visibility = "visible";
-	}
-}
-'; ?>
-
-</script>
+<script src="js/abstracter.js"></script>
 
 </head>
 

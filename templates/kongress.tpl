@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="http://doma.local/abstrakter/css/layout.css">
+<link rel="stylesheet" type="text/css" href="css/layout.css">
 <meta charset="UTF-8">
 <title>Abstrakter - Pridaj kongress</title>
 </head>
@@ -26,7 +26,7 @@
 		
 				<h1>Akcia / Seminár / Konferencia / Kongress...</h1>
 				<form method='post' action="app.php">
-				<input type="hidden" name="{$functions.fnc}" value="{$functions.value}">
+				<input type="hidden" name="{$data.functions.fnc}" value="{$data.functions.value}">
 				<table width="100%">
 					<tr><td>Názov kongresu:</td><td> <input type="text" name="congress_titel" value="{$data.congress_titel}" style='width:400px'></td></tr>
 					<tr><td>Podnázov:</td><td> <input type="text" name="congress_subtitel" value="{$data.congress_subtitel}"  style='width:400px;'></td></tr>

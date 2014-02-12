@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="http://doma.local/abstrakter/css/layout.css">
+<link rel="stylesheet" type="text/css" href="css/layout.css">
 <meta charset="UTF-8">
 <title>Abstrakter - User Data</title>
 </head>
@@ -37,10 +37,9 @@
 					<tr><td width="200px" valign="top">Priezvisko:</td> <td><input type="text" name="priezvisko" value="{$priezvisko}"  style="width:400px;"></td></tr>
 					<tr><td width="200px" valign="top">Titul za menom:</td> <td> <input type="text" name="titul_za" value="{$titul_za}"  style="width:400px;"></td></tr>
 					<tr><td width="200px" valign="top">Kontaktný email:</td> <td> <input type="text" name="contact_email" value="{$contact_email}"  style="width:400px;"></td></tr>
-					<tr><td width="200px" valign="top">Adresa pracoviska:</td> <td> <textarea cols="50" rows="5" name="adresa" >{$adresa}</textarea></td></tr>
+					<tr><td width="200px" valign="top">Adresa pracoviska:</td> <td> <textarea rows="10" name="adresa" style="width:400px;" >{$adresa}</textarea></td></tr>
 					<tr><td colspan="2"><input type="submit" value="Vloz"></td></tr>
-					
-					
+								
 			</form>
 		</table>
 		</div>

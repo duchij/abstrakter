@@ -258,11 +258,17 @@ class abstracter {
 		$insData['congress_regfrom'] = "{$data['dateOd_Year']}-{$data['dateOd_Month']}-{$data['dateOd_Day']}";
 		$insData['congress_reguntil'] = "{$data['dateDo_Year']}-{$data['dateDo_Month']}-{$data['dateDo_Day']}";
 		
-		$insData['functions'] = array("fnc"=>"editKongres_fnc","value"=>$id);
-		$insData['buttons'] = array("insert_new_kongres"=>"Uprav...");
-		
 		$res = $this->db->insert_row('kongressdata',$insData);
 		
+		$today = date("Y-m-d");
+		$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` > '%s'",$today);
+		
+		$table = $this->db->sql_table($sql);
+		$insData['avakon'] = $table;
+		
+		$insData['functions'] = array("fnc"=>"editKongres_fnc","value"=>$id);
+		$insData['buttons'] = array("insert_new_kongres"=>"Uprav...");
+				
 		
 		//$_SESSION['abstrakter']['selected_congress'] = $res['last_id'];
 		//session_commit();
@@ -270,6 +276,11 @@ class abstracter {
 		$this->smarty->assign('data',$insData);
 		$this->smarty->display('kongress.tpl');
 				
+		
+	}
+	
+	private function deleteAbstr_fnc($id, $data)
+	{
 		
 	}
 	

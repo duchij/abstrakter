@@ -22,6 +22,12 @@ a {
 a:hover{
 	text-decoration:underline;
 }
+
+textarea {
+	font-family:helvatica,arial;
+	font-size:11px;
+}
+
 #wrapper {
 		width:1024px;
 		margin:0px auto;

@@ -1,9 +1,9 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-12 13:45:43
+<?php /* Smarty version 2.6.28, created on 2014-02-12 20:13:01
          compiled from userdata.tpl */ ?>
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="http://doma.local/abstrakter/css/layout.css">
+<link rel="stylesheet" type="text/css" href="css/layout.css">
 <meta charset="UTF-8">
 <title>Abstrakter - User Data</title>
 </head>
@@ -50,11 +50,10 @@ unset($_smarty_tpl_vars);
 "  style="width:400px;"></td></tr>
 					<tr><td width="200px" valign="top">Kontaktný email:</td> <td> <input type="text" name="contact_email" value="<?php echo $this->_tpl_vars['contact_email']; ?>
 "  style="width:400px;"></td></tr>
-					<tr><td width="200px" valign="top">Adresa pracoviska:</td> <td> <textarea cols="50" rows="5" name="adresa" ><?php echo $this->_tpl_vars['adresa']; ?>
+					<tr><td width="200px" valign="top">Adresa pracoviska:</td> <td> <textarea rows="10" name="adresa" style="width:400px;" ><?php echo $this->_tpl_vars['adresa']; ?>
 </textarea></td></tr>
 					<tr><td colspan="2"><input type="submit" value="Vloz"></td></tr>
-					
-					
+								
 			</form>
 		</table>
 		</div>

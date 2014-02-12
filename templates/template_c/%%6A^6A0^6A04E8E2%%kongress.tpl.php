@@ -1,11 +1,11 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-12 14:56:54
+<?php /* Smarty version 2.6.28, created on 2014-02-12 18:18:57
          compiled from kongress.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'html_select_date', 'kongress.tpl', 36, false),array('modifier', 'date_format', 'kongress.tpl', 55, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="http://doma.local/abstrakter/css/layout.css">
+<link rel="stylesheet" type="text/css" href="css/layout.css">
 <meta charset="UTF-8">
 <title>Abstrakter - Pridaj kongress</title>
 </head>
@@ -35,8 +35,8 @@ unset($_smarty_tpl_vars);
 		
 				<h1>Akcia / Seminár / Konferencia / Kongress...</h1>
 				<form method='post' action="app.php">
-				<input type="hidden" name="<?php echo $this->_tpl_vars['functions']['fnc']; ?>
-" value="<?php echo $this->_tpl_vars['functions']['value']; ?>
+				<input type="hidden" name="<?php echo $this->_tpl_vars['data']['functions']['fnc']; ?>
+" value="<?php echo $this->_tpl_vars['data']['functions']['value']; ?>
 ">
 				<table width="100%">
 					<tr><td>Názov kongresu:</td><td> <input type="text" name="congress_titel" value="<?php echo $this->_tpl_vars['data']['congress_titel']; ?>
