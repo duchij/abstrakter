@@ -1,53 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="http://doma.local/abstrakter/css/layout.css">
 <meta charset="UTF-8">
 <title>Abstrakter - Pridaj kongress</title>
 </head>
 
 <body>
-	<h1>Pridaj kongress...</h1>
-	<a href="app.php?addcon=1">Pridaj kongress..</a>
+<div id="wrapper">
+
+	<div id="header">{include file="header.tpl"}
+		
+	</div>
 	
-	<a href="app.php?logout=1">Logout</a>
-	
-	
-	{$message}<br />
-	<form method='post' action="app.php">
-	<input type="hidden" name="inscongress" value="1">
-		Názov kongresu: <input type="text" name="congress_titel" value="{$data.congress_titel}" style='width:500px'"><br />
-		Podnázov: <input type="text" name="congress_subtitel" value="{$data.congress_subtitel}"  style='width:500px;'"><br />
-		URL adresa: <input type="text" name="congress_url" value="{$data.congress_url}"><br />
-		Venue: <input type="text" name="congress_venue" value="{$data.congress_venue}"><br />
+		<div id="content">
+			<div id="content-left">
+			<ul>
+				<li><a href="app.php?run=1">Domov...</a></li>
+				<li><a href="app.php?addcon=1">Pridaj kongress..</a></li>
+				<li><a href="app.phxp?logout=1">Logout</a></li>
+			</ul>
+			</div>
 		
-		Kongress od: {html_select_date prefix='kondateOd_' start_year='2014' end_year='2020' time=$data.congress_from} <br />
-		Kongress do: {html_select_date prefix='kondateDo_' start_year='2014' end_year='2020' time=$data.congress_until} <br />
+		<div id="content-main">{$message}
 		
-		Registrácia od: {html_select_date prefix='dateOd_' start_year='2014' end_year='2020' time=$data.congress_regfrom} <br />
-		Registrácia do: {html_select_date prefix='dateDo_' start_year='2014' end_year='2020' time=$data.congress_reguntil} <br />
+				<h1>Akcia / Seminár / Konferencia / Kongress...</h1>
+				<form method='post' action="app.php">
+				<input type="hidden" name="{$functions.fnc}" value="{$functions.value}">
+				<table width="100%">
+					<tr><td>Názov kongresu:</td><td> <input type="text" name="congress_titel" value="{$data.congress_titel}" style='width:400px'></td></tr>
+					<tr><td>Podnázov:</td><td> <input type="text" name="congress_subtitel" value="{$data.congress_subtitel}"  style='width:400px;'></td></tr>
+					<tr><td>URL adresa:</td><td> <input type="text" name="congress_url" value="{$data.congress_url}" style='width:400px;'></td></tr>
+					<tr><td>Venue: </td><td><input type="text" name="congress_venue" value="{$data.congress_venue}" style='width:400px;'></td></tr>
+					<tr><td colspan="2"><hr></td>
+					<tr><td>Kongress od:</td><td> {html_select_date prefix='kondateOd_' start_year='2014' end_year='2020' time=$data.congress_from}</td></tr>
+					<tr><td>Kongress do:</td><td> {html_select_date prefix='kondateDo_' start_year='2014' end_year='2020' time=$data.congress_until} </td></tr>
+					<tr><td colspan="2"><hr></td>
+					<tr><td>Registrácia od:</td><td> {html_select_date prefix='dateOd_' start_year='2014' end_year='2020' time=$data.congress_regfrom}</td></tr>
+					<tr><td>Registrácia do:</td><td> {html_select_date prefix='dateDo_' start_year='2014' end_year='2020' time=$data.congress_reguntil}</td></tr>
+					
+					
+					<tr><td colspan="2"><input type="submit" value="{$data.buttons.insert_new_kongres}"></td></tr>
+				</table>
+				</form>
+		</div>
+		
+		<div id="content-right">
+		 		<h1> Dostupné kongresy</h1>
+		 		<hr/>
+		 			<form method="post" action="app.php">
+		 			{foreach from=$data.avakon key=i item=row}	 			
+		 					<p>
+		 					<strong>{$row.congress_titel}</strong><br />
+		 					{$row.congress_venue}, <em>{$row.congress_from|date_format:"%d.%m.%Y"} - {$row.congress_until|date_format:"%d.%m.%Y"}</em><br />	
+		 				
+		 					<button name="register" value="{$row.item_id}">Prihlásiť</button>
+		 					<button name="editcon" value="{$row.item_id}">Upraviť</button>
+		 					</p>
+		 			{/foreach}
+				</form>
+		</div>
 		
 		
-		<input type="submit" value="Vloz">
-	</form>
- 	<h1> Dostupne aktivne kongresy</h1>
- 	
- 		{foreach from=$data.avakon key=i item=row}
- 			
- 			<form method="post" action="app.php">
- 			{$row.congress_titel}, {$row.congress_venue}		
- 				<!--<input type="hidden" name="editcon" value="{$row.item_id}">  -->
- 				<button name="register" value="{$row.item_id}">Prihlas sa </button>
- 				<button name="editcon" value="{$row.item_id}">Edituj kongress </button>
- 				<!-- <a href="app.php?register={$row.item_id}">Prihlas sa....</a> -->
- 				<!--<input type="submit" value="Edituj">  -->
- 			</form>
- 			
-		{/foreach}
- 	
- 	
- 	
- 
- 
-</body>
+	</div>
+	<div id="footer">{include file="footer.tpl"}</div>
+		<div id="bottom"></div>
+		 </div>	
+ </body>
 
 </html>

@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <title>Abstrakter - Registration form</title>
+
 </head>
 
 <body>
+
+
+
+
 <h1> Registrácia nového užívateľa do aplikácie ABSTRAKTER</h1>
 <hr />
 <form method='post' action="app.php">

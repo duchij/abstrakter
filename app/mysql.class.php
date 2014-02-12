@@ -61,6 +61,7 @@ class db {
 		}
 		else
 		{
+			trigger_error('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error, E_USER_ERROR);
 			$result['error'] = "Error SQL: {$sql}, ".$this->mysqli->error;
 		}
 		
@@ -167,14 +168,16 @@ class db {
 		{
 			$result['error'] = trigger_error('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error, E_USER_ERROR);
 			$result['status'] = FALSE;
-			$this->closeDb();
+			//$this->closeDb();
 		}
 		else
 		{
 			$result['status'] = TRUE;
 			$result['last_id'] = $this->mysqli->insert_id;
-			$this->closeDb();
+			//$this->closeDb();
 		}
+		
+		//$tmp->free_result();
 		return $result;
 	}
 }

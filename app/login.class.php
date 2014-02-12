@@ -34,6 +34,7 @@ class login{
 				{
 					$_SESSION['abstrakter']['user_id'] = $res['id'];
 					$_SESSION['abstrakter']['user_email'] = $res['email'];
+					$_SESSION['abstrakter']['session_id'] = session_id();
 					session_commit();
 					header("location:app.php?run=1");
 				}
