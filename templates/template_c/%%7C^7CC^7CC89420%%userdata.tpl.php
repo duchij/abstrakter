@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-13 11:51:07
+<?php /* Smarty version 2.6.28, created on 2014-02-13 21:52:39
          compiled from userdata.tpl */ ?>
 <!DOCTYPE html>
 <html>
@@ -22,12 +22,10 @@ unset($_smarty_tpl_vars);
 	
 	<div id="content">
 		<div id="content-left">
-		<ul>
 		<?php if ($this->_tpl_vars['admin']): ?>
 			<li><a href="app.php?addcon=1">Kongresy</a></li>
 		<?php endif; ?>
 			<li><a href="app.php?logout=1">Odhlásiť sa</a></li>
-		</ul>
 		</div>
 		<div id="content-main">
 		<?php echo $this->_tpl_vars['message']; ?>
@@ -57,8 +55,9 @@ unset($_smarty_tpl_vars);
 </textarea></td></tr>
 					<tr><td colspan="2"><input type="submit" value="Ulož"></td></tr>
 								
-			</form>
+			
 		</table>
+		</form>
 		</div>
 		<div id="content-right">
 			 	<?php $_smarty_tpl_vars = $this->_tpl_vars;

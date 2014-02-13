@@ -32,9 +32,18 @@ class login{
 		
 		if (!$this->run_fnc($_REQUEST))
 		{	
+			$this->smarty->assign('avab_kongres',$this->avabKOngres());
 			$this->smarty->display('index.tpl');
 		}
 		
+	}
+	
+	private function avabKongres()
+	{
+		$today = date("Y-m-d");
+		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s' ",$today);
+		//$sql = sprintf("SELECT * FROM `kongressdata` ");
+		return $this->db->sql_table($sql);
 	}
 	
 	private function login_fnc($id,$data)
@@ -53,8 +62,7 @@ class login{
 				{
 					$_SESSION['abstrakter']['is_admin'] = TRUE;
 				}
-					
-					
+						
 				session_commit();
 				header("location:app.php?run=1");
 			}
@@ -63,6 +71,8 @@ class login{
 	
 	private function register_fnc($id,$data)
 	{
+		
+		
 		$this->smarty->display('regform.tpl');
 	}
 	
