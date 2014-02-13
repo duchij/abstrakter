@@ -22,6 +22,22 @@ class db {
 		return str_replace($what,"`",$sql);
 	}
 	
+	public function sql_execute($sql)
+	{
+		$res = true;
+		$sql = $this->modifStr($sql);
+		$tmp = $this->mysqli->real_query($sql);
+		
+		if (!$tmp)
+		{
+			trigger_error('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error, E_USER_ERROR);
+			$res = false;
+		}
+		
+		return $res;
+		
+	}
+	
 	public function sql_table($sql)
 	{
 		$result = array();

@@ -20,21 +20,22 @@
 
 <div id="content">
 		<div id="content-left">
-	
+		<ul>
 			<li><a href="app.php?run=1">Domov...</a></li>
-			<li><a href="app.php?addcon=1">Pridaj kongress..</a></li>
-			<li><a href="app.php?logout=1">Logout</a></li>
+			{if $data.admin}
+			<li><a href="app.php?addcon=1">Kongress..</a></li>
+			{/if}
+			<li><a href="app.php?logout=1">Odhlasiť sa</a></li>
+		</ul>
 		</div>
 	<div id="content-main" style="width:750px;">
 			<h1 class="logo">Prihlásenie na kongres</h1>
 			<hr />
 			<h2>{$data.congress.congress_titel} </h2>
-			<h3>{$data.congress.congress_subtitel}</h3>
-			<a href="{$data.congress.congress_url}" target="_blank">Web stranka...</a>
-			<h3>{$data.congress.congress_venue}</h3>
-			<h4>{$data.congress.congress_from|date_format:"%d.%m.%Y"} - {$data.congress.congress_until|date_format:"%d.%m.%Y"}</h4>
-			
-			
+			{$data.congress.congress_subtitel}<br>
+			<a href="{$data.congress.congress_url}" target="_blank">Web stranka...</a><br>
+			{$data.congress.congress_venue}<br>
+			{$data.congress.congress_from|date_format:"%d.%m.%Y"} - {$data.congress.congress_until|date_format:"%d.%m.%Y"}<br>
 			{$data.message}<hr />
 			<form method='post' action="app.php">
 			
@@ -58,14 +59,12 @@
 					<tr><td width="150px" valign="top">Abstrakt:</td><td> <textarea name="abstract_text" rows="20"   style='width:600px;' {$data.state}>{$data.abstract.abstract_text}</textarea> </td></tr>
 					
 				
-				<tr><td colspan="2">
-				{if $data.state != 'readonly'}
-					<input type="submit" value="{$data.buttons.registration_submit}">
-				{/if}
-				</td></tr>
+				
 			</table>
 			</div>
-	
+			{if $data.state != 'readonly'}
+					<input type="submit" value="{$data.buttons.registration_submit}">
+				{/if}
 	</form>
 	</div>
 	<!-- <div id="content-right">

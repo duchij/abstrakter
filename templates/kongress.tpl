@@ -17,12 +17,13 @@
 			<div id="content-left">
 			<ul>
 				<li><a href="app.php?run=1">Domov...</a></li>
-				<li><a href="app.php?addcon=1">Pridaj kongress..</a></li>
-				<li><a href="app.phxp?logout=1">Logout</a></li>
+				<li><a href="app.php?addcon=1">Kongresy</a></li>
+				<li><a href="app.php?logout=1">Odhlásiť sa</a></li>
 			</ul>
 			</div>
 		
-		<div id="content-main">{$message}
+		<div id="content-main">
+		{$data.message}
 		
 				<h1>Akcia / Seminár / Konferencia / Kongress...</h1>
 				<form method='post' action="app.php">

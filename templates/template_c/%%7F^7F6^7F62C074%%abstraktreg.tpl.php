@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-12 18:22:58
+<?php /* Smarty version 2.6.28, created on 2014-02-13 11:52:58
          compiled from abstraktreg.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 35, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 38, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 
@@ -30,27 +30,28 @@ unset($_smarty_tpl_vars);
 
 <div id="content">
 		<div id="content-left">
-	
+		<ul>
 			<li><a href="app.php?run=1">Domov...</a></li>
-			<li><a href="app.php?addcon=1">Pridaj kongress..</a></li>
-			<li><a href="app.php?logout=1">Logout</a></li>
+			<?php if ($this->_tpl_vars['data']['admin']): ?>
+			<li><a href="app.php?addcon=1">Kongress..</a></li>
+			<?php endif; ?>
+			<li><a href="app.php?logout=1">Odhlasiť sa</a></li>
+		</ul>
 		</div>
 	<div id="content-main" style="width:750px;">
 			<h1 class="logo">Prihlásenie na kongres</h1>
 			<hr />
 			<h2><?php echo $this->_tpl_vars['data']['congress']['congress_titel']; ?>
  </h2>
-			<h3><?php echo $this->_tpl_vars['data']['congress']['congress_subtitel']; ?>
-</h3>
+			<?php echo $this->_tpl_vars['data']['congress']['congress_subtitel']; ?>
+<br>
 			<a href="<?php echo $this->_tpl_vars['data']['congress']['congress_url']; ?>
-" target="_blank">Web stranka...</a>
-			<h3><?php echo $this->_tpl_vars['data']['congress']['congress_venue']; ?>
-</h3>
-			<h4><?php echo ((is_array($_tmp=$this->_tpl_vars['data']['congress']['congress_from'])) ? $this->_run_mod_handler('date_format', true, $_tmp, "%d.%m.%Y") : smarty_modifier_date_format($_tmp, "%d.%m.%Y")); ?>
+" target="_blank">Web stranka...</a><br>
+			<?php echo $this->_tpl_vars['data']['congress']['congress_venue']; ?>
+<br>
+			<?php echo ((is_array($_tmp=$this->_tpl_vars['data']['congress']['congress_from'])) ? $this->_run_mod_handler('date_format', true, $_tmp, "%d.%m.%Y") : smarty_modifier_date_format($_tmp, "%d.%m.%Y")); ?>
  - <?php echo ((is_array($_tmp=$this->_tpl_vars['data']['congress']['congress_until'])) ? $this->_run_mod_handler('date_format', true, $_tmp, "%d.%m.%Y") : smarty_modifier_date_format($_tmp, "%d.%m.%Y")); ?>
-</h4>
-			
-			
+<br>
 			<?php echo $this->_tpl_vars['data']['message']; ?>
 <hr />
 			<form method='post' action="app.php">
@@ -93,15 +94,13 @@ unset($_smarty_tpl_vars);
 </textarea> </td></tr>
 					
 				
-				<tr><td colspan="2">
-				<?php if ($this->_tpl_vars['data']['state'] != 'readonly'): ?>
+				
+			</table>
+			</div>
+			<?php if ($this->_tpl_vars['data']['state'] != 'readonly'): ?>
 					<input type="submit" value="<?php echo $this->_tpl_vars['data']['buttons']['registration_submit']; ?>
 ">
 				<?php endif; ?>
-				</td></tr>
-			</table>
-			</div>
-	
 	</form>
 	</div>
 	<!-- <div id="content-right">

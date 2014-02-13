@@ -15,6 +15,7 @@ class abstracter {
 	{
 		
 		$this->user_id = $_SESSION['abstrakter']['user_id'];
+		
 		$this->smarty = new Smarty;
 	
 		$this->smarty->template_dir = './templates';
@@ -25,9 +26,8 @@ class abstracter {
 		$this->db = new db(new mysqli($_SESSION['abstrakter']['server'],$_SESSION['abstrakter']['user'], $_SESSION['abstrakter']['password'],$_SESSION['abstrakter']['db']));
 	}
 	
-	function startPage($data)
+	public function startPage($data)
 	{
-		var_dump($data);
 		
 		if ($_SESSION['abstrakter']['session_id'] != session_id())
 		{
@@ -35,25 +35,27 @@ class abstracter {
 			$this->smarty->display('index.tpl');
 		}
 		
-		if (!$this->run_fnc($data))
+		if (!$this->run_app($data))
 		{
 		
 			if (isset($data['run']) && $data['run']==1)
 			{
 				$result = $this->loginUser($_SESSION['abstrakter']['user_id']);
+				$insData = array();
 				
-				$this->smarty->assign('contact_email',$result['email']);
-				$this->smarty->assign('titul_pred',$result['titul_pred']);
-				$this->smarty->assign('titul_za',$result['titul_za']);
-				$this->smarty->assign('meno',$result['meno']);
-				$this->smarty->assign('priezvisko',$result['priezvisko']);
-				$this->smarty->assign('adresa',$result['adresa']);
+				$insData['user_id'] 	= $_SESSION['abstrakter']['user_id'];;
+				$insData['meno'] 		= $result['meno'];
+				$insData['priezvisko'] 	= $result['priezvisko'];
+				$insData['titul_pred']	= $result['titul_pred'];
+				$insData['titul_za']	= $result['titul_za'];
+				$insData['adresa']		= $result['adresa'];
+				$insData['contact_email']		= $result['contact_email'];
 				
 				//$this->getUserRegistrations($_SESSION['abstrakter']['user_id']);
-				
+				$this->smarty->assign('data',$insData);
 				$this->smarty->assign('regbyuser',$this->getUserRegistrations($_SESSION['abstrakter']['user_id']));
-	
 				$this->smarty->assign('avab_kongres',$this->avabKongres());
+				$this->smarty->assign('admin',$_SESSION['abstrakter']['is_admin']);
 		
 				$this->smarty->display("userdata.tpl");
 				
@@ -64,39 +66,7 @@ class abstracter {
 				session_destroy();
 				$this->smarty->display('index.tpl');
 			}
-				
-			else if (isset($data['insdat']) && $data['insdat'] == 1)
-			{
-				$insData = array();
-				//print_r($_SESSION['abstrakter']);
-				$insData['user_id'] 	= $_SESSION['abstrakter']['user_id'];;
-				$insData['meno'] 		= $data['meno'];
-				$insData['priezvisko'] 	= $data['priezvisko'];
-				$insData['titul_pred']	= $data['titul_pred'];
-				$insData['titul_za']	= $data['titul_za'];
-				$insData['adresa']		= $data['adresa'];
-				$insData['contact_email']		= $data['contact_email'];
-				
-				$result = $this->db->insert_row('usersdata',$insData);
-				
-				if ($result['status'])
-				{
-					$this->smarty->assign('contact_email',$insData['contact_email']);
-					$this->smarty->assign('titul_pred',$insData['titul_pred']);
-					$this->smarty->assign('titul_za',$insData['titul_za']);
-					$this->smarty->assign('meno',$insData['meno']);
-					$this->smarty->assign('priezvisko',$insData['priezvisko']);
-					$this->smarty->assign('adresa',$insData['adresa']);
-					$this->smarty->assign('message',"Aktualizácia prebehla v poriadku....");
-					
-					$this->smarty->display("userdata.tpl");
-				}
-				else
-				{
-					$this->smarty->assign('error',$result['error']);
-					$this->smarty->display("error.tpl");
-				}
-			}
+			
 			else if (isset($data['editcon']) && intval($data['editcon']) > 0)
 			{
 			
@@ -141,72 +111,18 @@ class abstracter {
 				$insData = array();
 				$insData['congress'] = $congress;
 				$insData['functions'] = array("fnc"=>"insertAbstr_fnc","value"=>1);
+				$insData['buttons'] = array("registration_submit"=>"Uložiť");
 				$this->smarty->assign('data',$insData);
 				$this->smarty->display("abstraktreg.tpl");
 			}
-			
-			
-			else if (isset($data['afterreg']) && intval($data['afterreg']) == 1)
-			{
-				//print_r($_REQUEST);
-				if (filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL))
-				{
-					if (!$this->checkReg($_REQUEST['email']) == true)
-					{
-						$passwd1 = hash('md5',$_REQUEST['password']);
-						$passwd2 = hash('md5',$_REQUEST['password2']);
-							
-						if ($passwd1 === $passwd2)
-						{
-							$insData = array();
-			
-							$insData['email'] = $_REQUEST['email'];
-							$insData['password'] = $passwd1;
-			
-							$res = $this->db->insert_row("users",$insData);
-			
-							if ($res['status'])
-							{
-								//var_dump($res);
-								//return;
-								$_SESSION['abstrakter']['user_id'] = $res['last_id'];
-									
-								header("location:app.php?run=1");
-							}
-							else
-							{
-								$this->smarty->assign('error',$res['error']);
-								$this->smarty->display('error.tpl');
-							}
-			
-						}
-						else
-						{
-							$this->smarty->assign('error',"Heslá sa nerovnajú");
-							$this->smarty->display('error.tpl');
-						}
-					}
-					else
-					{
-						$this->smarty->assign('error',"Toto nie je správna email adresa");
-						$this->smarty->display('error.tpl');
-					}
-				}
-				else{
-					$this->smarty->assign('error',"Emailová adresa je už zaregistrovaná, alebo má nesprávny formát");
-					$this->smarty->display('error.tpl');
-				}
-			}
 			else
 			{
-				
 				$this->smarty->display('index.tpl');
 			}
 		}
-		
 	}
 	
-	private function run_fnc($request)
+	private function run_app($request)
 	{
 		$result = false;
 		foreach ($request as $key=>$value)
@@ -225,7 +141,7 @@ class abstracter {
 	private function avabKongres()
 	{
 		$today = date("Y-m-d");
-		$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` >= '%s' AND `congress_reguntil` > '%s' ",$today,$today);
+		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s' AND [congress_reguntil] > '%s' ",$today,$today);
 		//$sql = sprintf("SELECT * FROM `kongressdata` ");
 		$table = $this->db->sql_table($sql);
 		
@@ -236,6 +152,37 @@ class abstracter {
 	private function insertKongres_fnc($id, $data)
 	{
 		$this->insertKongress($data);
+	}
+	
+	private function insUserData_fnc($id,$data)
+	{
+		$insData = array();
+		//print_r($_SESSION['abstrakter']);
+		$insData['user_id'] 	= $_SESSION['abstrakter']['user_id'];;
+		$insData['meno'] 		= $data['meno'];
+		$insData['priezvisko'] 	= $data['priezvisko'];
+		$insData['titul_pred']	= $data['titul_pred'];
+		$insData['titul_za']	= $data['titul_za'];
+		$insData['adresa']		= $data['adresa'];
+		$insData['contact_email']		= $data['contact_email'];
+		
+		$result = $this->db->insert_row('usersdata',$insData);
+		
+		if ($result['status'])
+		{
+			$insData['message'] = "Aktualizácia prebehla v poriadku....";
+			
+			$this->smarty->assign('avab_kongres',$this->avabKongres());
+			$this->smarty->assign('regbyuser',$this->getUserRegistrations($_SESSION['abstrakter']['user_id']));
+			
+			$this->smarty->assign('data',$insData);				
+			$this->smarty->display("userdata.tpl");
+		}
+		else
+		{
+			$this->smarty->assign('error',$result['error']);
+			$this->smarty->display("error.tpl");
+		}
 	}
 	
 	private function editKongres_fnc($id, $data)
@@ -265,9 +212,9 @@ class abstracter {
 		
 		$table = $this->db->sql_table($sql);
 		$insData['avakon'] = $table;
-		
+		$insData['message'] = "Kongres sa uložil...";
 		$insData['functions'] = array("fnc"=>"editKongres_fnc","value"=>$id);
-		$insData['buttons'] = array("insert_new_kongres"=>"Uprav...");
+		$insData['buttons'] = array("insert_new_kongres"=>"Uprav");
 				
 		
 		//$_SESSION['abstrakter']['selected_congress'] = $res['last_id'];
@@ -281,6 +228,26 @@ class abstracter {
 	
 	private function deleteAbstr_fnc($id, $data)
 	{
+		$sql = sprintf("DELETE FROM [registration] WHERE [item_id] = %d",intval($id));
+		if ($this->db->sql_execute($sql))
+		{
+			$result = $this->loginUser($_SESSION['abstrakter']['user_id']);
+			
+			$this->smarty->assign('contact_email',$result['email']);
+			$this->smarty->assign('titul_pred',$result['titul_pred']);
+			$this->smarty->assign('titul_za',$result['titul_za']);
+			$this->smarty->assign('meno',$result['meno']);
+			$this->smarty->assign('priezvisko',$result['priezvisko']);
+			$this->smarty->assign('adresa',$result['adresa']);
+			
+			//$this->getUserRegistrations($_SESSION['abstrakter']['user_id']);
+			
+			$this->smarty->assign('regbyuser',$this->getUserRegistrations($_SESSION['abstrakter']['user_id']));
+			
+			$this->smarty->assign('avab_kongres',$this->avabKongres());
+			
+			$this->smarty->display("userdata.tpl");
+		}
 		
 	}
 	
@@ -312,7 +279,9 @@ class abstracter {
 			$tmp['abstract'] = $insData;
 			$tmp['message'] = "Vasa ucast bol zaregistrovana...";
 			$tmp['functions'] =array("fnc"=>"editAbstr_fnc","value"=>$res['last_id']);
-			$tmp['buttons'] = array("registration_submit"=>"Nahraj abstrakt...");
+			$tmp['buttons'] = array("registration_submit"=>"Uložiť");
+			
+			$tmp['admin'] = $_SESSION['abstrakter']['is_admin'];
 			
 			$this->smarty->assign('data',$tmp);
 			$this->smarty->display('abstraktreg.tpl');
@@ -328,9 +297,9 @@ class abstracter {
 		$insData['congress'] = $this->db->sql_row($sql);
 		$insData['congress']['user_id'] = $_SESSION['abstrakter']['user_id'];
 		
-		$insData['buttons'] = array("registration_submit"=>"Vloz abstrakt");
+		$insData['buttons'] = array("registration_submit"=>"Uložiť");
 		$insData['functions'] = array("fnc"=>"insertAbstr_fnc","value"=>1);
-			
+		$insData['admin'] = $_SESSION['abstrakter']['is_admin'];
 		$this->smarty->assign('data',$insData);
 		$this->smarty->display('abstraktreg.tpl');
 				
@@ -389,7 +358,7 @@ class abstracter {
 		$tmp['congress'] = $congress;
 		$tmp['buttons'] = $buttons;	
 		$tmp['functions'] = array("fnc"=>"insertAbstr_fnc","value"=>$id);
-		
+		$tmp['admin'] = $_SESSION['abstrakter']['is_admin'];
 		$regDate = time($data['congress_reguntil']);
 		$regDate2 = time(date("Y-m-d"));
 		
@@ -425,18 +394,7 @@ class abstracter {
 		return $res;
 	}
 	
-	private function checkReg($email)
-	{
-		$result = false;
-		$sql = sprintf("SELECT * FROM [users] WHERE [email] = '%s'",$email);
-		$res = $this->db->sql_count_rows($sql);
-	
-		if (intval($res['rows']) > 0)
-		{
-			$result = true;
-		}
-		return $result;
-	}
+
 	
 	private function getKongressByID($id)
 	{
@@ -499,60 +457,13 @@ class abstracter {
 		//var_dump($_SESSION['abstrakter']);
 		
 	}
-	private function write_page($id,$data)
-	{
-		if ($id === 'login')
-		{
-			if (filter_var($data['email'], FILTER_VALIDATE_EMAIL))
-			{
-				$result = $this->loginUser($data);
-				//000print_r($result);
-	
-				if (intval($result['id']) > 0 )
-				{
-					$_SESSION['abstrakter']['user_id'] = $result['id'];
-					//	print_r($_SESSION['abstrakter']);
-					$this->smarty->assign('email',$result['email']);
-					$this->smarty->assign('titul_pred',$result['titul_pred']);
-					$this->smarty->assign('titul_za',$result['titul_za']);
-					$this->smarty->assign('meno',$result['meno']);
-					$this->smarty->assign('priezvisko',$result['priezvisko']);
-					$this->smarty->assign('adresa',$result['adresa']);
-	
-					$this->smarty->display("userdata.tpl");
-				}
-			}
-		}
-		if ($id === 'error')
-		{
-			$this->smarty->assign('error_msg', $data);
-			$this->smarty->display('error.tpl');
-		}
-		if ($id == 'new_user')
-		{
-			$this->smarty->assign('email',$data['email']);
-			$this->smarty->assign('new_reg_msg',$data['new_reg_msg']);
-				
-			$this->smarty->display('userdata.tpl');
-		}
-		if ($id === 'user_data')
-		{
-			$this->smarty->assign('email',$data['email']);
-			$this->smarty->assign('titul_pred',$data['titul_pred']);
-			$this->smarty->assign('titul_za',$data['titul_za']);
-			$this->smarty->assign('meno',$data['meno']);
-			$this->smarty->assign('priezvisko',$data['priezvisko']);
-			$this->smarty->assign('adresa',$data['adresa']);
-				
-			$this->smarty->display("userdata.tpl");
-		}
-	}
+
 	
 	function loginUser($id)
 	{
 		$sql = sprintf("
 						SELECT * FROM [usersdata] 
-							INNER JOIN [users] ON [usersdata].[user_id] = [users].[id]
+							LEFT JOIN [users] ON [usersdata].[user_id] = [users].[id]
 						WHERE [users].[id] = %d"
 				,intval($id));
 		return $this->db->sql_row($sql);

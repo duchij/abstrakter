@@ -14,8 +14,8 @@
 
 <h1> Registrácia nového užívateľa do aplikácie ABSTRAKTER</h1>
 <hr />
-<form method='post' action="app.php">
-	<input type="hidden" name="afterreg" value="1">
+<form method='post' action="index.php">
+	<input type="hidden" name="registerNewUser_fnc" value="1">
 	Email: <input type="text" name="email"><br />
 	Heslo: <input type="password" name="password"><br />
 	Re-Heslo: <input type="password" name="password2">

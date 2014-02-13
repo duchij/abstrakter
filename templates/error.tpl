@@ -7,7 +7,7 @@
 
 <body>
 	{$error_msg}
- 
+ <a href="index.php" target="_self">Späť na prihlásenie....</a>
 </body>
 
 </html>

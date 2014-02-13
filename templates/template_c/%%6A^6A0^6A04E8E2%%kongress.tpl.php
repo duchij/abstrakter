@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-12 18:18:57
+<?php /* Smarty version 2.6.28, created on 2014-02-13 11:21:49
          compiled from kongress.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'html_select_date', 'kongress.tpl', 36, false),array('modifier', 'date_format', 'kongress.tpl', 55, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'html_select_date', 'kongress.tpl', 37, false),array('modifier', 'date_format', 'kongress.tpl', 56, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,12 +25,13 @@ unset($_smarty_tpl_vars);
 			<div id="content-left">
 			<ul>
 				<li><a href="app.php?run=1">Domov...</a></li>
-				<li><a href="app.php?addcon=1">Pridaj kongress..</a></li>
+				<li><a href="app.php?addcon=1">Kongresy</a></li>
 				<li><a href="app.phxp?logout=1">Logout</a></li>
 			</ul>
 			</div>
 		
-		<div id="content-main"><?php echo $this->_tpl_vars['message']; ?>
+		<div id="content-main">
+		<?php echo $this->_tpl_vars['data']['message']; ?>
 
 		
 				<h1>Akcia / Seminár / Konferencia / Kongress...</h1>
