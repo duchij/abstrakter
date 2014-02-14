@@ -1,6 +1,8 @@
 <?php 
 require_once 'smarty/Smarty.class.php';
 require_once 'mysql.class.php';
+require_once 'phpmailer/class.phpmailer.php';
+
 session_start();
 
 class login{
@@ -20,6 +22,8 @@ class login{
 		//$_SESSION['abstrakter'] = parse_ini_file("$this->iniDir/database.ini");
 		$this->db = new db(new mysqli($_SESSION['abstrakter']['server'],$_SESSION['abstrakter']['user'], $_SESSION['abstrakter']['password'],$_SESSION['abstrakter']['db']));
 		
+		$this->mail = new PHPMailer();
+		
 		$this->smarty = new Smarty();
 		$this->smarty->template_dir = './templates';
 		$this->smarty->compile_dir = './templates/template_c';
@@ -29,11 +33,34 @@ class login{
 	
 	public function start()
 	{
-		
-		if (!$this->run_fnc($_REQUEST))
+		//var_dump($_REQUEST);
+		if ($this->run_fnc($_REQUEST) == true)
 		{	
-			$this->smarty->assign('avab_kongres',$this->avabKOngres());
+					
+			$this->smarty->assign('avab_kongres',$this->avabKongres());
 			$this->smarty->display('index.tpl');
+		}
+		else
+		{
+			if (isset($_REQUEST['rp']))
+			{
+				$rp = addslashes($_REQUEST['rp']);
+				
+				$sql = sprintf("SELECT * FROM [reset_passwd] WHERE [reset_link] = '%s' ",$rp);
+				
+				$res = $this->db->sql_row($sql);
+				
+				if (isset($res['item_id']))
+				{
+					$this->smarty->assign('email',$res['email']);
+					$this->smarty->display('regpsswd.tpl');
+				}
+				else
+				{
+					$this->smarty->assign('error','Neplatny link....');
+					$this->smarty->display('error.tpl');
+				}
+			}
 		}
 		
 	}
@@ -66,13 +93,23 @@ class login{
 				session_commit();
 				header("location:app.php?run=1");
 			}
+			else
+			{
+				$this->smarty->assign("error","Meno a heslo je nesprávne, alebo užívateľ neexistuje.....");
+				$this->smarty->display("error.tpl");
+				
+			}
+		}
+		else
+		{
+			$this->smarty->assign("error","Toto nie je emailová adresa.....");
+			$this->smarty->display("error.tpl");
 		}
 	}
 	
 	private function register_fnc($id,$data)
 	{
-		
-		
+			
 		$this->smarty->display('regform.tpl');
 	}
 	
@@ -119,7 +156,16 @@ class login{
 						$_SESSION['abstrakter']['user_id'] = $res['last_id'];
 						$_SESSION['abstrakter']['user_email'] = $data['email'];
 						$_SESSION['abstrakter']['session_id'] = session_id();
-						$this->sendMail($data['email']);
+						
+						
+						$tmpRes = $this->sendMail($data['email']);
+						
+						if ($tmpRes['status'] == FALSE)
+						{
+							$this->smarty->assign('error',$this->mail->ErrorInfo);
+							$this->smarty->display('error.tpl');
+							exit;
+						}
 						
 						session_commit();
 						
@@ -127,28 +173,143 @@ class login{
 					}
 					else 
 					{
-						$this->smarty->assign('error_msg',$res['error']);
+						$this->smarty->assign('error',$res['error']);
 						$this->smarty->display('error.tpl');
 					}
 				}
 				else 
 				{
-					$this->smarty->assign('error_msg',"Heslá sa nerovnajú");
+					$this->smarty->assign('error',"Heslá sa nerovnajú");
 					$this->smarty->display('error.tpl');
 				}
 			}
 			else 
 			{
-				$this->smarty->assign('error_msg',"Užívateľ je už zaregistrovaný...");
+				$this->smarty->assign('error',"Užívateľ je už zaregistrovaný...");
 				$this->smarty->display('error.tpl');
 			}
 		}
 		else 
 		{
-			$this->smarty->assign("error_msg","Toto nie je valídna emailová adresa..");
+			$this->smarty->assign("error","Toto nie je valídna emailová adresa..");
 			$this->smarty->display('error.tpl');
 		}
 				
+	}
+	
+	function resetExistPasswd_fnc($id,$data)
+	{
+		if (filter_var($data['email'], FILTER_VALIDATE_EMAIL) == FALSE)
+		{
+			$this->smarty->assign('error','Toto nie je emailová adresa...');
+			$this->smarty->display('error.tpl');
+			exit;
+		}
+		
+		$sql = sprintf("SELECT 	
+								[users].[id] AS [user_id], [users].[email] AS [user_email],
+								[usersdata].[meno] AS [meno], [usersdata].[priezvisko] AS [priezvisko],
+								[usersdata].[contact_email] AS [contact_email]
+							FROM [users] 
+						INNER JOIN [usersdata] ON [usersdata].[user_id] = [users].[id]
+						WHERE [users].[email] = '%s'",$data['email']);
+		
+		$res = $this->db->sql_row($sql);
+		
+		if(!isset($res['user_id']))
+		{
+			$this->smarty->assign('error','Takáto emailová adresa nie je zaregistrovaná...');
+			$this->smarty->display('error.tpl');
+			exit;
+		}
+		else
+		{
+			$valid_from = time();
+			$valid_until = time()+(1*24*60*60);
+			
+			$hash_link = hash('sha1',"{$data['email']}-{$valid_from}");
+			
+			$insData = array(
+						"email"=>$data['email'],
+						"reset_link"=>$hash_link,
+						"valid_from"=>$valid_from,
+						"valid_until"=>$valid_until
+					);
+			
+			$this->db->insert_row('reset_passwd',$insData);
+
+			$emailData = array(
+						"email"=>$data['email'],
+						"reset_link" => $hash_link,
+						"meno"=>$res['meno'],
+						"priezvisko"=>$res['priezvisko']
+					);
+			
+			$tmp = $this->sendMailMsg($emailData);
+			if ($tmp['status'] == FALSE)
+			{
+				$this->smarty->assign('error',$tmp['message']);
+				$this->smarty->display('error.tpl');
+				exit;
+			}
+			else
+			{
+				$this->smarty->assign("message","Na uvedený mail ste obdržali link na resetovanie Vášho hesla");
+				$this->smarty->display('message.tpl');
+				exit;
+			}
+			//var_dump($res);
+		}
+	}
+	
+	private function sendMailMsg($data)
+	{
+		$subject = "Reset hesla na pristup do abstrakter.detska-chirurgia.sk";
+		$this->smarty->assign("data",$data);
+		
+		$message = $this->smarty->fetch("emails/resetpasswd.tpl");
+		
+		$this->mail->isSMTP();                                      // Set mailer to use SMTP
+		$this->mail->Host = 'mail.detska-chirurgia.sk';  	// Specify main and backup server
+		$this->mail->Port = 25;
+		$this->mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$this->mail->Username = 'info@detska-chirurgia.sk';                            // SMTP username
+		$this->mail->Password = 'InfoPassword';                           // SMTP password
+		//$this->mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also accepted
+		
+		$this->mail->From = 'Info@detska-chirurgia.sk';
+		$this->mail->FromName = 'detska-chirurgia.sk';
+		//$this->mail->addAddress('josh@example.net', 'Josh Adams');  // Add a recipient
+		$this->mail->addAddress($data['email']);               // Name is optional
+		$this->mail->addReplyTo('info@detska-chirurgia.sk', 'Detska chirurgia Slovenska');
+		//	$this->mail->addCC('cc@example.com');
+		//	$this->mail->addBCC('bcc@example.com');
+		
+		$this->mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+		//	$this->mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+		//	$this->mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+		$this->mail->isHTML(true);                                  // Set email format to HTML
+		
+		$this->mail->Subject = $subject;
+		$this->mail->Body    = $message;
+		$this->mail->CharSet ="UTF-8";
+		
+		$result = array("status"=>TRUE,"message"=>'');
+		if (!$this->mail->send())
+		{
+			//$this->smarty->assign('error',$this->mail->ErrorInfo);
+			//$this->smarty->display('error.tpl');
+			$result['message'] = $this->mail->ErrorInfo;
+			$result['status'] = FALSE;
+		}
+		
+		return $result;
+	}
+	
+	
+	private function reset_fnc($id,$data)
+	{
+		$this->smarty->display('resetpas.tpl');
 	}
 	
 	private function run_fnc($request)
@@ -187,19 +348,60 @@ class login{
 	}
 	
 	private function sendMail($email)
-	{
-		$headers = 'From: trauma@detska-chirurgia.sk'."\r\n";
-		$headers .= 'MIME-Version: 1.0'."\r\n";
-		$headers .= 'Content-Type: text/html; charset=utf-8'."\r\n";
+	{	
+		$subject = "Informacia o uspesnej registracii do aplikacie Abstrakter na webe detska-chirurgia.sk";
+		
+		$message = $this->smarty->fetch("emails/newuser_html_mail.tpl");
+		
+		$this->mail->isSMTP();                                      // Set mailer to use SMTP
+		$this->mail->Host = 'mail.detska-chirurgia.sk';  	// Specify main and backup server
+		$this->mail->Port = 25;
+		$this->mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$this->mail->Username = 'trauma@detska-chirurgia.sk';                            // SMTP username
+		$this->mail->Password = 'TraumaPassword';                           // SMTP password
+		//$this->mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also accepted
+		
+		$this->mail->From = 'trauma@detska-chirurgia.sk';
+		$this->mail->FromName = 'trauma@detska-chirurgia.sk';
+		//$this->mail->addAddress('josh@example.net', 'Josh Adams');  // Add a recipient
+		$this->mail->addAddress($email);               // Name is optional
+		$this->mail->addReplyTo('trauma@detska-chirurgia.sk', 'Trauma v detskom veku');
+	//	$this->mail->addCC('cc@example.com');
+	//	$this->mail->addBCC('bcc@example.com');
+		
+		$this->mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+	//	$this->mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+	//	$this->mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+		$this->mail->isHTML(true);                                  // Set email format to HTML
+		
+		$this->mail->Subject = $subject;
+		$this->mail->Body    = $message;
+		$this->mail->CharSet ="UTF-8";
+		
+		$result = array("status"=>TRUE,"message"=>'');
+		if (!$this->mail->send())
+		{
+			//$this->smarty->assign('error',$this->mail->ErrorInfo);
+			//$this->smarty->display('error.tpl');
+			$result['message'] = $this->mail->ErrorInfo;
+			$result['status'] = FALSE;
+		}
+				
+		return $result;
+		
+		//$this->mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+		
+// 		$headers = 'From: trauma@detska-chirurgia.sk'."\r\n";
+// 		$headers .= 'MIME-Version: 1.0'."\r\n";
+// 		$headers .= 'Content-Type: text/html; charset=utf-8'."\r\n";
 		
 		
-		$message = $this->smarty->fetch("newuser_html_mail.tpl");
-		$to = $email;
+		
+		//$to = $email;
+					
 		
 		
-		$subject = "Informácia o úspešnej registrácii do aplikácie Abstrakter na webe detska-chirurgia.sk";
-		
-		return mail($to,$subject,$message,$headers);
+		//return mail($to,$subject,$message,$headers);
 		
 	}
 	

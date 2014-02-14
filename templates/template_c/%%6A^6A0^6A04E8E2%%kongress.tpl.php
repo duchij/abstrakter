@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-13 11:21:49
+<?php /* Smarty version 2.6.28, created on 2014-02-14 06:48:20
          compiled from kongress.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'html_select_date', 'kongress.tpl', 37, false),array('modifier', 'date_format', 'kongress.tpl', 56, false),)), $this); ?>
@@ -26,7 +26,7 @@ unset($_smarty_tpl_vars);
 			<ul>
 				<li><a href="app.php?run=1">Domov...</a></li>
 				<li><a href="app.php?addcon=1">Kongresy</a></li>
-				<li><a href="app.phxp?logout=1">Logout</a></li>
+				<li><a href="app.php?logout=1">Odhlásiť sa</a></li>
 			</ul>
 			</div>
 		

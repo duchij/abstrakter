@@ -32,7 +32,7 @@ class abstracter {
 		if ($_SESSION['abstrakter']['session_id'] != session_id())
 		{
 			session_destroy();
-			$this->smarty->display('index.tpl');
+			$this->smarty->display('logout.tpl');
 		}
 		
 		if (!$this->run_app($data))
@@ -62,9 +62,13 @@ class abstracter {
 			}
 			else if (isset($data['logout']) && $data['logout'] == 1)
 			{
-				//session_start();
-				session_destroy();
-				$this->smarty->display('index.tpl');
+				if (isset($_SESSION['abstrakter']['session_id']))
+				{		
+					unset($_SESSION['abstrakter']['session_id']);
+					session_destroy();
+				}
+				
+				$this->smarty->display('logout.tpl');
 			}
 			
 			else if (isset($data['editcon']) && intval($data['editcon']) > 0)
@@ -104,7 +108,6 @@ class abstracter {
 				$this->smarty->display('kongress.tpl');
 				//$this->insertKongress($data);
 			}
-			
 			else if (isset($data['register']) && intval($data['register']) > 0)
 			{
 				$congress= $this->getKongressByID(intval($data['register']));
@@ -117,7 +120,15 @@ class abstracter {
 			}
 			else
 			{
-				$this->smarty->display('index.tpl');
+				if (isset($_SESSION['abstrakter']['session_id']))
+				{		
+					unset($_SESSION['abstrakter']['session_id']);
+					session_destroy();
+				}
+				
+				$this->smarty->display('logout.tpl');
+				
+				//$this->smarty->display('index.tpl');
 			}
 		}
 	}
@@ -175,6 +186,8 @@ class abstracter {
 			$this->smarty->assign('avab_kongres',$this->avabKongres());
 			$this->smarty->assign('regbyuser',$this->getUserRegistrations($_SESSION['abstrakter']['user_id']));
 			
+			$this->smarty->assign("admin",$_SESSION['abstrakter']['is_admin']);
+			
 			$this->smarty->assign('data',$insData);				
 			$this->smarty->display("userdata.tpl");
 		}
@@ -215,7 +228,7 @@ class abstracter {
 		$insData['message'] = "Kongres sa uložil...";
 		$insData['functions'] = array("fnc"=>"editKongres_fnc","value"=>$id);
 		$insData['buttons'] = array("insert_new_kongres"=>"Uprav");
-				
+		$this->smarty->assign("admin",$_SESSION['abstrakter']['is_admin']);
 		
 		//$_SESSION['abstrakter']['selected_congress'] = $res['last_id'];
 		//session_commit();
@@ -245,6 +258,8 @@ class abstracter {
 			$this->smarty->assign('regbyuser',$this->getUserRegistrations($_SESSION['abstrakter']['user_id']));
 			
 			$this->smarty->assign('avab_kongres',$this->avabKongres());
+			
+			$this->smarty->assign("admin",$_SESSION['abstrakter']['is_admin']);
 			
 			$this->smarty->display("userdata.tpl");
 		}
@@ -300,6 +315,8 @@ class abstracter {
 		$insData['buttons'] = array("registration_submit"=>"Uložiť");
 		$insData['functions'] = array("fnc"=>"insertAbstr_fnc","value"=>1);
 		$insData['admin'] = $_SESSION['abstrakter']['is_admin'];
+		$this->smarty->assign("admin",$_SESSION['abstrakter']['is_admin']);
+		
 		$this->smarty->assign('data',$insData);
 		$this->smarty->display('abstraktreg.tpl');
 				
@@ -443,6 +460,8 @@ class abstracter {
 			
 			$insData['functions'] = array("fnc"=>"editKongres_fnc","value"=>$id);
 			$insData['buttons'] = array("insert_new_kongres"=>"Uprav...");
+			
+			$this->smarty->assign("admin",$_SESSION['abstrakter']['is_admin']);
 			
 			$this->smarty->assign('data',$insData);
 			$this->smarty->display('kongress.tpl');

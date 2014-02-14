@@ -16,14 +16,17 @@
 	
 	<div id="content">
 		<div id="content-left">
+		<ul>
 		{if $admin}
 			<li><a href="app.php?addcon=1">Kongresy</a></li>
 		{/if}
 			<li><a href="app.php?logout=1">Odhlásiť sa</a></li>
+			</ul>
 		</div>
 		<div id="content-main">
-		{$message}
+		
 		<h1>Kontaktne údaje...</h1>
+		{$data.message}
 				<form method='post' action="app.php">
 				<input type="hidden" name="insUserData_fnc" value="1">
 				<table>

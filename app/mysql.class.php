@@ -92,9 +92,12 @@ class db {
 		if ($tmp = $this->mysqli->query($sql))
 		{
 			$row = $tmp->fetch_assoc();
-			foreach ($row as $key=>$value)
+			if (is_array($row))
 			{
-				$result[$key] = $value;
+				foreach ($row as $key=>$value)
+				{
+					$result[$key] = $value;
+				}
 			}
 		}
 		else

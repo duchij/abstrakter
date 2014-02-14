@@ -14,20 +14,26 @@
 	<div id="content">
 		
 		<div id="content-main" style="width:250px;">
-			<form method='post' action="index.php">
-			<input type='hidden' name='login_fnc' value='1'>
-				Email: <input type="text" name="email"><br>
-				Heslo: <input type="password" name="password"><br>
 				
-				<input type="submit" value="Prihlás"><button name='register_fnc' value='1' >Vytvoriť nový účet</button> 
+			<form method='post' action="index.php">
+			<table>
+				<tr><td>Email:</td><td> <input type="text" name="email"></td></tr>
+				<tr><td>Heslo:</td><td> <input type="password" name="password"></td></tr>
+				
+			
+			<tr><td colspan="2"><button formaction="index.php?login_fnc=1" type="submit">Prihlás</button> 
+			<button formaction="index.php?register_fnc=1"  >Vytvoriť nový účet</button>
+			<button formaction="index.php?reset_fnc=1">Zabudnuté heslo?</button></td></tr>	
+			</table>
 			</form> 
+			
 		</div>
-		
+		 
 		<div id="content-right" style="width:700px;">
 		<h1>Aktuálne kongresy</h1><hr>
-			 		{foreach from=$avab_kongres item=row}
-			 			<h1>{$row.congress_title}</h1>
-			 			{$row.congres_subtitle},{$row.congress_venue}<br>
+			 		{foreach from=$avab_kongres item=row key=i}
+			 			<strong>{$row.congress_titel}</strong><br>
+			 			{$row.congress_subtitel},{$row.congress_venue}<br>
 			 			<em>{$row.congress_from|date_format:"%d.%m.%Y"} - {$row.congress_until|date_format:"%d.%m.%Y"}</em>
 			 			<hr />
 			 		{/foreach}
