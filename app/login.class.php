@@ -34,34 +34,17 @@ class login{
 	public function start()
 	{
 		//var_dump($_REQUEST);
-		if ($this->run_fnc($_REQUEST) == true)
+		if (!$this->run_fnc($_REQUEST))
 		{	
 					
 			$this->smarty->assign('avab_kongres',$this->avabKongres());
 			$this->smarty->display('index.tpl');
 		}
-		else
+		/*else
 		{
-			if (isset($_REQUEST['rp']))
-			{
-				$rp = addslashes($_REQUEST['rp']);
-				
-				$sql = sprintf("SELECT * FROM [reset_passwd] WHERE [reset_link] = '%s' ",$rp);
-				
-				$res = $this->db->sql_row($sql);
-				
-				if (isset($res['item_id']))
-				{
-					$this->smarty->assign('email',$res['email']);
-					$this->smarty->display('regpsswd.tpl');
-				}
-				else
-				{
-					$this->smarty->assign('error','Neplatny link....');
-					$this->smarty->display('error.tpl');
-				}
-			}
-		}
+			$this->smarty->assign('avab_kongres',$this->avabKongres());
+			$this->smarty->display('index.tpl');
+		}*/
 		
 	}
 	
@@ -71,6 +54,78 @@ class login{
 		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s' ",$today);
 		//$sql = sprintf("SELECT * FROM `kongressdata` ");
 		return $this->db->sql_table($sql);
+	}
+	
+	private function rp_fnc($id,$data)
+	{
+		$rp = addslashes($data['rp_fnc']);
+		
+		$sql = sprintf("SELECT * FROM [reset_passwd] WHERE [reset_link] = '%s' ",$rp);
+		
+		$res = $this->db->sql_row($sql);
+		
+		if (isset($res['item_id']))
+		{
+			$this->smarty->assign('email',$res['email']);
+			$this->smarty->assign('user_id',$res['user_id']);
+			$this->smarty->display('ch_passwd_form.tpl');
+		}
+		else
+		{
+			$this->smarty->assign('error','Neplatny link....');
+			$this->smarty->display('error.tpl');
+		}
+	}
+	
+	private function changePasswdUser_fnc($id,$data)
+	{
+		if ($data['password'] != $data['password2'])
+		{
+			$this->smarty->assign('message',"Heslá nie sú rovnaké !!!!");
+			$this->smarty->assign('email',$data['email']);
+			$this->smarty->assign('user_id',$data['user_id']);
+			
+			$this->smarty->display('ch_passwd_form.tpl');
+		}
+		else
+		{
+			$passwd1 = hash('md5',$data['password']);
+				
+			
+			$insData = array();
+			$insData['email'] = $data['email'];
+			$insData['password'] = $passwd1;
+		
+			$res = $this->db->insert_row("users",$insData);
+		
+			if ($res['status'])
+			{
+				$del = sprintf("DELETE FROM [reset_passwd] WHERE [email] = '%s'",$data['email']);
+				$this->db->sql_execute($del);
+				$sql = sprintf("
+						SELECT *
+							FROM [users]
+						LEFT JOIN [usersdata] ON [usersdata].[user_id] = [users].[id]
+							WHERE [users].[email] = '%s'
+						",$data['email']);
+	
+				$result = $this->db->sql_row($sql);
+		
+				$_SESSION['abstrakter']['user_id'] = $data['user_id'];
+				$_SESSION['abstrakter']['user_email'] = $data['email'];
+				$_SESSION['abstrakter']['session_id'] = session_id();
+				
+				if ($result['account'] === 'admin')
+				{
+					$_SESSION['abstrakter']['is_admin'] = TRUE;
+				}
+		
+				session_commit();
+		
+				header("location:app.php?run=1");
+			}
+		}
+		
 	}
 	
 	private function login_fnc($id,$data)
@@ -110,7 +165,7 @@ class login{
 	private function register_fnc($id,$data)
 	{
 			
-		$this->smarty->display('regform.tpl');
+		$this->smarty->display('reguser.tpl');
 	}
 	
 	private function checkReg($email)

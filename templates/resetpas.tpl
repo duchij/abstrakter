@@ -22,7 +22,7 @@
 				<form method='post' action="index.php">
 					<input type="hidden" name="resetExistPasswd_fnc" value="1">
 					<table>
-						<tr><td>Email:</td><td> <input type="text" name="email"></td></tr>
+						<tr><td>Email:</td><td> <input type="text" name="email" value={$email}></td></tr>
 						<!--<tr><td>Heslo: </td><td> <input type="password" name="password"></td></tr>
 						<tr><td>Re-Heslo:</td><td>  <input type="password" name="password2"></td></tr>-->
 						<tr><td colspan="2"><input type="submit" value="Resetuj..."></td></tr>

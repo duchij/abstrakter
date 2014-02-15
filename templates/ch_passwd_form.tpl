@@ -17,10 +17,14 @@
 	<div id="content">
 		
 			<div id="content-main" style="width:900px;">
+			
 				<h1> Zmena hesla do ABSTRAKTER</h1>
 				<hr />
+				{$message}
 				<form method='post' action="index.php">
-					<input type="hidden" name="registerNewUser_fnc" value="1">
+					<input type="hidden" name="changePasswdUser_fnc" value="1">
+					<input type="hidden" name="user_id" value="{$user_id}">
+					
 					<table>
 						<tr><td>Email:</td><td> <input type="text" name="email" value="{$email}" readonly></td></tr>
 						<tr><td>Heslo: </td><td> <input type="password" name="password"></td></tr>

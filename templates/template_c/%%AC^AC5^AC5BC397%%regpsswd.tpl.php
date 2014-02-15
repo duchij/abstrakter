@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-14 15:10:53
+<?php /* Smarty version 2.6.28, created on 2014-02-15 08:20:02
          compiled from regpsswd.tpl */ ?>
 <!DOCTYPE html>
 <html>
@@ -28,7 +28,8 @@ unset($_smarty_tpl_vars);
 				<form method='post' action="index.php">
 					<input type="hidden" name="registerNewUser_fnc" value="1">
 					<table>
-						<tr><td>Email:</td><td> <input type="text" name="email"></td></tr>
+						<tr><td>Email:</td><td> <input type="text" name="email" value=<?php echo $this->_tpl_vars['email']; ?>
+></td></tr>
 						<tr><td>Heslo: </td><td> <input type="password" name="password"></td></tr>
 						<tr><td>Re-Heslo:</td><td>  <input type="password" name="password2"></td></tr>
 						<tr><td colspan="2"><input type="submit" value="Zaregistruj..."></td></tr>

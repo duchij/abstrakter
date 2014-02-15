@@ -1,5 +1,5 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-14 13:05:50
-         compiled from regform.tpl */ ?>
+<?php /* Smarty version 2.6.28, created on 2014-02-15 08:57:55
+         compiled from ch_passwd_form.tpl */ ?>
 <!DOCTYPE html>
 <html>
 
@@ -23,12 +23,19 @@ unset($_smarty_tpl_vars);
 	<div id="content">
 		
 			<div id="content-main" style="width:900px;">
-				<h1> Registrácia nového užívateľa do aplikácie ABSTRAKTER</h1>
+			
+				<h1> Zmena hesla do ABSTRAKTER</h1>
 				<hr />
+				<?php echo $this->_tpl_vars['message']; ?>
+
 				<form method='post' action="index.php">
-					<input type="hidden" name="registerNewUser_fnc" value="1">
+					<input type="hidden" name="changePasswdUser_fnc" value="1">
+					<input type="hidden" name="user_id" value="<?php echo $this->_tpl_vars['user_id']; ?>
+">
+					
 					<table>
-						<tr><td>Email:</td><td> <input type="text" name="email"></td></tr>
+						<tr><td>Email:</td><td> <input type="text" name="email" value="<?php echo $this->_tpl_vars['email']; ?>
+" readonly></td></tr>
 						<tr><td>Heslo: </td><td> <input type="password" name="password"></td></tr>
 						<tr><td>Re-Heslo:</td><td>  <input type="password" name="password2"></td></tr>
 						<tr><td colspan="2"><input type="submit" value="Zaregistruj..."></td></tr>

@@ -1,5 +1,5 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-14 21:54:38
-         compiled from resetpas.tpl */ ?>
+<?php /* Smarty version 2.6.28, created on 2014-02-15 08:42:12
+         compiled from reguser.tpl */ ?>
 <!DOCTYPE html>
 <html>
 
@@ -23,15 +23,15 @@ unset($_smarty_tpl_vars);
 	<div id="content">
 		
 			<div id="content-main" style="width:900px;">
-				<h1> Reset hesla do aplikácie ABSTRAKTER</h1>
+				<h1> Registrácia nového užívateľa do aplikácie ABSTRAKTER</h1>
 				<hr />
 				<form method='post' action="index.php">
-					<input type="hidden" name="resetExistPasswd_fnc" value="1">
+					<input type="hidden" name="registerNewUser_fnc" value="1">
 					<table>
 						<tr><td>Email:</td><td> <input type="text" name="email"></td></tr>
-						<!--<tr><td>Heslo: </td><td> <input type="password" name="password"></td></tr>
-						<tr><td>Re-Heslo:</td><td>  <input type="password" name="password2"></td></tr>-->
-						<tr><td colspan="2"><input type="submit" value="Resetuj..."></td></tr>
+						<tr><td>Heslo: </td><td> <input type="password" name="password"></td></tr>
+						<tr><td>Re-Heslo:</td><td>  <input type="password" name="password2"></td></tr>
+						<tr><td colspan="2"><input type="submit" value="Zaregistruj..."></td></tr>
 						
 					</table>
 				</form> 

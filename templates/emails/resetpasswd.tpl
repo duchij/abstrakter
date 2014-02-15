@@ -1,14 +1,14 @@
 <html>
 <body>
-<h3>Váená pani, Váenı pán {$data.name}</h3>
+<h3>VÃ¡Å¾enÃ¡ pani, VÃ¡Å¾enÃ½ pÃ¡n {$data.name}</h3>
 
-<p>Kliknutím na nišie uvedenı link si budete môc nastavi nové heslo na prístup do Abstraktera na detska-chirurgia.sk</p>
+<p>KliknutÃ­m na niÅ¾Å¡ie uvedenÃ½ link si budete mÃ´cÅ¥ nastaviÅ¥ novÃ© heslo na prÃ­stup do aplikÃ¡cie Abstrakter na webe detska-chirurgia.sk</p>
 
-http://abstrakter.detska-chirurgia.sk/index.php?rp={$data.reset_link}
+http://abstrakter.detska-chirurgia.sk/index.php?rp_fnc={$data.reset_link}
 
-<p>Tento link je platnı 24 hodín</p>
+<p>Tento link je platnÃ½ 24 hodÃ­n</p>
 
-Na tento mail prosím neodpovedajte.....
+Na tento mail prosÃ­m neodpovedajte.....
 
 
 </body>
