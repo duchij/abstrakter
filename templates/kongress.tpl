@@ -4,6 +4,7 @@
 <link rel="stylesheet" type="text/css" href="css/layout.css">
 <meta charset="UTF-8">
 <title>Abstrakter - Pridaj kongress</title>
+
 </head>
 
 <body>
@@ -18,6 +19,7 @@
 			<ul>
 				<li><a href="app.php?run=1">Domov...</a></li>
 				<li><a href="app.php?addcon=1">Kongresy</a></li>
+				
 				<li><a href="app.php?logout=1">Odhlásiť sa</a></li>
 			</ul>
 			</div>
@@ -57,6 +59,7 @@
 		 				
 		 					<button name="register" value="{$row.item_id}">Prihlásiť</button>
 		 					<button name="editcon" value="{$row.item_id}">Upraviť</button>
+		 					<button name="getRegisteredCVS_fnc" value="{$row.item_id}">Export Excel</button>
 		 					</p>
 		 			{/foreach}
 				</form>

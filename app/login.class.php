@@ -61,19 +61,32 @@ class login{
 		$rp = addslashes($data['rp_fnc']);
 		
 		$sql = sprintf("SELECT * FROM [reset_passwd] WHERE [reset_link] = '%s' ",$rp);
-		
 		$res = $this->db->sql_row($sql);
-		
 		if (isset($res['item_id']))
 		{
-			$this->smarty->assign('email',$res['email']);
-			$this->smarty->assign('user_id',$res['user_id']);
-			$this->smarty->display('ch_passwd_form.tpl');
+			
+			if ($res['valid_until'] < time())
+			{
+				$tmp = sprintf("DELETE FROM [reset_passwd] WHERE [item_id]=%d",$res['item_id']);
+				$this->db->sql_execute($tmp);
+				
+				$this->smarty->assign('error','Neplatny link....');
+				$this->smarty->display('error.tpl');
+				exit;
+				
+			}
+			else 
+			{
+				$this->smarty->assign('email',$res['email']);
+				$this->smarty->assign('user_id',$res['user_id']);
+				$this->smarty->display('ch_passwd_form.tpl');
+			}
 		}
 		else
 		{
 			$this->smarty->assign('error','Neplatny link....');
 			$this->smarty->display('error.tpl');
+			exit;
 		}
 	}
 	
@@ -111,8 +124,8 @@ class login{
 	
 				$result = $this->db->sql_row($sql);
 		
-				$_SESSION['abstrakter']['user_id'] = $data['user_id'];
-				$_SESSION['abstrakter']['user_email'] = $data['email'];
+				$_SESSION['abstrakter']['user_id'] = $result['user_id'];
+				$_SESSION['abstrakter']['user_email'] = $result['email'];
 				$_SESSION['abstrakter']['session_id'] = session_id();
 				
 				if ($result['account'] === 'admin')

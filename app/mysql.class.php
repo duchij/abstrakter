@@ -89,7 +89,9 @@ class db {
 	{
 		$result = array();
 		$sql = $this->modifStr($sql);
-		if ($tmp = $this->mysqli->query($sql))
+		
+		$tmp = $this->mysqli->query($sql);
+		if ($tmp)
 		{
 			$row = $tmp->fetch_assoc();
 			if (is_array($row))
@@ -102,8 +104,8 @@ class db {
 		}
 		else
 		{
-			trigger_error("Error SQL: {$sql}, ".$this->mysqli->error);
-			$result['error'] = "Error SQL: {$sql}, ".$this->mysqli->error;
+			trigger_error("Error SQL: {$sql} <br> ".$this->mysqli->error);
+			$result['error'] = "Error SQL: {$sql}<br> ".$this->mysqli->error;
 		}
 		$tmp->free_result();
 		//print_r($result);

@@ -23,3 +23,8 @@ function deleteConfirm(str)
 	}	
 		
 }
+
+function myMsq()
+{
+		
+}

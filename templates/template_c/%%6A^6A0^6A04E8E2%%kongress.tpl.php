@@ -1,13 +1,14 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-15 09:11:09
+<?php /* Smarty version 2.6.28, created on 2014-02-17 23:59:25
          compiled from kongress.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'html_select_date', 'kongress.tpl', 37, false),array('modifier', 'date_format', 'kongress.tpl', 56, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'html_select_date', 'kongress.tpl', 39, false),array('modifier', 'date_format', 'kongress.tpl', 58, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="css/layout.css">
 <meta charset="UTF-8">
 <title>Abstrakter - Pridaj kongress</title>
+
 </head>
 
 <body>
@@ -26,6 +27,7 @@ unset($_smarty_tpl_vars);
 			<ul>
 				<li><a href="app.php?run=1">Domov...</a></li>
 				<li><a href="app.php?addcon=1">Kongresy</a></li>
+				
 				<li><a href="app.php?logout=1">Odhlásiť sa</a></li>
 			</ul>
 			</div>
@@ -85,6 +87,8 @@ unset($_smarty_tpl_vars);
 ">Prihlásiť</button>
 		 					<button name="editcon" value="<?php echo $this->_tpl_vars['row']['item_id']; ?>
 ">Upraviť</button>
+		 					<button name="getRegisteredCVS_fnc" value="<?php echo $this->_tpl_vars['row']['item_id']; ?>
+">Export Excel</button>
 		 					</p>
 		 			<?php endforeach; endif; unset($_from); ?>
 				</form>
