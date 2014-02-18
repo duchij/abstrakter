@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-14 21:50:55
+<?php /* Smarty version 2.6.28, created on 2014-02-18 09:34:13
          compiled from regbyuser.tpl */ ?>
 <h1> Vaše aktuálne zahlasené abstrakty</h1>
  
@@ -19,4 +19,4 @@
 		
 		<hr />
 	
-	<?php endforeach; endif; unset($_from); ?>
+	<?php endforeach; endif; unset($_from); ?>

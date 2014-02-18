@@ -398,6 +398,9 @@ class abstracter {
 		
 		$data = $this->db->sql_row($sql);
 		
+		//var_dump($data);
+		
+		
 		$abstract = array(
 				"user_id"			=>$data['reg_user_id'],
 				"registr_id"		=>$data['registr_id'],
@@ -409,6 +412,22 @@ class abstracter {
 				"abstract_adresy"	=>$data['reg_abstract_adresy'],
 				"abstract_text"		=>$data['reg_abstract_text']
 		);
+		
+		if ($data['reg_participation'] == "aktiv")
+		{
+			$abstract['ckeck_activ'] = "checked";
+		}
+		if ($data['reg_participation'] == 'pasiv')
+		{
+			$abstract['ckeck_pasiv'] = "checked";
+		}
+		if ($data['reg_participation'] == 'visit')
+		{
+			$abstract['ckeck_visit'] = "checked";
+		}
+		
+		//var_dump($abstract);
+		
 		$congress = array(
 				"congress_titel" 	=> $data['congress_titel'],
 				"congress_subtitel" => $data['congress_subtitel'],
@@ -438,6 +457,9 @@ class abstracter {
 		{
 			$tmp['state'] = 'readonly';
 		}
+		
+		
+		
 		$this->smarty->assign('data',$tmp);
 		$this->smarty->display('abstraktreg.tpl');
 	}

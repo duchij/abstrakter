@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-17 13:17:54
+<?php /* Smarty version 2.6.28, created on 2014-02-18 09:34:16
          compiled from abstraktreg.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 38, false),)), $this); ?>
@@ -67,14 +67,23 @@ unset($_smarty_tpl_vars);
 				<input type="hidden" name="registr_id" value="<?php echo $this->_tpl_vars['data']['abstract']['registr_id']; ?>
 ">
 				<table>
-				<tr><td>	Aktívna účasť (autor)</td><td> <input type="radio" name="particip" value="aktiv" onClick="test('1');" checked <?php echo $this->_tpl_vars['data']['state']; ?>
+				<tr><td>	Aktívna účasť (autor)</td><td> <input type="radio" name="particip" value="aktiv" onClick="test('1');"  <?php echo $this->_tpl_vars['data']['abstract']['check_activ']; ?>
+ <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
-				<tr><td>	Pasívna účasť (spoluautor) </td><td>  <input type="radio" name="particip" value ="pasiv" onClick="test('0');" <?php echo $this->_tpl_vars['data']['state']; ?>
+				<tr><td>	Pasívna účasť (spoluautor) </td><td>  <input type="radio" name="particip" value ="pasiv" onClick="test('0');" <?php echo $this->_tpl_vars['data']['abstract']['check_pasiv']; ?>
+ <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
-				<tr><td>	Pasívna účasť (návštevník)</td><td> 	<input type="radio" name="particip"  value ="visit" onClick="test('0');" <?php echo $this->_tpl_vars['data']['state']; ?>
+				<tr><td>	Pasívna účasť (návštevník)</td><td> 	<input type="radio" name="particip"  value ="visit" onClick="test('0');" <?php echo $this->_tpl_vars['data']['abstract']['check_visit']; ?>
+ <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
 				</table>
+				
 				<div id="block" style="border:none;padding:0px;margin:0px">
+				<table>
+				<tr><td> <input type="radio" name="section" value="doctor"> - Lekárska sekcia</td> <td><input type="radio" name="section" value="nurse" > - Sesterská sekcia</td></tr> 
+				
+				</table>
+				
 				<table>
 					<tr><td width="150px" valign="top">Názov prednášky:</td><td>  <input type="text" name="abstract_titul" value="<?php echo $this->_tpl_vars['data']['abstract']['abstract_titul']; ?>
 " style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
