@@ -1,10 +1,11 @@
 <?php 
+session_start();
 require_once './smarty/Smarty.class.php';
 require_once 'mysql.class.php';
 require_once './phpmailer/class.phpmailer.php';
 require_once 'xml.class.php';
 
-session_start();
+
 
 
 class abstracter {
@@ -293,6 +294,25 @@ class abstracter {
 			unset($insData['item_id']);
 		}
 		
+		if ($data['particip'] === "aktiv")
+		{
+			$this->smarty->assign('ckeck_activ',"checked");
+		}
+		
+		if ($data['particip'] === 'pasiv')
+		{
+			//	$tmp['ckeck_pasiv'] = "checked";
+			$this->smarty->assign('ckeck_pasiv',"checked");
+		}
+		
+		if ($data['particip'] === 'visit')
+		{
+			//$tmp['ckeck_visit'] = "checked";
+			$this->smarty->assign('ckeck_visit',"checked");
+		}
+		
+		
+		
 		$res = $this->db->insert_row("registration",$insData);
 		
 		if ($res['status'])
@@ -312,6 +332,7 @@ class abstracter {
 			$tmp['buttons'] = array("registration_submit"=>"Uložiť");
 			
 			$tmp['admin'] = $_SESSION['abstrakter']['is_admin'];
+			$tmp['check_activ']="checked";
 			
 			$this->smarty->assign('data',$tmp);
 			$this->smarty->display('abstraktreg.tpl');
@@ -370,6 +391,8 @@ class abstracter {
 		$insData['buttons'] = array("registration_submit"=>"Uložiť");
 		$insData['functions'] = array("fnc"=>"insertAbstr_fnc","value"=>1);
 		$insData['admin'] = $_SESSION['abstrakter']['is_admin'];
+		$insData['check_activ']="checked";
+		
 		$this->smarty->assign("admin",$_SESSION['abstrakter']['is_admin']);
 		
 		$this->smarty->assign('data',$insData);
@@ -433,22 +456,7 @@ class abstracter {
 				);
 		$tmp = array();
 		
-		if ($abstract['participation'] === "aktiv")
-		{
-			$this->smarty->assign('ckeckactiv',"checked");
-		}
 		
-		if ($abstract['participation'] === 'pasiv')
-		{
-		//	$tmp['ckeck_pasiv'] = "checked";
-			$this->smarty->assign('ckeckpasiv',"checked");
-		}
-		
-		if ($abstract['participation'] === 'visit')
-		{
-			//$tmp['ckeck_visit'] = "checked";
-			$this->smarty->assign('ckeckvisit',"checked");
-		}
 		
 		
 		//$tmp['congress'] = $this->getKongressByID($data['congress_id']);
@@ -467,9 +475,25 @@ class abstracter {
 			$tmp['state'] = 'readonly';
 		}
 		
+		if ($abstract['participation'] == "aktiv")
+		{
+			$tmp['ckeck_activ']="checked";
+		}
 		
+		if ($abstract['participation'] == 'pasiv')
+		{
+			//	$tmp['ckeck_pasiv'] = "checked";
+			$tmp['ckeck_pasiv']="checked";
+		}
+		
+		if ($abstract['participation'] == 'visit')
+		{
+			//$tmp['ckeck_visit'] = "checked";
+			$tmp['ckeck_visit']="checked";
+		}
 		
 		$this->smarty->assign('data',$tmp);
+		
 		$this->smarty->display('abstraktreg.tpl');
 	}
 	

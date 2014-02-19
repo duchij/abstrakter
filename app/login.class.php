@@ -1,9 +1,10 @@
 <?php 
+session_start();
 require_once 'smarty/Smarty.class.php';
 require_once 'mysql.class.php';
 require_once 'phpmailer/class.phpmailer.php';
 
-session_start();
+
 
 class login{
 	
