@@ -134,7 +134,7 @@ class Excel_XML
 		foreach ($row as $k => $v):
 		
 		$cells .= "<Cell ss:StyleID=\"tucne\"><Data ss:Type=\"String\">" . $k . "</Data></Cell>\n";
-		
+		//$cells .= "<Cell><Data ss:Type=\"String\">" . $k . "</Data></Cell>\n";
 		endforeach;
 		
 		// transform $cells content into one row
@@ -165,6 +165,7 @@ class Excel_XML
 
 		// run through the array and add them into rows
 		$this->firstRow($array[0]);
+		
 		foreach ($array as $k => $v):
 		$this->addRow ($v);
 		endforeach;
@@ -221,7 +222,7 @@ class Excel_XML
 		echo "</Table>\n</Worksheet>\n";
 		echo $this->footer;*/
 		
-		$fh = fopen($filename,"w+");
+		
 		
 		$outStr = stripslashes($this->header);
 		$outStr .= "\n<Worksheet ss:Name=\"" . $this->worksheet_title . "\">\n<Table>\n";
@@ -229,7 +230,7 @@ class Excel_XML
 		$outStr .= implode ("\n", $this->lines);
 		$outStr .= "</Table>\n</Worksheet>\n";
 		$outStr .= $this->footer;
-		
+		$fh = fopen($filename,"w+");
 		fwrite($fh,$outStr);
 		fclose($fh);
 

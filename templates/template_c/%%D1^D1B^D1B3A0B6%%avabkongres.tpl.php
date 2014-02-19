@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-18 09:34:14
+<?php /* Smarty version 2.6.28, created on 2014-02-19 13:38:33
          compiled from avabkongres.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'avabkongres.tpl', 7, false),)), $this); ?>

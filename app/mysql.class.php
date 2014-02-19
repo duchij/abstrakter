@@ -40,7 +40,8 @@ class db {
 	
 	public function sql_table($sql)
 	{
-		$result = array();
+		$result = array("status"=>TRUE,"table"=>array(),"error"=>'');
+		
 		$sql = $this->modifStr($sql);
 		
 		if ($tmp = $this->mysqli->query($sql))
@@ -51,16 +52,20 @@ class db {
 			{
 				$tmp->data_seek($i);
 				$row = $tmp->fetch_array(MYSQL_ASSOC);
-				array_push($result,$row);
+				array_push($result['table'],$row);
 			}
+			
+			$tmp->free_result();
 		}
 		else
 		{
-			trigger_error('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error, E_USER_ERROR);
+			
+			//trigger_error('Chyba SQL: <p>' . $sql . '</p> Error: ' . $this->mysqli->error);
 			$result['status'] = false;
-			$result['error'] = "SQL:{$sql},error:{$this->mysqli->error}";
+			$result['error'] = "SQL:<p>{$sql}</p>, error:<p>{$this->mysqli->error}</p>";
+			//$tmp->free_result();
 		}
-		$tmp->free_result();
+		
 		//$tmp->close();
 		return $result;
 	

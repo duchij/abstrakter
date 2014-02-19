@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-18 09:34:16
+<?php /* Smarty version 2.6.28, created on 2014-02-19 13:55:58
          compiled from abstraktreg.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 38, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'var_dump', 'abstraktreg.tpl', 15, false),array('modifier', 'date_format', 'abstraktreg.tpl', 42, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 
@@ -10,11 +10,17 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format
 
 <meta charset="UTF-8">
 <title>Abstrakter - Pridaj kongress</title>
-<script src="js/abstracter.js"></script>
+
 
 </head>
-
+<script src="js/abstracter.js"></script>
 <body>
+lol <?php echo $this->_tpl_vars['checkactiv']; ?>
+
+<?php echo var_dump($this->_tpl_vars['data']); ?>
+
+<?php echo var_dump($this->_tpl_vars['checkactiv']); ?>
+
 <div id="wrapper">
 		<div id="header">
 			<?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -54,6 +60,7 @@ unset($_smarty_tpl_vars);
 <br>
 			<?php echo $this->_tpl_vars['data']['message']; ?>
 <hr />
+			
 			<form method='post' action="app.php">
 			
 			
@@ -67,14 +74,14 @@ unset($_smarty_tpl_vars);
 				<input type="hidden" name="registr_id" value="<?php echo $this->_tpl_vars['data']['abstract']['registr_id']; ?>
 ">
 				<table>
-				<tr><td>	Aktívna účasť (autor)</td><td> <input type="radio" name="particip" value="aktiv" onClick="test('1');"  <?php echo $this->_tpl_vars['data']['abstract']['check_activ']; ?>
- <?php echo $this->_tpl_vars['data']['state']; ?>
+				<tr><td> Aktívna účasť (autor)</td><td> <input type="radio" name="particip" value="aktiv"  <?php echo $this->_tpl_vars['data']['check_activ']; ?>
+ onClick="test('1');" <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
-				<tr><td>	Pasívna účasť (spoluautor) </td><td>  <input type="radio" name="particip" value ="pasiv" onClick="test('0');" <?php echo $this->_tpl_vars['data']['abstract']['check_pasiv']; ?>
- <?php echo $this->_tpl_vars['data']['state']; ?>
+				<tr><td>	Pasívna účasť (spoluautor) </td><td>  <input type="radio" name="particip" value ="pasiv" <?php echo $this->_tpl_vars['data']['check_pasiv']; ?>
+ onClick="test('0');"  <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
-				<tr><td>	Pasívna účasť (návštevník)</td><td> 	<input type="radio" name="particip"  value ="visit" onClick="test('0');" <?php echo $this->_tpl_vars['data']['abstract']['check_visit']; ?>
- <?php echo $this->_tpl_vars['data']['state']; ?>
+				<tr><td>	Pasívna účasť (návštevník)</td><td> 	<input type="radio" name="particip"  value ="visit" <?php echo $this->_tpl_vars['data']['check_visit']; ?>
+ onClick="test('0');"  <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
 				</table>
 				

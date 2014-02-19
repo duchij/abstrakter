@@ -6,11 +6,15 @@
 
 <meta charset="UTF-8">
 <title>Abstrakter - Pridaj kongress</title>
-<script src="js/abstracter.js"></script>
+
 
 </head>
-
+<script src="js/abstracter.js"></script>
 <body>
+lol {$checkactiv}
+{$data|@var_dump}
+{assign name="pokus" value="checked"}
+{$checkactiv|@var_dump}
 <div id="wrapper">
 		<div id="header">
 			{include file="header.tpl"}
@@ -37,6 +41,7 @@
 			{$data.congress.congress_venue}<br>
 			{$data.congress.congress_from|date_format:"%d.%m.%Y"} - {$data.congress.congress_until|date_format:"%d.%m.%Y"}<br>
 			{$data.message}<hr />
+			
 			<form method='post' action="app.php">
 			
 			
@@ -45,9 +50,9 @@
 				<input type="hidden" name="user_id" value="{$data.congress.user_id}">
 				<input type="hidden" name="registr_id" value="{$data.abstract.registr_id}">
 				<table>
-				<tr><td>	Aktívna účasť (autor)</td><td> <input type="radio" name="particip" value="aktiv" onClick="test('1');"  {$data.abstract.check_activ} {$data.state}></td></tr>
-				<tr><td>	Pasívna účasť (spoluautor) </td><td>  <input type="radio" name="particip" value ="pasiv" onClick="test('0');" {$data.abstract.check_pasiv} {$data.state}></td></tr>
-				<tr><td>	Pasívna účasť (návštevník)</td><td> 	<input type="radio" name="particip"  value ="visit" onClick="test('0');" {$data.abstract.check_visit} {$data.state}></td></tr>
+				<tr><td> Aktívna účasť (autor)</td><td> <input type="radio" name="particip" value="aktiv"  {$data.check_activ} onClick="test('1');" {$data.state}></td></tr>
+				<tr><td>	Pasívna účasť (spoluautor) </td><td>  <input type="radio" name="particip" value ="pasiv" {$data.check_pasiv} onClick="test('0');"  {$data.state}></td></tr>
+				<tr><td>	Pasívna účasť (návštevník)</td><td> 	<input type="radio" name="particip"  value ="visit" {$data.check_visit} onClick="test('0');"  {$data.state}></td></tr>
 				</table>
 				
 				<div id="block" style="border:none;padding:0px;margin:0px">

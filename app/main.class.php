@@ -92,7 +92,7 @@ class abstracter {
 					
 				$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` > '%s'",$today);
 				$table = $this->db->sql_table($sql);
-				$insData['avakon'] = $table;
+				$insData['avakon'] = $table['table'];
 				$insData['functions'] = array("fnc"=>"editKongres_fnc", "value"=>intval($data['editcon']));
 				$insData['buttons'] = array("insert_new_kongres"=>"Uprav...");
 				$this->smarty->assign('data',$insData);
@@ -107,7 +107,7 @@ class abstracter {
 				$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` > '%s'",$today);
 				
 				$table = $this->db->sql_table($sql);
-				$insData['avakon'] = $table;
+				$insData['avakon'] = $table['table'];
 				$insData['functions'] = array("fnc"=>"insertKongres_fnc","value"=>1);
 				$insData['buttons'] =	array("insert_new_kongres"=>"Vlož nový kongress");
 				$this->smarty->assign('data',$insData);
@@ -162,7 +162,7 @@ class abstracter {
 		//$sql = sprintf("SELECT * FROM `kongressdata` ");
 		$table = $this->db->sql_table($sql);
 		
-		return $table;
+		return $table['table'];
 	}
 	
 	
@@ -230,7 +230,7 @@ class abstracter {
 		$sql = sprintf("SELECT * FROM `kongressdata` WHERE `congress_from` > '%s'",$today);
 		
 		$table = $this->db->sql_table($sql);
-		$insData['avakon'] = $table;
+		$insData['avakon'] = $table['table'];
 		$insData['message'] = "Kongres sa uložil...";
 		$insData['functions'] = array("fnc"=>"editKongres_fnc","value"=>$id);
 		$insData['buttons'] = array("insert_new_kongres"=>"Uprav");
@@ -413,18 +413,7 @@ class abstracter {
 				"abstract_text"		=>$data['reg_abstract_text']
 		);
 		
-		if ($data['reg_participation'] == "aktiv")
-		{
-			$abstract['ckeck_activ'] = "checked";
-		}
-		if ($data['reg_participation'] == 'pasiv')
-		{
-			$abstract['ckeck_pasiv'] = "checked";
-		}
-		if ($data['reg_participation'] == 'visit')
-		{
-			$abstract['ckeck_visit'] = "checked";
-		}
+		
 		
 		//var_dump($abstract);
 		
@@ -443,6 +432,25 @@ class abstracter {
 				"registration_submit" => "Oprav abstrakt"
 				);
 		$tmp = array();
+		
+		if ($abstract['participation'] === "aktiv")
+		{
+			$this->smarty->assign('ckeckactiv',"checked");
+		}
+		
+		if ($abstract['participation'] === 'pasiv')
+		{
+		//	$tmp['ckeck_pasiv'] = "checked";
+			$this->smarty->assign('ckeckpasiv',"checked");
+		}
+		
+		if ($abstract['participation'] === 'visit')
+		{
+			//$tmp['ckeck_visit'] = "checked";
+			$this->smarty->assign('ckeckvisit',"checked");
+		}
+		
+		
 		//$tmp['congress'] = $this->getKongressByID($data['congress_id']);
 		$tmp['abstract'] = $abstract;
 		//$tmp['message'] = "Vasa ucast bol zaregistrovana...";
@@ -450,6 +458,7 @@ class abstracter {
 		$tmp['buttons'] = $buttons;	
 		$tmp['functions'] = array("fnc"=>"insertAbstr_fnc","value"=>$id);
 		$tmp['admin'] = $_SESSION['abstrakter']['is_admin'];
+		
 		$regDate = time($data['congress_reguntil']);
 		$regDate2 = time(date("Y-m-d"));
 		
@@ -485,7 +494,7 @@ class abstracter {
 		
 		$res = $this->db->sql_table($sql);
 		//var_dump($res);
-		return $res;
+		return $res['table'];
 	}
 	
 
@@ -512,7 +521,7 @@ class abstracter {
 		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s' ",$today);
 		//$sql = sprintf("SELECT * FROM `kongressdata` ");
 		$table = $this->db->sql_table($sql);
-		
+		$data = $table['table'];
 		$insData = array();
 
 		$insData['congress_titel'] = $data['congress_titel'];
@@ -556,11 +565,29 @@ class abstracter {
 	
 	private function getRegisteredCVS_fnc($id,$data)
 	{
-		$sql = sprintf("SELECT * FROM [registration]
+		$sql = sprintf("SELECT 
+						[kongressdata].[congress_titel] AS [kongres],
+						[usersdata].[titul_pred] AS [titul_pred], [usersdata].[meno] AS [meno], [usersdata].[priezvisko] AS [priezvisko],
+						[usersdata].[titul_za] AS [titul_za], [usersdata].[contact_email] AS [contact_email], [usersdata].[adresa] AS [adresa],
+						[users].[email] AS [email2], 
+						[registration].[participation] AS [ucast], [registration].[section] AS [sekcia],[registration].[abstract_titul] AS [nazov_prezentacie],
+						[registration].[abstract_main_autor] AS [hlavny_autor], [registration].[abstract_autori] AS [spoluautori],
+						[registration].[abstract_adresy] AS [adresy_pracoviska], [registration].[abstract_text] AS [text_abstraktu]
+				FROM [registration]
 							INNER JOIN [usersdata] ON [usersdata].[user_id] = [registration].[user_id]
+							INNER JOIN [kongressdata] ON [kongressdata].[item_id] = [registration].[congress_id]
+							INNER JOIN [users] ON [users].[id] = [registration].[user_id]
 					WHERE [registration].[congress_id]=%d",intval($id));
 		
+		
 		$table = $this->db->sql_table($sql);
+		//$data = $table['table'];
+		if ($table['status'] == false)
+		{
+			$this->smarty->assign('error',$table['error']);
+			$this->smarty->display('error.tpl');
+			exit;
+		}
 		
 		$fileName = "./tmp/output_".time().".xls";
 		
@@ -573,18 +600,24 @@ class abstracter {
 		}
 		else
 		{
+			//var_dump($table['table']);
+			//exit;
 			$this->EXml->setWorksheetTitle("Zoznam");
-			$this->EXml->addArray($table);
+			$this->EXml->addArray($table['table']);
 			$this->EXml->generateXML($fileName);
 		}
 		
-		$fh= fopen($fileName,"r");
-		$str = fread($fh,filesize($fileName));
-		fclose($fh);
-			
+		//$fh= fopen($fileName,"r");
+		//$str = fread($fh,filesize($fileName));
+		//fclose($fh);
+		header("Content-Description: File Transfer");
 		header("Content-Type: application/vnd.ms-excel; charset=UTF-8");
-		header('Content-Disposition: inline; filename="\.\/tmp\/'.basename($fileName).'"');
-		echo $str;
+		$tmpFl = basename($fileName);
+		header("Content-Disposition: attachment; filename={$tmpFl}");
+		ob_clean();
+		flush();
+		readfile($fileName);
+		//echo $str;
 		
 	}
 	
