@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-19 20:55:38
+<?php /* Smarty version 2.6.28, created on 2014-02-20 13:30:09
          compiled from abstraktreg.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'var_dump', 'abstraktreg.tpl', 19, false),array('modifier', 'date_format', 'abstraktreg.tpl', 47, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 43, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 
@@ -13,15 +13,9 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'var_dump', 
 <script src="js/abstracter.js"></script>
 
 </head>
-<?php echo '
-<script>
-test(\'0\');
-</script>
-'; ?>
 
 
 <body>
-<?php echo var_dump($this->_tpl_vars['data']); ?>
 
 
 
@@ -79,20 +73,17 @@ unset($_smarty_tpl_vars);
 				<input type="hidden" name="registr_id" value="<?php echo $this->_tpl_vars['data']['abstract']['registr_id']; ?>
 ">
 				<table>
-				<tr><td> Aktívna účasť (autor)</td><td> <input type="radio" name="particip" value="aktiv"  <?php echo $this->_tpl_vars['data']['check_activ']; ?>
- onClick="test('1');" <?php echo $this->_tpl_vars['data']['state']; ?>
+				<tr><td> Aktívna účasť (autor)</td><td> <input id="aktiv_rb" type="radio" name="particip" value="aktiv"  onClick="test('1');" <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
-				<tr><td>	Pasívna účasť (spoluautor)  </td><td>  <input type="radio" name="particip" value ="pasiv" <?php echo $this->_tpl_vars['data']['check_pasiv']; ?>
- onClick="test('0');"  <?php echo $this->_tpl_vars['data']['state']; ?>
+				<tr><td>	Pasívna účasť (spoluautor)  </td><td>  <input id="pasiv_rb" type="radio" name="particip" value ="pasiv"  onClick="test('0');"  <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
-				<tr><td>	Pasívna účasť (návštevník)</td><td> 	<input type="radio" name="particip"  value ="visit" <?php echo $this->_tpl_vars['data']['check_visit']; ?>
- onClick="test('0');"  <?php echo $this->_tpl_vars['data']['state']; ?>
+				<tr><td>	Pasívna účasť (návštevník)</td><td> 	<input id="visit_rb" type="radio" name="particip"  value ="visit"  onClick="test('0');"  <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
 				</table>
 				
 				<div id="block" style="border:none;padding:0px;margin:0px">
 				<table>
-				<tr><td> <input type="radio" name="section" value="doctor"> - Lekárska sekcia</td> <td><input type="radio" name="section" value="nurse" > - Sesterská sekcia</td></tr> 
+				<tr><td> <input id="doctor_rb" type="radio" name="section" value="doctor" checked> - Lekárska sekcia</td> <td><input id="nurse_rb" type="radio" name="section" value="nurse" > - Sesterská sekcia</td></tr> 
 				
 				</table>
 				
@@ -146,6 +137,68 @@ unset($_smarty_tpl_vars);
 	<div id="bottom"></div>
 	
 </div>
+<?php if ($this->_tpl_vars['data']['abstract']['participation'] == 'aktiv'): ?>
+	<?php echo '
+	<script>
+		test(\'1\');
+		setRadioButtons(\'aktiv\');
+	</script>
+	'; ?>
+
+<?php elseif ($this->_tpl_vars['data']['abstract']['participation'] == 'pasiv'): ?>
+<?php echo '
+	<script>
+		test(\'0\');
+		setRadioButtons(\'pasiv\');
+	</script>
+	'; ?>
+
+<?php elseif ($this->_tpl_vars['data']['abstract']['participation'] == 'visit'): ?>
+	<?php echo '
+	<script>
+		test(\'0\');
+		setRadioButtons(\'visit\');
+	</script>
+	'; ?>
+
+<?php else: ?>
+	<?php echo '
+	<script>
+		test(\'1\');
+		setRadioButtons(\'aktiv\');
+	</script>
+	'; ?>
+	
+	
+<?php endif; ?>
+
+<?php if ($this->_tpl_vars['data']['abstract']['section'] === 'doctor'): ?>
+	<?php echo '
+	<script>
+		setSectionRadios(\'doctor\');
+	</script>
+	'; ?>
+
+<?php endif; ?>
+
+<?php if ($this->_tpl_vars['data']['abstract']['section'] === 'nurse'): ?>
+	<?php echo '
+	<script>
+		setSectionRadios(\'nurse\');
+	</script>
+	'; ?>
+
+<?php endif; ?>
+
+<?php if ($this->_tpl_vars['data']['abstract']['section'] === 'other'): ?>
+	<?php echo '
+	<script>
+		setSectionRadios(\'other\');
+	</script>
+	'; ?>
+
+<?php endif; ?>
+
 </body>
 
 </html>

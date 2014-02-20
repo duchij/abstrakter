@@ -37,7 +37,7 @@ class login{
 		//var_dump($_REQUEST);
 		if (!$this->run_fnc($_REQUEST))
 		{	
-					
+				
 			$this->smarty->assign('avab_kongres',$this->avabKongres());
 			$this->smarty->display('index.tpl');
 		}
@@ -54,7 +54,8 @@ class login{
 		$today = date("Y-m-d");
 		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s' ",$today);
 		//$sql = sprintf("SELECT * FROM `kongressdata` ");
-		return $this->db->sql_table($sql);
+		$res =  $this->db->sql_table($sql);
+		return $res['table'];
 	}
 	
 	private function rp_fnc($id,$data)

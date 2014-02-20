@@ -5,9 +5,6 @@ require_once 'mysql.class.php';
 require_once './phpmailer/class.phpmailer.php';
 require_once 'xml.class.php';
 
-
-
-
 class abstracter {
 	
 	var $includeDir = "./include";
@@ -142,6 +139,9 @@ class abstracter {
 	
 	private function run_app($request)
 	{
+		
+		//var_dump($request);
+		//exit;
 		$result = false;
 		foreach ($request as $key=>$value)
 		{
@@ -277,11 +277,14 @@ class abstracter {
 	
 	private function insertAbstr_fnc($id, $data)
 	{
+		//var_dump($data);
+		//exit;
 		$insData = array(
 				"user_id"			=>$data['user_id'],
 				"item_id"			=>$data['registr_id'],
 				"congress_id"		=>$data['congress_id'],
 				"participation"		=>$data['particip'],
+				"section"			=>$data['section'],
 				"abstract_titul"	=>$data['abstract_titul'],
 				"abstract_main_autor"=>$data['abstract_main_autor'],
 				"abstract_autori"	=>$data['abstract_autori'],
@@ -294,30 +297,12 @@ class abstracter {
 			unset($insData['item_id']);
 		}
 		
-		if ($data['particip'] === "aktiv")
-		{
-			$this->smarty->assign('ckeck_activ',"checked");
-		}
-		
-		if ($data['particip'] === 'pasiv')
-		{
-			//	$tmp['ckeck_pasiv'] = "checked";
-			$this->smarty->assign('ckeck_pasiv',"checked");
-		}
-		
-		if ($data['particip'] === 'visit')
-		{
-			//$tmp['ckeck_visit'] = "checked";
-			$this->smarty->assign('ckeck_visit',"checked");
-		}
-		
-		
-		
+			
 		$res = $this->db->insert_row("registration",$insData);
 		
 		if ($res['status'])
 		{
-			if (intval($res['last_id']) >0)
+			if (empty($insData['item_id']))
 			{
 				$insData['registration_id'] = $res['last_id'];
 				$this->sendAbstractEmailInfo($insData);
@@ -409,6 +394,7 @@ class abstracter {
 				[registration].[abstract_titul] AS [reg_abstract_titul],  [registration].[abstract_main_autor] AS [reg_main_autor],
 				[registration].[abstract_autori] AS [reg_abstract_autori], [registration].[abstract_adresy] AS [reg_abstract_adresy],
 				[registration].[abstract_text] AS [reg_abstract_text],[kongressdata].[congress_titel] AS [congress_titel],
+				[registration].[section] AS [section],
 				[kongressdata].[congress_subtitel] AS [congress_subtitel],[kongressdata].[congress_venue] AS [congress_venue],
 				[kongressdata].[congress_url] AS [congress_url], [kongressdata].[congress_from] AS [congress_from],
 				[kongressdata].[congress_until] AS [congress_until],[kongressdata].[congress_reguntil] AS [congress_reguntil]
@@ -429,16 +415,13 @@ class abstracter {
 				"registr_id"		=>$data['registr_id'],
 				"congress_id"		=>$data['congress_id'],
 				"participation"		=>$data['reg_participation'],
+				"section"			=>$data['section'],
 				"abstract_titul"	=>$data['reg_abstract_titul'],
 				"abstract_main_autor"=>$data['reg_main_autor'],
 				"abstract_autori"	=>$data['reg_abstract_autori'],
 				"abstract_adresy"	=>$data['reg_abstract_adresy'],
 				"abstract_text"		=>$data['reg_abstract_text']
 		);
-		
-		
-		
-		//var_dump($abstract);
 		
 		$congress = array(
 				"congress_titel" 	=> $data['congress_titel'],
@@ -455,10 +438,6 @@ class abstracter {
 				"registration_submit" => "Oprav abstrakt"
 				);
 		$tmp = array();
-		
-		
-		
-		
 		//$tmp['congress'] = $this->getKongressByID($data['congress_id']);
 		$tmp['abstract'] = $abstract;
 		//$tmp['message'] = "Vasa ucast bol zaregistrovana...";
@@ -475,26 +454,10 @@ class abstracter {
 			$tmp['state'] = 'readonly';
 		}
 		
-		if ($abstract['participation'] == "aktiv")
-		{
-			$tmp['ckeck_activ']="checked";
-		}
-		
-		if ($abstract['participation'] == 'pasiv')
-		{
-			//	$tmp['ckeck_pasiv'] = "checked";
-			$tmp['ckeck_pasiv']="checked";
-		}
-		
-		if ($abstract['participation'] == 'visit')
-		{
-			//$tmp['ckeck_visit'] = "checked";
-			$tmp['ckeck_visit']="checked";
-		}
-		
 		$this->smarty->assign('data',$tmp);
 		
 		$this->smarty->display('abstraktreg.tpl');
+		//exit;
 	}
 	
 	private function getUserRegistrations($user_id)
@@ -506,6 +469,7 @@ class abstracter {
 						[registration].[abstract_titul] AS [abstract_titul],  [registration].[abstract_main_autor] AS [reg_main_autor],
 						[registration].[abstract_autori] AS [reg_abstract_autori], [registration].[abstract_adresy] AS [reg_abstract_adresy],
 						[registration].[abstract_text] AS [reg_abstract_text],[kongressdata].[congress_titel] AS [congress_titel],
+						[registration].[section] AS [section],
 						[kongressdata].[congress_subtitel] AS [congress_subtitel],[kongressdata].[congress_venue] AS [congress_venue]
 						
 					FROM [registration]
