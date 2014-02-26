@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-20 13:53:29
+<?php /* Smarty version 2.6.28, created on 2014-02-25 12:58:53
          compiled from regbyuser.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count_characters', 'regbyuser.tpl', 6, false),)), $this); ?>
@@ -30,13 +30,15 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'count_chara
 	<br />,<?php echo $this->_tpl_vars['reg_row']['congress_titel']; ?>
 , <?php echo $this->_tpl_vars['reg_row']['congress_venue']; ?>
 <br />
+	<p>
 	<form name ="regabstrform" method="post" action="app.php"> 
 		<button name="editAbstr_fnc" value="<?php echo $this->_tpl_vars['reg_row']['registr_id']; ?>
 ">Edituj</button>
-		
-		<button  onClick="deleteConfirm('deleteAbstr_fnc;<?php echo $this->_tpl_vars['reg_row']['registr_id']; ?>
-')" >Zmaž</button>
+	
 	</form>
+	<button  onClick="deleteConfirm('deleteAbstr_fnc;<?php echo $this->_tpl_vars['reg_row']['registr_id']; ?>
+')" >Zmaž</button>
+	</p>
 		<hr />
 	
 	<?php endforeach; endif; unset($_from); ?>

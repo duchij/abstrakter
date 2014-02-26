@@ -33,6 +33,7 @@
 		<h1>Aktuálne kongresy</h1><hr>
 			 		{foreach from=$avab_kongres item=row key=i}
 			 			<strong>{$row.congress_titel}</strong><br>
+			 			<a href="{$row.congress_url}" target="_blank">{$row.congress_url}</a><br>
 			 			{$row.congress_subtitel},{$row.congress_venue}<br>
 			 			<em>{$row.congress_from|date_format:"%d.%m.%Y"} - {$row.congress_until|date_format:"%d.%m.%Y"}</em>
 			 			<hr />

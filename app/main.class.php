@@ -1,21 +1,23 @@
 <?php 
-session_start();
-require_once './smarty/Smarty.class.php';
+//session_start();
+require_once 'app.class.php';
+
+/*require_once './smarty/Smarty.class.php';
 require_once 'mysql.class.php';
 require_once './phpmailer/class.phpmailer.php';
-require_once 'xml.class.php';
+require_once 'xml.class.php';*/
 
-class abstracter {
+class abstracter extends app {
 	
-	var $includeDir = "./include";
+	/*var $includeDir = "./include";
 	var $iniDir = "./local_settings";
 	var $user_id;
-	var $user_email;
+	var $user_email;*/
 	
 	function __construct ()
 	{
 		
-		$this->user_id = $_SESSION['abstrakter']['user_id'];
+		/*$this->user_id = $_SESSION['abstrakter']['user_id'];
 		$this->EXml = new Excel_XML();
 		$this->mail = new PHPMailer();
 		$this->smarty = new Smarty;
@@ -27,6 +29,8 @@ class abstracter {
 		$this->smarty->config_dir = './templates/configs';
 	
 		$this->db = new db(new mysqli($_SESSION['abstrakter']['server'],$_SESSION['abstrakter']['user'], $_SESSION['abstrakter']['password'],$_SESSION['abstrakter']['db']));
+		*/
+		parent::__construct();
 	}
 	
 	public function startPage($data)
@@ -38,7 +42,7 @@ class abstracter {
 			$this->smarty->display('logout.tpl');
 		}
 		
-		if (!$this->run_app($data))
+		if (!$this->run_app($data,&$this)) //this calls a function in main class 
 		{
 		
 			if (isset($data['run']) && $data['run']==1)
@@ -137,26 +141,12 @@ class abstracter {
 		}
 	}
 	
-	private function run_app($request)
+	function fform_fnc($id,$data)
 	{
-		
-		//var_dump($request);
-		//exit;
-		$result = false;
-		foreach ($request as $key=>$value)
-		{
-			if (strpos($key,"_fnc")!==false)
-			{
-				$fnc = str_replace(array("_fnc_x","_fnc_y"),"_fnc",$key);
-				
-				$result = true;
-				$this->$fnc($value,$request);
-			}
-		}
-		return $result;
+		$this->smarty->display('admin/form_templater.tpl');
 	}
-	
-	private function avabKongres()
+
+	public function avabKongres()
 	{
 		$today = date("Y-m-d");
 		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s' AND [congress_reguntil] > '%s' ",$today,$today);
@@ -167,12 +157,12 @@ class abstracter {
 	}
 	
 	
-	private function insertKongres_fnc($id, $data)
+	public function insertKongres_fnc($id, $data)
 	{
 		$this->insertKongress($data);
 	}
 	
-	private function insUserData_fnc($id,$data)
+	public function insUserData_fnc($id,$data)
 	{
 		$insData = array();
 		//print_r($_SESSION['abstrakter']);
@@ -205,7 +195,7 @@ class abstracter {
 		}
 	}
 	
-	private function editKongres_fnc($id, $data)
+	public function editKongres_fnc($id, $data)
 	{
 			
 		$insData = array();
@@ -246,7 +236,7 @@ class abstracter {
 		
 	}
 	
-	private function deleteAbstr_fnc($id, $data)
+	public function deleteAbstr_fnc($id, $data)
 	{
 		$sql = sprintf("DELETE FROM [registration] WHERE [item_id] = %d",intval($id));
 		if ($this->db->sql_execute($sql))
@@ -275,7 +265,7 @@ class abstracter {
 		
 	}
 	
-	private function insertAbstr_fnc($id, $data)
+	public function insertAbstr_fnc($id, $data)
 	{
 		//var_dump($data);
 		//exit;
@@ -324,7 +314,7 @@ class abstracter {
 		}
 	}
 	
-	private function sendAbstractEmailInfo($data)
+	public function sendAbstractEmailInfo($data)
 	{
 		$sql = sprintf("SELECT
 					[registration].[item_id] AS [registr_id], [kongressdata].[item_id] AS [congress_id],
@@ -364,7 +354,7 @@ class abstracter {
 		
 	}
 	
-	private function regKongresForUser_fnc($kongres_id,$request)
+	public function regKongresForUser_fnc($kongres_id,$request)
 	{
 		$insData = array();
 		
@@ -385,7 +375,7 @@ class abstracter {
 				
 	}
 	
-	private function editAbstr_fnc($id,$request)
+	public function editAbstr_fnc($id,$request)
 	{
 		//var_dump($data);
 		$sql = sprintf("SELECT
@@ -460,7 +450,7 @@ class abstracter {
 		//exit;
 	}
 	
-	private function getUserRegistrations($user_id)
+	public function getUserRegistrations($user_id)
 	{
 		$today = date("Y-m-d");
 		$sql = sprintf("SELECT 
@@ -487,7 +477,7 @@ class abstracter {
 	
 
 	
-	private function getKongressByID($id)
+	public function getKongressByID($id)
 	{
 		$sql = sprintf("SELECT * FROM `kongressdata` WHERE `item_id` = '%s'", $id);
 		$row =$this->db->sql_row($sql);
@@ -501,7 +491,7 @@ class abstracter {
 		return $congress;
 	}
 	
-	private function insertKongress($data)
+	public function insertKongress($data)
 	{
 		
 		$today = date("Y-m-d");
@@ -551,7 +541,7 @@ class abstracter {
 		
 	}
 	
-	private function getRegisteredCVS_fnc($id,$data)
+	public function getRegisteredCVS_fnc($id,$data)
 	{
 		$sql = sprintf("SELECT 
 						[kongressdata].[congress_titel] AS [kongres],
@@ -609,61 +599,9 @@ class abstracter {
 		
 	}
 	
-	function loginUser($id)
-	{
-		$sql = sprintf("
-						SELECT * FROM [usersdata] 
-							LEFT JOIN [users] ON [usersdata].[user_id] = [users].[id]
-						WHERE [users].[id] = %d"
-				,intval($id));
-		return $this->db->sql_row($sql);
-		
-	}
 	
-	private function sendMailMsg($data)
-	{
-		$subject = $data['subject'];
-		$fileName = $data['fileName'];
-		$this->smarty->assign("data",$data);
 	
-		$message = $this->smarty->fetch($data['fileName']);
 	
-		$this->mail->isSMTP();                                      // Set mailer to use SMTP
-		$this->mail->Host = 'mail.detska-chirurgia.sk';  	// Specify main and backup server
-		$this->mail->Port = 25;
-		$this->mail->SMTPAuth = true;                               // Enable SMTP authentication
-		$this->mail->Username = 'trauma@detska-chirurgia.sk';                            // SMTP username
-		$this->mail->Password = 'TraumaPassword';                           // SMTP password
-		//$this->mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also accepted
-	
-		$this->mail->From = 'trauma@detska-chirurgia.sk';
-		$this->mail->FromName = 'detska-chirurgia.sk';
-		//$this->mail->addAddress('josh@example.net', 'Josh Adams');  // Add a recipient
-		$this->mail->addAddress($data['email']);               // Name is optional
-		$this->mail->addReplyTo('trauma@detska-chirurgia.sk', 'Detska chirurgia Slovenska');
-		//	$this->mail->addCC('cc@example.com');
-		//	$this->mail->addBCC('bcc@example.com');
-	
-		$this->mail->WordWrap = 50;                                 // Set word wrap to 50 characters
-		//	$this->mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-		//	$this->mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
-		$this->mail->isHTML(true);                                  // Set email format to HTML
-	
-		$this->mail->Subject = $subject;
-		$this->mail->Body    = $message;
-		$this->mail->CharSet ="UTF-8";
-	
-		$result = array("status"=>TRUE,"message"=>'');
-		if (!$this->mail->send())
-		{
-			//$this->smarty->assign('error',$this->mail->ErrorInfo);
-			//$this->smarty->display('error.tpl');
-			$result['message'] = $this->mail->ErrorInfo;
-			$result['status'] = FALSE;
-		}
-	
-		return $result;
-	}
 		
 	
 }

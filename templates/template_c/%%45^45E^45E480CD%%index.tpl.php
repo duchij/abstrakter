@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-19 19:28:21
+<?php /* Smarty version 2.6.28, created on 2014-02-25 12:53:44
          compiled from index.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'index.tpl', 37, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'index.tpl', 38, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,6 +44,9 @@ unset($_smarty_tpl_vars);
 ?>
 			 			<strong><?php echo $this->_tpl_vars['row']['congress_titel']; ?>
 </strong><br>
+			 			<a href="<?php echo $this->_tpl_vars['row']['congress_url']; ?>
+" target="_blank"><?php echo $this->_tpl_vars['row']['congress_url']; ?>
+</a><br>
 			 			<?php echo $this->_tpl_vars['row']['congress_subtitel']; ?>
 ,<?php echo $this->_tpl_vars['row']['congress_venue']; ?>
 <br>
