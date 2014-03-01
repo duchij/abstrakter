@@ -1,5 +1,5 @@
 <?php 
-//session_start();
+session_start();
 require_once 'app.class.php';
 
 /*require_once './smarty/Smarty.class.php';
@@ -35,14 +35,14 @@ class abstracter extends app {
 	
 	public function startPage($data)
 	{
-		
+		//$this->fform_fnc();
 		if ($_SESSION['abstrakter']['session_id'] != session_id())
 		{
 			session_destroy();
 			$this->smarty->display('logout.tpl');
 		}
 		
-		if (!$this->run_app($data,&$this)) //this calls a function in main class 
+		if (!$this->run_app($data, $this)) //this calls a function in main class 
 		{
 		
 			if (isset($data['run']) && $data['run']==1)
@@ -141,10 +141,7 @@ class abstracter extends app {
 		}
 	}
 	
-	function fform_fnc($id,$data)
-	{
-		$this->smarty->display('admin/form_templater.tpl');
-	}
+	
 
 	public function avabKongres()
 	{

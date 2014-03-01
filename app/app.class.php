@@ -1,10 +1,11 @@
 <?php 
-session_start();
+//session_start();
+
+require_once 'formdes.class.php';
 require_once './smarty/Smarty.class.php';
 require_once 'mysql.class.php';
 require_once './phpmailer/class.phpmailer.php';
 require_once 'xml.class.php';
-require_once 'formdes.class.php';
 
 
 class app {
@@ -17,15 +18,18 @@ class app {
 	var $db;
 	var $smarty;
 	
+	//var $formdes;
 	
-	function __construct ()
+	
+	public function __construct()
 	{
 	
 		$this->user_id = $_SESSION['abstrakter']['user_id'];
 		$this->EXml = new Excel_XML();
 		$this->mail = new PHPMailer();
 		$this->smarty = new Smarty;
-	
+		
+		$this->forms = new FormDes();
 	
 		$this->smarty->template_dir = './templates';
 		$this->smarty->compile_dir = './templates/template_c';
@@ -46,8 +50,10 @@ class app {
 	
 	}
 	
+		
 	public function run_app($request,$caller)
 	{
+		//var_dump($caller);
 	
 		$result = false;
 		foreach ($request as $key=>$value)
@@ -55,16 +61,17 @@ class app {
 			if (strpos($key,"_fnc") !== false)
 			{
 				$fnc = str_replace(array("_fnc_x","_fnc_y"),"_fnc",$key);
-	
+				//var_dump($caller);
 				$result = true;
 				$caller->$fnc($value,$request);
+				//break;
 			}
 		}
 		return $result;
 	}
 	
 	
-	private function sendMailMsg($data)
+	function sendMailMsg($data)
 	{
 		$subject = $data['subject'];
 		$fileName = $data['fileName'];
@@ -109,7 +116,7 @@ class app {
 		return $result;
 	}
 	
-	
+
 	
 }
 
