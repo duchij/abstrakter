@@ -50,6 +50,12 @@ class app {
 	
 	}
 	
+	
+	function logData($what)
+	{
+		$datum  = date("Ymd");
+		$fp = fopen("./log")
+	}
 		
 	public function run_app($request,$caller)
 	{

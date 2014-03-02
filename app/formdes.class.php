@@ -9,7 +9,7 @@ class FormDes {
 
 
 	
-	function fform_fnc($id,$data)
+	function fform_fnc()
 	{
 		//$this->smarty->display('admin/form_templater.tpl');
 		
@@ -20,9 +20,7 @@ class FormDes {
 		radio;Pasivna;auto;auto;participation;text|
 		textarea;Adresa;100;20;adresa;text|
 string;
-		$d = $this->parseString($string);
-		
-		var_dump($d);
+		return $this->parseString($string);
 		
 	}
 	
@@ -32,7 +30,7 @@ string;
 		
 		$forms = array();
 		
-		foreach ($row as $rows)
+		foreach ($rows as $row)
 		{
 			$tmp = explode(";",$row);
 			array_push($forms,$tmp);

@@ -153,6 +153,10 @@ class abstracter extends app {
 		return $table['table'];
 	}
 	
+	public function fform_fnc($id, $data)
+	{
+		var_dump($this->forms->fform_fnc());
+	}
 	
 	public function insertKongres_fnc($id, $data)
 	{
