@@ -155,7 +155,7 @@ class abstracter extends app {
 	
 	public function fform_fnc($id, $data)
 	{
-		var_dump($this->forms->fform_fnc());
+		$this->logData($this->forms->fform_fnc(),4444);
 	}
 	
 	public function insertKongres_fnc($id, $data)

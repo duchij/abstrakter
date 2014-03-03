@@ -51,10 +51,18 @@ class app {
 	}
 	
 	
-	function logData($what)
+	function logData($what,$debug)
 	{
-		$datum  = date("Ymd");
-		$fp = fopen("./log")
+		$datum  = date("dmY");
+		$fp = fopen("./log/{$datum}.log","a+");
+		
+		$str = date("d.m.Y H.i.s")."..........>{$debug} \r\n";
+		$str .= var_export($what,true);
+		
+		fwrite($fp,$str);
+		fclose($fp);
+		
+		
 	}
 		
 	public function run_app($request,$caller)
