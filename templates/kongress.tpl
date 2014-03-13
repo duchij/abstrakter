@@ -16,12 +16,7 @@
 	
 		<div id="content">
 			<div id="content-left">
-			<ul>
-				<li><a href="app.php?run=1">Domov...</a></li>
-				<li><a href="app.php?addcon=1">Kongresy</a></li>
-				
-				<li><a href="app.php?logout=1">Odhlásiť sa</a></li>
-			</ul>
+				{include file="main_menu.tpl"}
 			</div>
 		
 		<div id="content-main">

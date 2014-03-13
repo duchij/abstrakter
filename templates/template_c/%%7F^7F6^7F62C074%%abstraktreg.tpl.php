@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-20 13:30:09
+<?php /* Smarty version 2.6.28, created on 2014-03-13 13:34:01
          compiled from abstraktreg.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 43, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 37, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 
@@ -35,13 +35,11 @@ unset($_smarty_tpl_vars);
 
 <div id="content">
 		<div id="content-left">
-		<ul>
-			<li><a href="app.php?run=1">Domov...</a></li>
-			<?php if ($this->_tpl_vars['data']['admin']): ?>
-			<li><a href="app.php?addcon=1">Kongress..</a></li>
-			<?php endif; ?>
-			<li><a href="app.php?logout=1">Odhlasiť sa</a></li>
-		</ul>
+			<?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => "main_menu.tpl", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
 		</div>
 	<div id="content-main" style="width:750px;">
 			<h1 class="logo">Prihlásenie na kongres</h1>

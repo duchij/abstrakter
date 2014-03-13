@@ -94,18 +94,18 @@ class app {
 		$message = $this->smarty->fetch($data['fileName']);
 	
 		$this->mail->isSMTP();                                      // Set mailer to use SMTP
-		$this->mail->Host = 'mail.detska-chirurgia.sk';  	// Specify main and backup server
+		$this->mail->Host = $_SESSION['abstrakter']['mail_server'];  	// Specify main and backup server
 		$this->mail->Port = 25;
 		$this->mail->SMTPAuth = true;                               // Enable SMTP authentication
-		$this->mail->Username = 'trauma@detska-chirurgia.sk';                            // SMTP username
-		$this->mail->Password = 'TraumaPassword';                           // SMTP password
+		$this->mail->Username = $_SESSION['abstrakter']['mail_acc'];                            // SMTP username
+		$this->mail->Password = $_SESSION['abstrakter']['mail_passwd'];                           // SMTP password
 		//$this->mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also accepted
 	
-		$this->mail->From = 'trauma@detska-chirurgia.sk';
-		$this->mail->FromName = 'detska-chirurgia.sk';
+		$this->mail->From = $_SESSION['abstrakter']['send_mail_acc'];
+		$this->mail->FromName = $_SESSION['abstrakter']['mail_from_name'];
 		//$this->mail->addAddress('josh@example.net', 'Josh Adams');  // Add a recipient
 		$this->mail->addAddress($data['email']);               // Name is optional
-		$this->mail->addReplyTo('trauma@detska-chirurgia.sk', 'Detska chirurgia Slovenska');
+		$this->mail->addReplyTo($_SESSION['abstrakter']['mail_acc'], $_SESSION['abstrakter']['mail_from_name']);
 		//	$this->mail->addCC('cc@example.com');
 		//	$this->mail->addBCC('bcc@example.com');
 	

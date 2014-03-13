@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.28, created on 2014-02-19 19:33:50
+<?php /* Smarty version 2.6.28, created on 2014-03-13 13:33:53
          compiled from kongress.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'html_select_date', 'kongress.tpl', 39, false),array('modifier', 'date_format', 'kongress.tpl', 58, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'html_select_date', 'kongress.tpl', 34, false),array('modifier', 'date_format', 'kongress.tpl', 53, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,12 +24,11 @@ unset($_smarty_tpl_vars);
 	
 		<div id="content">
 			<div id="content-left">
-			<ul>
-				<li><a href="app.php?run=1">Domov...</a></li>
-				<li><a href="app.php?addcon=1">Kongresy</a></li>
-				
-				<li><a href="app.php?logout=1">Odhlásiť sa</a></li>
-			</ul>
+				<?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => "main_menu.tpl", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
 			</div>
 		
 		<div id="content-main">

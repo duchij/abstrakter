@@ -1,2 +1,2 @@
-<a href="index.php"><img src="img/logo_kdch.png" align="left"></a> <h1 class="logo">Klinika detskej chirurgie LF UK a DFNsP</h1>
-Limbová 1, 833 40 Bratislava
+<a href="index.php"><img src="img/{$smarty.session.abstrakter.logo_img}" align="left"></a> <h1 class="logo">{$smarty.session.abstrakter.web_data.web_title}</h1>
+{$smarty.session.abstrakter.web_data.web_subtitle}

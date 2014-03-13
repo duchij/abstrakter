@@ -3,6 +3,7 @@ session_start();
 require_once 'smarty/Smarty.class.php';
 require_once 'mysql.class.php';
 require_once 'phpmailer/class.phpmailer.php';
+require_once 'labels.class.php';
 
 
 
@@ -11,10 +12,14 @@ class login{
 	var $includeDir = "./include";
 	var $iniDir = "./local_settings";
 	
+	var $LABELS = array();
+	
 	function __construct()
 	{
 		
-		$_SESSION['abstrakter'] = parse_ini_file("$this->iniDir/database.ini");
+		$_SESSION['abstrakter'] = parse_ini_file("$this->iniDir/settings.ini");
+		
+		
 		$_SESSION['abstrakter']['item_id'] = 0;
 		$_SESSION['abstrakter']['user_email'] = '';
 		$_SESSION['abstrakter']['session_id'] = '';
@@ -30,22 +35,21 @@ class login{
 		$this->smarty->compile_dir = './templates/template_c';
 		$this->smarty->cache_dir = './templates/cache';
 		$this->smarty->config_dir = './templates/configs';
+		
+		$this->_labels = new Labels();		
+		$this->LABELS = $this->_labels->getLabels();
+		
+		$_SESSION['abstrakter']['web_data'] = 	$this->LABELS['web_data'];
+		$_SESSION['abstrakter']['footer'] = 	$this->LABELS['footer'];
 	}
 	
 	public function start()
 	{
-		//var_dump($_REQUEST);
 		if (!$this->run_fnc($_REQUEST))
 		{	
-				
 			$this->smarty->assign('avab_kongres',$this->avabKongres());
 			$this->smarty->display('index.tpl');
 		}
-		/*else
-		{
-			$this->smarty->assign('avab_kongres',$this->avabKongres());
-			$this->smarty->display('index.tpl');
-		}*/
 		
 	}
 	
@@ -334,24 +338,24 @@ class login{
 	
 	private function sendMailMsg($data)
 	{
-		$subject = "Reset hesla na pristup do abstrakter.detska-chirurgia.sk";
+		$subject = $this->LABELS['sendmail']['password_reset'];
 		$this->smarty->assign("data",$data);
 		
 		$message = $this->smarty->fetch("emails/resetpasswd.tpl");
 		
 		$this->mail->isSMTP();                                      // Set mailer to use SMTP
-		$this->mail->Host = 'mail.detska-chirurgia.sk';  	// Specify main and backup server
+		$this->mail->Host = $_SESSION['abstrakter']['mail_serv'];  	// Specify main and backup server
 		$this->mail->Port = 25;
 		$this->mail->SMTPAuth = true;                               // Enable SMTP authentication
-		$this->mail->Username = 'info@detska-chirurgia.sk';                            // SMTP username
-		$this->mail->Password = 'InfoPassword';                           // SMTP password
+		$this->mail->Username = $_SESSION['abstrakter']['mail_acc'];                            // SMTP username
+		$this->mail->Password = $_SESSION['abstrakter']['mail_passwd'];                           // SMTP password
 		//$this->mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also accepted
 		
-		$this->mail->From = 'Info@detska-chirurgia.sk';
-		$this->mail->FromName = 'detska-chirurgia.sk';
+		$this->mail->From = $_SESSION['abstrakter']['mail_acc'];
+		$this->mail->FromName = $_SESSION['abstrakter']['mail_from_name'];
 		//$this->mail->addAddress('josh@example.net', 'Josh Adams');  // Add a recipient
-		$this->mail->addAddress($data['email']);               // Name is optional
-		$this->mail->addReplyTo('info@detska-chirurgia.sk', 'Detska chirurgia Slovenska');
+		$this->mail->addAddress($email);               // Name is optional
+		$this->mail->addReplyTo($_SESSION['abstrakter']['mail_acc'], $_SESSION['abstrakter']['mail_from_name']);
 		//	$this->mail->addCC('cc@example.com');
 		//	$this->mail->addBCC('bcc@example.com');
 		
@@ -419,23 +423,23 @@ class login{
 	
 	private function sendMail($email)
 	{	
-		$subject = "Informacia o uspesnej registracii do aplikacie Abstrakter na webe detska-chirurgia.sk";
+		$subject = $this->LABELS['sendmail']['new_user_subject_mail'];
 		
 		$message = $this->smarty->fetch("emails/newuser_html_mail.tpl");
 		
 		$this->mail->isSMTP();                                      // Set mailer to use SMTP
-		$this->mail->Host = 'mail.detska-chirurgia.sk';  	// Specify main and backup server
+		$this->mail->Host = $_SESSION['abstrakter']['mail_serv'];  	// Specify main and backup server
 		$this->mail->Port = 25;
 		$this->mail->SMTPAuth = true;                               // Enable SMTP authentication
-		$this->mail->Username = 'trauma@detska-chirurgia.sk';                            // SMTP username
-		$this->mail->Password = 'TraumaPassword';                           // SMTP password
+		$this->mail->Username = $_SESSION['abstrakter']['mail_acc'];                            // SMTP username
+		$this->mail->Password = $_SESSION['abstrakter']['mail_passwd'];                           // SMTP password
 		//$this->mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also accepted
 		
-		$this->mail->From = 'trauma@detska-chirurgia.sk';
-		$this->mail->FromName = 'trauma@detska-chirurgia.sk';
+		$this->mail->From = $_SESSION['abstrakter']['mail_acc'];
+		$this->mail->FromName = $_SESSION['abstrakter']['mail_from_name'];
 		//$this->mail->addAddress('josh@example.net', 'Josh Adams');  // Add a recipient
 		$this->mail->addAddress($email);               // Name is optional
-		$this->mail->addReplyTo('trauma@detska-chirurgia.sk', 'Trauma v detskom veku');
+		$this->mail->addReplyTo($_SESSION['abstrakter']['mail_acc'], $_SESSION['abstrakter']['mail_from_name']);
 	//	$this->mail->addCC('cc@example.com');
 	//	$this->mail->addBCC('bcc@example.com');
 		

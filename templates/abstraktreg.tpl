@@ -25,13 +25,7 @@
 
 <div id="content">
 		<div id="content-left">
-		<ul>
-			<li><a href="app.php?run=1">Domov...</a></li>
-			{if $data.admin}
-			<li><a href="app.php?addcon=1">Kongress..</a></li>
-			{/if}
-			<li><a href="app.php?logout=1">Odhlasiť sa</a></li>
-		</ul>
+			{include file="main_menu.tpl"}
 		</div>
 	<div id="content-main" style="width:750px;">
 			<h1 class="logo">Prihlásenie na kongres</h1>
