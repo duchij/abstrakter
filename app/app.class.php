@@ -47,7 +47,7 @@ class app {
 		
 		$this->abstr->smarty = $this->smarty;
 		$this->abstr->db = $this->db;
-		
+		$this->abstr->app = $this;
 		
 		return $this->abstr;
 	}
