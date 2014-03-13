@@ -18,6 +18,8 @@ class app {
 	var $db;
 	var $smarty;
 	
+	var $abstr;
+	
 	//var $formdes;
 	
 	
@@ -37,6 +39,17 @@ class app {
 		$this->smarty->config_dir = './templates/configs';
 	
 		$this->db = new db(new mysqli($_SESSION['abstrakter']['server'],$_SESSION['abstrakter']['user'], $_SESSION['abstrakter']['password'],$_SESSION['abstrakter']['db']));
+	}
+	
+	function app_init()
+	{
+		$this->abstr = new stdClass();
+		
+		$this->abstr->smarty = $this->smarty;
+		$this->abstr->db = $this->db;
+		
+		
+		return $this->abstr;
 	}
 	
 	public function loginUser($id)
@@ -131,6 +144,7 @@ class app {
 	}
 	
 
+	//return app;
 	
 }
 

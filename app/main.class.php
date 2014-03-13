@@ -150,7 +150,7 @@ class abstracter extends app {
 	
 	public function fform_fnc($id, $data)
 	{
-		$this->logData($this->forms->fform_fnc(),4444);
+		$this->forms->fform_fnc(); //calls formdes.class.php and uses this class for creating of simple formulars 
 	}
 	
 	public function insertKongres_fnc($id, $data)

@@ -9,13 +9,7 @@
 <script src="js/abstracter.js"></script>
 
 </head>
-
-
 <body>
-
-
-
-
 <div id="wrapper">
 		<div id="header">
 			{include file="header.tpl"}
