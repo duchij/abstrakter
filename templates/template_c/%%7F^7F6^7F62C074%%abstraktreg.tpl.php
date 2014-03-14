@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.28, created on 2014-03-13 13:34:01
+<?php /* Smarty version 2.6.28, created on 2014-03-14 09:57:51
          compiled from abstraktreg.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 37, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 31, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 
@@ -13,13 +13,7 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format
 <script src="js/abstracter.js"></script>
 
 </head>
-
-
 <body>
-
-
-
-
 <div id="wrapper">
 		<div id="header">
 			<?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -81,7 +75,7 @@ unset($_smarty_tpl_vars);
 				
 				<div id="block" style="border:none;padding:0px;margin:0px">
 				<table>
-				<tr><td> <input id="doctor_rb" type="radio" name="section" value="doctor" checked> - Lekárska sekcia</td> <td><input id="nurse_rb" type="radio" name="section" value="nurse" > - Sesterská sekcia</td></tr> 
+				<!--  <tr><td> <input id="doctor_rb" type="radio" name="section" value="doctor" checked> - Lekárska sekcia</td> <td><input id="nurse_rb" type="radio" name="section" value="nurse" > - Sesterská sekcia</td></tr>--> 
 				
 				</table>
 				
@@ -95,13 +89,23 @@ unset($_smarty_tpl_vars);
 					<tr><td width="150px" valign="top">Prvý autor:</td><td>  <input type="text" name="abstract_main_autor" value="<?php echo $this->_tpl_vars['data']['abstract']['abstract_main_autor']; ?>
 " style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
-					<tr><td width="150px" valign="top">Ostatný autori:</td><td>  <input type="text" name="abstract_autori" value="<?php echo $this->_tpl_vars['data']['abstract']['abstract_autori']; ?>
+					<tr><td width="150px" valign="top">Ostatní autori:</td><td>  <input type="text" name="abstract_autori" value="<?php echo $this->_tpl_vars['data']['abstract']['abstract_autori']; ?>
 "  style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
 					
-					<tr><td width="150px" valign="top">Abstrakt:</td><td> <textarea name="abstract_text" rows="20"   style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
+					<tr><td width="150px" valign="top">Registracne cislo:</td><td>  <input type="text" name="reg_num" value="<?php echo $this->_tpl_vars['data']['abstract']['reg_num']; ?>
+"  style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
+></td></tr>
+					<tr><td width="150px" valign="top">Clen SKSaPA:</td><td>  <input type="text" name="skskapa_num" value="<?php echo $this->_tpl_vars['data']['abstract']['skskapa_num']; ?>
+"  style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
+></td></tr>
+					<!--  <tr><td width="150px" valign="top">Neclen SKSa:</td><td>  <input type="text" name="skskapa_num" value="<?php echo $this->_tpl_vars['data']['abstract']['skskapa_num']; ?>
+"  style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
+></td></tr>-->
+					
+					<!--  <tr><td width="150px" valign="top">Abstrakt:</td><td> <textarea name="abstract_text" rows="20"   style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
 ><?php echo $this->_tpl_vars['data']['abstract']['abstract_text']; ?>
-</textarea> </td></tr>
+</textarea> </td></tr>-->
 					
 				
 				

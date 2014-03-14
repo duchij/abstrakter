@@ -46,7 +46,7 @@
 				
 				<div id="block" style="border:none;padding:0px;margin:0px">
 				<table>
-				<tr><td> <input id="doctor_rb" type="radio" name="section" value="doctor" checked> - Lekárska sekcia</td> <td><input id="nurse_rb" type="radio" name="section" value="nurse" > - Sesterská sekcia</td></tr> 
+				<!--  <tr><td> <input id="doctor_rb" type="radio" name="section" value="doctor" checked> - Lekárska sekcia</td> <td><input id="nurse_rb" type="radio" name="section" value="nurse" > - Sesterská sekcia</td></tr>--> 
 				
 				</table>
 				
@@ -54,9 +54,13 @@
 					<tr><td width="150px" valign="top">Názov prednášky:</td><td>  <input type="text" name="abstract_titul" value="{$data.abstract.abstract_titul}" style='width:600px;' {$data.state}></td></tr>
 					<tr><td width="150px" valign="top">Názov pracoviska:</td><td>  <input type="text" name="abstract_adresy" value="{$data.abstract.abstract_adresy}"  style='width:600px;' {$data.state}></td></tr>
 					<tr><td width="150px" valign="top">Prvý autor:</td><td>  <input type="text" name="abstract_main_autor" value="{$data.abstract.abstract_main_autor}" style='width:600px;' {$data.state}></td></tr>
-					<tr><td width="150px" valign="top">Ostatný autori:</td><td>  <input type="text" name="abstract_autori" value="{$data.abstract.abstract_autori}"  style='width:600px;' {$data.state}></td></tr>
+					<tr><td width="150px" valign="top">Ostatní autori:</td><td>  <input type="text" name="abstract_autori" value="{$data.abstract.abstract_autori}"  style='width:600px;' {$data.state}></td></tr>
 					
-					<tr><td width="150px" valign="top">Abstrakt:</td><td> <textarea name="abstract_text" rows="20"   style='width:600px;' {$data.state}>{$data.abstract.abstract_text}</textarea> </td></tr>
+					<tr><td width="150px" valign="top">Registracne cislo SKSaPA:</td><td>  <input type="text" name="abstract_text" value="{$data.abstract.abstract_text}"  style='width:600px;' {$data.state}></td></tr>
+				
+					<!--  <tr><td width="150px" valign="top">Neclen SKSa:</td><td>  <input type="text" name="skskapa_num" value="{$data.abstract.skskapa_num}"  style='width:600px;' {$data.state}></td></tr>-->
+					
+					<!--  <tr><td width="150px" valign="top">Abstrakt:</td><td> <textarea name="abstract_text" rows="20"   style='width:600px;' {$data.state}>{$data.abstract.abstract_text}</textarea> </td></tr>-->
 					
 				
 				
