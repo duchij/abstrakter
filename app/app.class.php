@@ -6,6 +6,7 @@ require_once './smarty/Smarty.class.php';
 require_once 'mysql.class.php';
 require_once './phpmailer/class.phpmailer.php';
 require_once 'xml.class.php';
+require_once 'labels/labels.class.php';
 
 
 class app {
@@ -19,6 +20,8 @@ class app {
 	var $smarty;
 	
 	var $abstr;
+	
+	var $LABELS = array();
 	
 	//var $formdes;
 	
@@ -39,6 +42,11 @@ class app {
 		$this->smarty->config_dir = './templates/configs';
 	
 		$this->db = new db(new mysqli($_SESSION['abstrakter']['server'],$_SESSION['abstrakter']['user'], $_SESSION['abstrakter']['password'],$_SESSION['abstrakter']['db']));
+		
+		$this->_labels = new Labels();
+		$this->LABELS = $this->_labels->getLabels();
+	
+	
 	}
 	
 	function app_init()
@@ -48,6 +56,7 @@ class app {
 		$this->abstr->smarty = $this->smarty;
 		$this->abstr->db = $this->db;
 		$this->abstr->app = $this;
+		$this->abstr->LABELS = $this->LABELS;
 		
 		return $this->abstr;
 	}
@@ -114,12 +123,12 @@ class app {
 		$this->mail->Password = $_SESSION['abstrakter']['mail_passwd'];                           // SMTP password
 		//$this->mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also accepted
 	
-		$this->mail->From = $_SESSION['abstrakter']['send_mail_acc'];
+		$this->mail->From = $_SESSION['abstrakter']['send_email_acc'];
 		$this->mail->FromName = $_SESSION['abstrakter']['mail_from_name'];
 		//$this->mail->addAddress('josh@example.net', 'Josh Adams');  // Add a recipient
 		$this->mail->addAddress($data['email']);               // Name is optional
 		$this->mail->addReplyTo($_SESSION['abstrakter']['mail_acc'], $_SESSION['abstrakter']['mail_from_name']);
-		//	$this->mail->addCC('cc@example.com');
+		$this->mail->addCC($_SESSION['abstrakter']['mail_acc']);
 		//	$this->mail->addBCC('bcc@example.com');
 	
 		$this->mail->WordWrap = 50;                                 // Set word wrap to 50 characters

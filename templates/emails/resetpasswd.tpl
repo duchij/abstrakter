@@ -4,7 +4,7 @@
 
 <p>Kliknutím na nižšie uvedený link si budete môcť nastaviť nové heslo na prístup do aplikácie Abstrakter na webe detska-chirurgia.sk</p>
 
-http://abstrakter.detska-chirurgia.sk/index.php?rp_fnc={$data.reset_link}
+http://{$smarty.session.abstrakter.server_name}/index.php?rp_fnc={$data.reset_link}
 
 <p>Tento link je platný 24 hodín</p>
 

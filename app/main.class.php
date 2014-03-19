@@ -168,6 +168,7 @@ class abstracter extends app {
 		$insData['titul_za']	= $data['titul_za'];
 		$insData['adresa']		= $data['adresa'];
 		$insData['contact_email']		= $data['contact_email'];
+		$insData['contact_phone']		= $data['contact_phone'];
 		
 		$result = $this->db->insert_row('usersdata',$insData);
 		
@@ -285,7 +286,7 @@ class abstracter extends app {
 			$tmp = array();
 			$tmp['congress'] = $this->getKongressByID($data['congress_id']);
 			$tmp['abstract'] = $insData;
-			$tmp['message'] = "Vasa ucast bol zaregistrovana...";
+			$tmp['message'] = "Vaša účasť bola zaregistrovaná...";
 			$tmp['functions'] =array("fnc"=>"editAbstr_fnc","value"=>$res['last_id']);
 			$tmp['buttons'] = array("registration_submit"=>"Uložiť");
 			
@@ -528,7 +529,7 @@ class abstracter extends app {
 		$sql = sprintf("SELECT 
 						[kongressdata].[congress_titel] AS [kongres],
 						[usersdata].[titul_pred] AS [titul_pred], [usersdata].[meno] AS [meno], [usersdata].[priezvisko] AS [priezvisko],
-						[usersdata].[titul_za] AS [titul_za], [usersdata].[contact_email] AS [contact_email], [usersdata].[adresa] AS [adresa],
+						[usersdata].[titul_za] AS [titul_za], [usersdata].[contact_email] AS [contact_email],[usersdata].[contact_phone] AS [contact_phone], [usersdata].[adresa] AS [adresa],
 						[users].[email] AS [email2], 
 						[registration].[participation] AS [ucast], [registration].[section] AS [sekcia],[registration].[abstract_titul] AS [nazov_prezentacie],
 						[registration].[abstract_main_autor] AS [hlavny_autor], [registration].[abstract_autori] AS [spoluautori],

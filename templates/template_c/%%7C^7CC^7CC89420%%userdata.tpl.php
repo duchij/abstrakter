@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-03-13 13:32:32
+<?php /* Smarty version 2.6.28, created on 2014-03-15 17:44:04
          compiled from userdata.tpl */ ?>
 <!DOCTYPE html>
 <html>
@@ -53,6 +53,9 @@ unset($_smarty_tpl_vars);
 "  style="width:400px;"></td></tr>
 					<tr><td width="200px" valign="top">Kontaktný email:</td> <td> <input type="text" name="contact_email" value="<?php echo $this->_tpl_vars['data']['contact_email']; ?>
 "  style="width:400px;"></td></tr>
+					<tr><td width="200px" valign="top">Kontaktný telefon:</td> <td> <input type="text" name="contact_phone" value="<?php echo $this->_tpl_vars['data']['contact_phone']; ?>
+"  style="width:400px;"></td></tr>
+					
 					<tr><td width="200px" valign="top">Adresa pracoviska:</td> <td> <textarea rows="10" name="adresa" style="width:400px;" ><?php echo $this->_tpl_vars['data']['adresa']; ?>
 </textarea></td></tr>
 					<tr><td colspan="2"><input type="submit" value="Ulož"></td></tr>

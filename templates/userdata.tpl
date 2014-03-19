@@ -37,6 +37,8 @@
 					<tr><td width="200px" valign="top">Priezvisko:</td> <td><input type="text" name="priezvisko" value="{$data.priezvisko}"  style="width:400px;"></td></tr>
 					<tr><td width="200px" valign="top">Titul za menom:</td> <td> <input type="text" name="titul_za" value="{$data.titul_za}"  style="width:400px;"></td></tr>
 					<tr><td width="200px" valign="top">Kontaktný email:</td> <td> <input type="text" name="contact_email" value="{$data.contact_email}"  style="width:400px;"></td></tr>
+					<tr><td width="200px" valign="top">Kontaktný telefon:</td> <td> <input type="text" name="contact_phone" value="{$data.contact_phone}"  style="width:400px;"></td></tr>
+					
 					<tr><td width="200px" valign="top">Adresa pracoviska:</td> <td> <textarea rows="10" name="adresa" style="width:400px;" >{$data.adresa}</textarea></td></tr>
 					<tr><td colspan="2"><input type="submit" value="Ulož"></td></tr>
 								

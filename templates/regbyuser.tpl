@@ -1,26 +1,27 @@
 <h1> Vaše aktuálne zahlasené abstrakty</h1>
+<hr>
  
 	{foreach from=$regbyuser item=reg_row}
 	
 	
 	{if $reg_row.abstract_titul|count_characters == 0}
 		{if $reg_row.reg_participation == 'aktiv'}
-			<strong>Aktívna účasť</strong>
+			<h3>Aktívna účasť</h3>
 		{/if}
 		
 		{if $reg_row.reg_participation == 'pasiv'}
-			<strong>Pasívna úcasť</strong>
+			<h3>Pasívna úcasť</h3>
 		{/if}
 		
 		{if $reg_row.reg_participation == 'visit'}
-			<strong>Navštevník</strong>
+			<h3>Navštevník</h3>
 		{/if}
 		
 	{else}
-	<strong>Aktívna účasť</strong> - 
-	<em>{$reg_row.abstract_titul}</em>
+	<h3>Aktívna účasť</h3> 
+	<h2>{$reg_row.abstract_titul}</h2>
 	{/if}
-	<br />,{$reg_row.congress_titel}, {$reg_row.congress_venue}<br />
+	<strong>{$reg_row.congress_titel}</strong><br> {$reg_row.congress_venue}<br />
 	<p>
 	<form name ="regabstrform" method="post" action="app.php"> 
 		<button name="editAbstr_fnc" value="{$reg_row.registr_id}">Edituj</button>

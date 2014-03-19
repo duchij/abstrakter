@@ -3,7 +3,7 @@ session_start();
 require_once 'smarty/Smarty.class.php';
 require_once 'mysql.class.php';
 require_once 'phpmailer/class.phpmailer.php';
-require_once 'labels.class.php';
+require_once 'labels/labels.class.php';
 
 
 
@@ -24,6 +24,7 @@ class login{
 		$_SESSION['abstrakter']['user_email'] = '';
 		$_SESSION['abstrakter']['session_id'] = '';
 		$_SESSION['abstrakter']['is_admin'] = FALSE;
+		$_SESSION['abstrakter']['server_name'] = $_SERVER['HTTP_HOST'];
 		
 		//$_SESSION['abstrakter'] = parse_ini_file("$this->iniDir/database.ini");
 		$this->db = new db(new mysqli($_SESSION['abstrakter']['server'],$_SESSION['abstrakter']['user'], $_SESSION['abstrakter']['password'],$_SESSION['abstrakter']['db']));
@@ -202,7 +203,7 @@ class login{
 	
 	private function registerNewUser_fnc($id,$data)
 	{
-		
+		$data['email'] = trim($data['email']);
 		if (filter_var($data['email'], FILTER_VALIDATE_EMAIL) == true)
 		{
 			//var_dump($data);
@@ -344,17 +345,17 @@ class login{
 		$message = $this->smarty->fetch("emails/resetpasswd.tpl");
 		
 		$this->mail->isSMTP();                                      // Set mailer to use SMTP
-		$this->mail->Host = $_SESSION['abstrakter']['mail_serv'];  	// Specify main and backup server
+		$this->mail->Host = $_SESSION['abstrakter']['mail_server'];  	// Specify main and backup server
 		$this->mail->Port = 25;
 		$this->mail->SMTPAuth = true;                               // Enable SMTP authentication
 		$this->mail->Username = $_SESSION['abstrakter']['mail_acc'];                            // SMTP username
 		$this->mail->Password = $_SESSION['abstrakter']['mail_passwd'];                           // SMTP password
 		//$this->mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also accepted
 		
-		$this->mail->From = $_SESSION['abstrakter']['mail_acc'];
+		$this->mail->From = $_SESSION['abstrakter']['send_email_acc'];
 		$this->mail->FromName = $_SESSION['abstrakter']['mail_from_name'];
 		//$this->mail->addAddress('josh@example.net', 'Josh Adams');  // Add a recipient
-		$this->mail->addAddress($email);               // Name is optional
+		$this->mail->addAddress($data['email']);               // Name is optional
 		$this->mail->addReplyTo($_SESSION['abstrakter']['mail_acc'], $_SESSION['abstrakter']['mail_from_name']);
 		//	$this->mail->addCC('cc@example.com');
 		//	$this->mail->addBCC('bcc@example.com');
@@ -428,7 +429,7 @@ class login{
 		$message = $this->smarty->fetch("emails/newuser_html_mail.tpl");
 		
 		$this->mail->isSMTP();                                      // Set mailer to use SMTP
-		$this->mail->Host = $_SESSION['abstrakter']['mail_serv'];  	// Specify main and backup server
+		$this->mail->Host = $_SESSION['abstrakter']['mail_server'];  	// Specify main and backup server
 		$this->mail->Port = 25;
 		$this->mail->SMTPAuth = true;                               // Enable SMTP authentication
 		$this->mail->Username = $_SESSION['abstrakter']['mail_acc'];                            // SMTP username
@@ -440,7 +441,7 @@ class login{
 		//$this->mail->addAddress('josh@example.net', 'Josh Adams');  // Add a recipient
 		$this->mail->addAddress($email);               // Name is optional
 		$this->mail->addReplyTo($_SESSION['abstrakter']['mail_acc'], $_SESSION['abstrakter']['mail_from_name']);
-	//	$this->mail->addCC('cc@example.com');
+		$this->mail->addCC($_SESSION['abstrakter']['mail_acc']);
 	//	$this->mail->addBCC('bcc@example.com');
 		
 		$this->mail->WordWrap = 50;                                 // Set word wrap to 50 characters

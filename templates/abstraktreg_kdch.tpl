@@ -47,7 +47,7 @@
 				<div id="block" style="border:none;padding:0px;margin:0px">
 				<table>
 				<tr><td> <input id="doctor_rb" type="radio" name="section" value="doctor" checked> - Lekárska sekcia</td> <td><input id="nurse_rb" type="radio" name="section" value="nurse" > - Sesterská sekcia</td></tr> 
-				
+				 
 				</table>
 				
 				<table>

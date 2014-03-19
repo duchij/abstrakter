@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-03-14 09:57:51
+<?php /* Smarty version 2.6.28, created on 2014-03-16 19:16:48
          compiled from abstraktreg.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'abstraktreg.tpl', 31, false),)), $this); ?>
@@ -23,8 +23,7 @@ unset($_smarty_tpl_vars);
  ?>
 			<h3><?php echo $this->_tpl_vars['new_reg_msg']; ?>
 </h3>
-			<?php echo $this->_tpl_vars['message']; ?>
-<br />
+			
 		</div>
 
 <div id="content">
@@ -38,17 +37,17 @@ unset($_smarty_tpl_vars);
 	<div id="content-main" style="width:750px;">
 			<h1 class="logo">Prihlásenie na kongres</h1>
 			<hr />
-			<h2><?php echo $this->_tpl_vars['data']['congress']['congress_titel']; ?>
- </h2>
-			<?php echo $this->_tpl_vars['data']['congress']['congress_subtitel']; ?>
-<br>
+			<h1><?php echo $this->_tpl_vars['data']['congress']['congress_titel']; ?>
+ </h1>
+			<h2><?php echo $this->_tpl_vars['data']['congress']['congress_subtitel']; ?>
+</h2>
 			<a href="<?php echo $this->_tpl_vars['data']['congress']['congress_url']; ?>
-" target="_blank">Web stranka...</a><br>
+" target="_blank">Web stránka...</a><br><br>
 			<?php echo $this->_tpl_vars['data']['congress']['congress_venue']; ?>
-<br>
+<br><br>
 			<?php echo ((is_array($_tmp=$this->_tpl_vars['data']['congress']['congress_from'])) ? $this->_run_mod_handler('date_format', true, $_tmp, "%d.%m.%Y") : smarty_modifier_date_format($_tmp, "%d.%m.%Y")); ?>
  - <?php echo ((is_array($_tmp=$this->_tpl_vars['data']['congress']['congress_until'])) ? $this->_run_mod_handler('date_format', true, $_tmp, "%d.%m.%Y") : smarty_modifier_date_format($_tmp, "%d.%m.%Y")); ?>
-<br>
+<br><br>
 			<?php echo $this->_tpl_vars['data']['message']; ?>
 <hr />
 			
@@ -93,12 +92,8 @@ unset($_smarty_tpl_vars);
 "  style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>
 					
-					<tr><td width="150px" valign="top">Registracne cislo:</td><td>  <input type="text" name="reg_num" value="<?php echo $this->_tpl_vars['data']['abstract']['reg_num']; ?>
-"  style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
-></td></tr>
-					<tr><td width="150px" valign="top">Clen SKSaPA:</td><td>  <input type="text" name="skskapa_num" value="<?php echo $this->_tpl_vars['data']['abstract']['skskapa_num']; ?>
-"  style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
-></td></tr>
+					
+				
 					<!--  <tr><td width="150px" valign="top">Neclen SKSa:</td><td>  <input type="text" name="skskapa_num" value="<?php echo $this->_tpl_vars['data']['abstract']['skskapa_num']; ?>
 "  style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
 ></td></tr>-->
@@ -111,11 +106,18 @@ unset($_smarty_tpl_vars);
 				
 			</table>
 			</div>
+			<table>
+			<tr><td width="150px" valign="top">Registračné čislo SKSaPA (ak niečlen nechať prázdne):</td><td>  <input type="text" name="abstract_text" value="<?php echo $this->_tpl_vars['data']['abstract']['abstract_text']; ?>
+"  style='width:600px;' <?php echo $this->_tpl_vars['data']['state']; ?>
+></td></tr>
+			</table>
 			<?php if ($this->_tpl_vars['data']['state'] != 'readonly'): ?>
 					<input type="submit" value="<?php echo $this->_tpl_vars['data']['buttons']['registration_submit']; ?>
 ">
 				<?php endif; ?>
 	</form>
+	<font style="color:green;"><?php echo $this->_tpl_vars['message']; ?>
+</font><br />
 	</div>
 	<!-- <div id="content-right">
 			 <?php $_smarty_tpl_vars = $this->_tpl_vars;

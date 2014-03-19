@@ -10,6 +10,8 @@ class Labels {
 	{
 		$labels = array();
 		
+		
+		
 		$labels['sendmail'] = array(
 										"new_user_subject_mail"=>"Informacia o uspesnej registracii do aplikacie Abstrakter",
 										"password_reset"=>"Reset hesla na pristup do aplikacie Abstrakter",
@@ -27,6 +29,9 @@ class Labels {
 									"footer_text"=>"Registrácie na vzdelácie akcie, kongresy a pod....",
 				
 				);
+		
+		
+		
 		
 		return $labels;
 		

@@ -31,11 +31,13 @@
 		 
 		<div id="content-right" style="width:700px;">
 		<h1>Aktuálne kongresy</h1><hr>
+		<p>
 			 		{foreach from=$avab_kongres item=row key=i}
-			 			<strong>{$row.congress_titel}</strong><br>
+			 			<h1>{$row.congress_titel}</h1>
 			 			<a href="{$row.congress_url}" target="_blank">{$row.congress_url}</a><br>
-			 			{$row.congress_subtitel},{$row.congress_venue}<br>
+			 			{$row.congress_subtitel}<h3>{$row.congress_venue}</h3>
 			 			<em>{$row.congress_from|date_format:"%d.%m.%Y"} - {$row.congress_until|date_format:"%d.%m.%Y"}</em>
+			 </p>			
 			 			<hr />
 			 		{/foreach}
 			 		
