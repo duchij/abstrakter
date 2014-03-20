@@ -18,7 +18,6 @@ Heslo, ktoré ste zadali pri registrácii si dobre zapamätajte, pretože len po
 <p>Vaše pripomienky, ev. problémy s aplikáciou, ale ďaľšie otázky poprosíme posielajte na adresu <strong>{$smarty.session.abstrakter.mail_acc}</strong></p>
 
 
-
 <p>Na tento mail prosím neodpovedajte.</p>
 
 <p>S pozdravom</p>

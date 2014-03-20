@@ -22,7 +22,7 @@ class FormDes extends app {
 		$string=<<<string
 		input_text;Meno;200;auto;meno;;text|
 		input_text;Priezvisko;200;auto;priezvisko;;text|
-		radio;Aktivna,Pasivna,Navsteva;auto;auto;participation;aktiv,pasiv,visit;text|
+		radio;Aktivna,Pasivna,Navsteva;auto;auto;participation;aktiv,pasiv,visit;enum|
 		textarea;Adresa;100;20;adresa;;text
 string;
 		
@@ -80,8 +80,6 @@ string;
 					);
 				array_push($forms,$asAr);
 			}
-			
-			
 		}
 		
 		var_dump($forms);

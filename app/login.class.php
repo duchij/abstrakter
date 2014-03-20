@@ -209,8 +209,8 @@ class login{
 			//var_dump($data);
 			if (!$this->checkReg($data['email'])) 
 			{
-				$passwd1 = hash('md5',$data['password']);
-				$passwd2 = hash('md5',$data['password2']);
+				$passwd1 = hash('md5',$data['password'].$_SESSION['abstrakter']['salt]']);
+				$passwd2 = hash('md5',$data['password2'].$_SESSION['abstrakter']['salt]']);
 					
 				if ($passwd1 === $passwd2) 
 				{
