@@ -92,11 +92,30 @@ string;
 		return $forms; 
 	}
 	
+	function makeSQLTable($data)
+	{
+	
+		$rows = explode(";", $data);
+		$sql = "";
+		foreach ($rows as $row)
+		{
+			if ($row[0] == 'input_text'){
+				$sql .= sprintf("[%s] longtext COLLATE 'utf_slovak_ci' NULL",$row[4]);
+			}
+			if ($row[0]) == 'radio'){
+				$enum = sprintf("")
+			}
+		}
+		
+	}
 	
 	
 	
 	
 }
+
+
+
 $str = <<<str
 CREATE TABLE `pokus` (
   `item_id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
