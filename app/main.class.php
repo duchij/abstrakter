@@ -263,7 +263,8 @@ class abstracter extends app {
 				"abstract_main_autor"=>$data['abstract_main_autor'],
 				"abstract_autori"	=>$data['abstract_autori'],
 				"abstract_adresy"	=>$data['abstract_adresy'],
-				"abstract_text"		=>$data['abstract_text']
+				"abstract_text"		=>$data['abstract_text'],
+				"etc"				=>$data['etc']
 				);
 		
 		if (empty($insData['item_id']))
@@ -292,6 +293,20 @@ class abstracter extends app {
 			
 			$tmp['admin'] = $_SESSION['abstrakter']['is_admin'];
 			$tmp['check_activ']="checked";
+			
+			if ($insData['etc'] == "golf")
+			{
+				$tmp['selected_golf'] = "selected";
+			}
+			if ($insData['etc'] == "rafting")
+			{
+				$tmp['selected_raf'] = "selected";
+			}
+			if ($insData['etc'] == 'none')
+			{
+				$tmp['selected_none'] = "selected";
+			}
+			
 			
 			$this->smarty->assign('data',$tmp);
 			$this->smarty->display('abstraktreg.tpl');
@@ -368,7 +383,7 @@ class abstracter extends app {
 				[registration].[abstract_titul] AS [reg_abstract_titul],  [registration].[abstract_main_autor] AS [reg_main_autor],
 				[registration].[abstract_autori] AS [reg_abstract_autori], [registration].[abstract_adresy] AS [reg_abstract_adresy],
 				[registration].[abstract_text] AS [reg_abstract_text],[kongressdata].[congress_titel] AS [congress_titel],
-				[registration].[section] AS [section],
+				[registration].[section] AS [section], [registration].[etc] AS [etc],
 				[kongressdata].[congress_subtitel] AS [congress_subtitel],[kongressdata].[congress_venue] AS [congress_venue],
 				[kongressdata].[congress_url] AS [congress_url], [kongressdata].[congress_from] AS [congress_from],
 				[kongressdata].[congress_until] AS [congress_until],[kongressdata].[congress_reguntil] AS [congress_reguntil]
@@ -394,7 +409,8 @@ class abstracter extends app {
 				"abstract_main_autor"=>$data['reg_main_autor'],
 				"abstract_autori"	=>$data['reg_abstract_autori'],
 				"abstract_adresy"	=>$data['reg_abstract_adresy'],
-				"abstract_text"		=>$data['reg_abstract_text']
+				"abstract_text"		=>$data['reg_abstract_text'],
+				"etc"				=>$data['etc']
 		);
 		
 		$congress = array(
@@ -427,6 +443,20 @@ class abstracter extends app {
 		{
 			$tmp['state'] = 'readonly';
 		}
+		
+		if ($abstract['etc'] == "golf")
+		{
+			$tmp['selected_golf'] = "selected";
+		}
+		if ($abstract['etc'] == "rafting")
+		{
+			$tmp['selected_raf'] = "selected";
+		}
+		if ($abstract['etc'] == 'none')
+		{
+			$tmp['selected_none'] = "selected";
+		}
+		
 		
 		$this->smarty->assign('data',$tmp);
 		

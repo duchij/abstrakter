@@ -14,7 +14,7 @@
 		<div id="header">
 			{include file="header.tpl"}
 			<h3>{$new_reg_msg}</h3>
-			{$message}<br />
+			
 		</div>
 
 <div id="content">
@@ -24,11 +24,11 @@
 	<div id="content-main" style="width:750px;">
 			<h1 class="logo">Prihlásenie na kongres</h1>
 			<hr />
-			<h2>{$data.congress.congress_titel} </h2>
-			{$data.congress.congress_subtitel}<br>
-			<a href="{$data.congress.congress_url}" target="_blank">Web stranka...</a><br>
-			{$data.congress.congress_venue}<br>
-			{$data.congress.congress_from|date_format:"%d.%m.%Y"} - {$data.congress.congress_until|date_format:"%d.%m.%Y"}<br>
+			<h1>{$data.congress.congress_titel} </h1>
+			<h2>{$data.congress.congress_subtitel}</h2>
+			<a href="{$data.congress.congress_url}" target="_blank">Web stránka...</a><br><br>
+			{$data.congress.congress_venue}<br><br>
+			{$data.congress.congress_from|date_format:"%d.%m.%Y"} - {$data.congress.congress_until|date_format:"%d.%m.%Y"}<br><br>
 			{$data.message}<hr />
 			
 			<form name="form1" method='post' action="app.php">
@@ -46,26 +46,34 @@
 				
 				<div id="block" style="border:none;padding:0px;margin:0px">
 				<table>
-				<tr><td> <input id="doctor_rb" type="radio" name="section" value="doctor" checked> - Lekárska sekcia</td> <td><input id="nurse_rb" type="radio" name="section" value="nurse" > - Sesterská sekcia</td></tr> 
-				 
+				<!--  <tr><td> <input id="doctor_rb" type="radio" name="section" value="doctor" checked> - Lekárska sekcia</td> <td><input id="nurse_rb" type="radio" name="section" value="nurse" > - Sesterská sekcia</td></tr>--> 
+				
 				</table>
 				
 				<table>
 					<tr><td width="150px" valign="top">Názov prednášky:</td><td>  <input type="text" name="abstract_titul" value="{$data.abstract.abstract_titul}" style='width:600px;' {$data.state}></td></tr>
 					<tr><td width="150px" valign="top">Názov pracoviska:</td><td>  <input type="text" name="abstract_adresy" value="{$data.abstract.abstract_adresy}"  style='width:600px;' {$data.state}></td></tr>
 					<tr><td width="150px" valign="top">Prvý autor:</td><td>  <input type="text" name="abstract_main_autor" value="{$data.abstract.abstract_main_autor}" style='width:600px;' {$data.state}></td></tr>
-					<tr><td width="150px" valign="top">Ostatný autori:</td><td>  <input type="text" name="abstract_autori" value="{$data.abstract.abstract_autori}"  style='width:600px;' {$data.state}></td></tr>
+					<tr><td width="150px" valign="top">Ostatní autori:</td><td>  <input type="text" name="abstract_autori" value="{$data.abstract.abstract_autori}"  style='width:600px;' {$data.state}></td></tr>
 					
-					<tr><td width="150px" valign="top">Abstrakt:</td><td> <textarea name="abstract_text" rows="20"   style='width:600px;' {$data.state}>{$data.abstract.abstract_text}</textarea> </td></tr>
+					
+				
+					<!--  <tr><td width="150px" valign="top">Neclen SKSa:</td><td>  <input type="text" name="skskapa_num" value="{$data.abstract.skskapa_num}"  style='width:600px;' {$data.state}></td></tr>-->
+					
+					<!--  <tr><td width="150px" valign="top">Abstrakt:</td><td> <textarea name="abstract_text" rows="20"   style='width:600px;' {$data.state}>{$data.abstract.abstract_text}</textarea> </td></tr>-->
 					
 				
 				
 			</table>
 			</div>
+			<table>
+			<tr><td width="150px" valign="top">Registračné čislo SKSaPA (ak niečlen nechať prázdne):</td><td>  <input type="text" name="abstract_text" value="{$data.abstract.abstract_text}"  style='width:600px;' {$data.state}></td></tr>
+			</table>
 			{if $data.state != 'readonly'}
 					<input type="submit" value="{$data.buttons.registration_submit}">
 				{/if}
 	</form>
+	<font style="color:green;">{$message}</font><br />
 	</div>
 	<!-- <div id="content-right">
 			 {include file="regbyuser.tpl"}<hr/>

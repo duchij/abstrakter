@@ -102,8 +102,8 @@ string;
 			if ($row[0] == 'input_text'){
 				$sql .= sprintf("[%s] longtext COLLATE 'utf_slovak_ci' NULL",$row[4]);
 			}
-			if ($row[0]) == 'radio'){
-				$enum = sprintf("")
+			if ($row[0] == 'radio'){
+				$enum = sprintf("");
 			}
 		}
 		
