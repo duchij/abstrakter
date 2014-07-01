@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+@import url("layout.css");
+
+#designerPlace {
+	width:60%;
+	border:1px solid black;
+float:left;
+
+}
+#propertiesPlace {
+	width:35%;
+	border:1px solid black;
+	
+	float:left;
+}

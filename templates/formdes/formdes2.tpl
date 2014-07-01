@@ -3,9 +3,9 @@
 
 <head>
 
-<link rel="stylesheet" type="text/css" href="css/layout.css" >
+<link rel="stylesheet" type="text/css" href="css/designer.css" >
 
-<!-- <link rel="stylesheet" type="text/css" href="js/src/fancyfields.css" > -->
+<link rel="stylesheet" type="text/css" href="js/src/fancyfields.css" >
 
 <meta charset="UTF-8">
 <title>Formdes pokus</title>	
@@ -14,9 +14,20 @@
 <script src="js/jquery.js"></script>
 </head>
 <body>
+<p>
 <button name="TextBox" id="TextBox" type="button">TextBox</button>
 <button name="TextArea" id="TextArea" type="button">TextArea</button>
-<div id="designerPlace">halo</div>
+</p>
+<div id="designerPlace"><p>Design area:</p></div>
+<div id="propertiesPlace"><p>Properties:</p>
+IDF:
+Width:
+Height:
+Text:
+Items:
+
+</div>
+
 
 {literal}
 <script>
@@ -28,6 +39,12 @@ $( document ).ready(function() {
 		$("#designerPlace").append('<div>Text: <input type="text" name="lolo"/></div>');
 		
 	});
+	
+	$("#TextArea").click(function(e){
+		$("#designerPlace").append('<div>Textarea: <textarea name="lolo"></textarea></div>');
+	});
+	
+	
 
 
 });
