@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.28, created on 2014-03-24 18:02:06
+<?php /* Smarty version 2.6.28, created on 2014-06-05 06:53:22
          compiled from index.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'index.tpl', 39, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'date_format', 'index.tpl', 41, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,8 +31,10 @@ unset($_smarty_tpl_vars);
 			
 			<tr><td colspan="2"><button formaction="index.php?login_fnc=1" type="submit">Prihlás</button> 
 			<button formaction="index.php?register_fnc=1"  >Vytvoriť nový účet</button>
-			<button formaction="index.php?reset_fnc=1">Zabudnuté heslo?</button></td></tr>	
+			<button formaction="index.php?reset_fnc=1">Zabudnuté heslo?</button></td></tr>
+			
 			</table>
+			<a href="https://github.com/duchij/abstrakter/wiki/Ako-sa-prihl%C3%A1si%C5%A5%3F" target="_blank">Pomoc?</a>
 			</form> 
 			
 		</div>

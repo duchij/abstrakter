@@ -117,6 +117,9 @@ class Excel_XML
 		// foreach key -> write value into cells
 		foreach ($array as $k => $v):
 
+		$v = str_replace(">","&#62;",$v);
+		$v = str_replace("<","&#38;#60;",$v);
+		
 		$cells .= "<Cell><Data ss:Type=\"String\">" . $v . "</Data></Cell>\n";
 
 		endforeach;

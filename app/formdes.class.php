@@ -82,11 +82,11 @@ string;
 			}
 		}
 		
-		var_dump($forms);
+		//var_dump($forms);
 		$this->fforms->app->logData($forms,666);
 		$this->fforms->smarty->assign("data",$forms);
 		
-		$this->fforms->smarty->display('formdes/formdes.tpl');
+		$this->fforms->smarty->display('formdes/formdes2.tpl');
 		
 		//$this->logData($forms,5555);
 		return $forms; 
@@ -108,13 +108,7 @@ string;
 		}
 		
 	}
-	
-	
-	
-	
 }
-
-
 
 $str = <<<str
 CREATE TABLE `pokus` (

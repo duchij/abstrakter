@@ -563,7 +563,8 @@ class abstracter extends app {
 						[users].[email] AS [email2], 
 						[registration].[participation] AS [ucast], [registration].[section] AS [sekcia],[registration].[abstract_titul] AS [nazov_prezentacie],
 						[registration].[abstract_main_autor] AS [hlavny_autor], [registration].[abstract_autori] AS [spoluautori],
-						[registration].[abstract_adresy] AS [adresy_pracoviska], [registration].[abstract_text] AS [text_abstraktu]
+						[registration].[abstract_adresy] AS [adresy_pracoviska], [registration].[abstract_text] AS [text_abstraktu],
+						[registration].[etc] AS [etc]
 				FROM [registration]
 							INNER JOIN [usersdata] ON [usersdata].[user_id] = [registration].[user_id]
 							INNER JOIN [kongressdata] ON [kongressdata].[item_id] = [registration].[congress_id]
