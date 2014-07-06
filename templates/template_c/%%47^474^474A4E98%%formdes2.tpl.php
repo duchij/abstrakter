@@ -1,55 +1,48 @@
-<?php /* Smarty version 2.6.28, created on 2014-07-01 21:55:32
+<?php /* Smarty version 2.6.28, created on 2014-07-06 21:16:35
          compiled from formdes/formdes2.tpl */ ?>
 <!DOCTYPE html>
 <html>
 
 <head>
-
 <link rel="stylesheet" type="text/css" href="css/designer.css" >
-
 <link rel="stylesheet" type="text/css" href="js/src/fancyfields.css" >
-
 <meta charset="UTF-8">
 <title>Formdes pokus</title>	
 
 
-<script src="js/jquery.js"></script>
 </head>
 <body>
-<p>
+<?php echo '
+<script type="text/javascript" src="js/jquery.js"></script>
+'; ?>
+
+
+
+<form>
 <button name="TextBox" id="TextBox" type="button">TextBox</button>
 <button name="TextArea" id="TextArea" type="button">TextArea</button>
-</p>
-<div id="designerPlace"><p>Design area</p></div>
-<div id="propertiesPlace"><p>Properties</p>
-IDF:
-Width:
-Height:
-Text:
+</form>
 
+<div id="designerPlace">
+<form id="desForm">Design area:</form>
+</div>
+<div id="propertiesPlace"><p>Properties for:</p>
+<form id="formProps">
+<div>IDF: <input type="text" id="input_text_idf"></div>
+<div>Label name:<input type="text" id="input_text_label"></div>
+<div>Width:<input type="text" id="input_text_width"></div>
+<div>Height:<input type="text" id="input_text_height"></div>
+<div>Text:<input type="text" id="input_text_text"></div>
+<div>Column name:<input type="text" id="input_text_column_name"></div>
+<div>Column size:<input type="text" id="input_text_column_size"></div>
+<div>Items:<input type="text" id="input_text_items"></div>
+</form>
 
 </div>
-
-
 <?php echo '
-<script>
-$( document ).ready(function() {
-//window.alert( "ready!" );
-
-	$("#TextBox").click(function(e){
-		//window.alert( "ready!" );
-		$("#designerPlace").append(\'<div>Text: <input type="text" name="lolo"/></div>\');
-		
-	});
-	
-	$("#TextArea").click(function(e){
-		$("#designerPlace").append(\'<div>Textarea: <textarea name="lolo"></textarea></div>\');
-	});
-
-
-});
-</script>
+<script type="text/javascript" src="js/myfnc.js"></script>
 '; ?>
+
 
 </body>
 </html>
