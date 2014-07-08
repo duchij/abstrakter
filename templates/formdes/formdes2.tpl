@@ -23,16 +23,18 @@
 <div id="designerPlace">
 <form id="desForm">Design area:</form>
 </div>
-<div id="propertiesPlace"><p>Properties for:</p>
+<div id="propertiesPlace"><h1>Properties for:</h1>
 <form id="formProps">
-<div>IDF: <input type="text" id="input_text_idf"></div>
-<div>Label name:<input type="text" id="input_text_label"></div>
-<div>Width:<input type="text" id="input_text_width"></div>
-<div>Height:<input type="text" id="input_text_height"></div>
-<div>Text:<input type="text" id="input_text_text"></div>
-<div>Column name:<input type="text" id="input_text_column_name"></div>
-<div>Column size:<input type="text" id="input_text_column_size"></div>
-<div>Items:<input type="text" id="input_text_items"></div>
+
+<div><div class="properties_key_val">IDF:</div><div><input type="text" id="input_text_idf"></div></div>
+<div><div class="properties_key_val">Label name:</div><div><input type="text" id="input_text_label"></div></div>
+<div><div class="properties_key_val">Width:</div><div><input type="text" id="input_text_width"></div></div>
+<div><div class="properties_key_val">Height:</div><div><input type="text" id="input_text_height"></div></div>
+<div><div class="properties_key_val">Text:</div><div><input type="text" id="input_text_text"></div></div>
+<div><div class="properties_key_val">Column name:</div><div><input type="text" id="input_text_column_name"></div></div>
+<div><div class="properties_key_val">Column size:</div><div><input type="text" id="input_text_column_size"></div></div>
+<div><div class="properties_key_val">Items:</div><div><input type="text" id="input_text_items"></div></div>
+
 </form>
 
 </div>

@@ -13,3 +13,9 @@ float:left;
 	
 	float:left;
 }
+
+.properties_key_val{
+	width:100px;
+	float:left;
+	font-weight: bolder;
+}
