@@ -11,6 +11,11 @@ function countObj(obj)
 
 
 $(document).ready(function() {
+	
+	/*$("#input_text_prop").hide();
+	$("#textarea_text_prop").hide();*/
+	$("body").hideAllProp();
+	
 	var elements = {};
 	var $inputText = '';
 	var selectedObj = '';
@@ -36,7 +41,8 @@ $(document).ready(function() {
 	});
 	
 	$("#TextArea").click(function(e){
-		$("#designerPlace").append('<div>Textarea: <textarea id="text_duch" name="lolos"></textarea></div>');
+		var count = countObj(elements);
+		$("#desForm").append('<div id="textarea_text_'+count+'">Textarea: <textarea id="text_duch" name="lolos"></textarea></div>');
 	});
 	
 	/*removal of selected object*/
@@ -48,13 +54,19 @@ $(document).ready(function() {
 		console.log(elements);
 	});
 	
+	$("#desForm").focus(function(e){
+		
+		console.log("halo");
+});
 	
-	$("#desForm").on('focus','input',function(){
+	$("#desForm").on('focus','*',function(){
 		var id = $(this).attr("id");
 		selectedObj = id;
-		
+	
 		if (id.indexOf("input_text_") != -1)
 		{
+			$("#input_text_prop").show();
+			
 			$("#input_text_items").attr('readonly',true);
 			$("#input_text_height").attr('readonly',true);
 			$("#input_text_idf").val(id);
@@ -64,15 +76,13 @@ $(document).ready(function() {
 			$("#input_text_column_size").val(elements[id].column_size);
 			
 		}
+		else if (id.indexOf("textarea_text_") != -1)
+		{
+			$("#textarea_text_prop").show();
+		}
 		else
 		{
-			$("#input_text_items").attr('readonly',true).val();
-			$("#input_text_height").attr('readonly',true).val();
-			$("#input_text_idf").attr('readonly',true).val();
-			$("#input_text_label").attr('readonly',true).val();
-			$("#input_text_width").attr('readonly',true).val();
-			$("#input_text_column_name").attr('readonly',true).val();
-			$("#input_text_column_size").attr('readonly',true).val();
+			$("body").hideAllProp();
 		}
 	});
 	
@@ -114,26 +124,25 @@ $(document).ready(function() {
 	
 	});
 	
-	(function($)
-	{
-		$.fn.countObj = function(obj) {
-			
-			
-			$(this).find('focus','label',function(){
-				window.alert("k");
-			});
-			var gh = $(this).attr("id");
-			console.log($(gh).serialize());
-			$(gh).focus(function()
-			{
-				var id = $(this).attr("id");
-				window.alert(id);
-			});
-			return $(this).addClass('changed');
-		}
-	})(jQuery);
+
+	
+	
 		
 
 });
+
+(function($) {	
+	$.fn.hideAllProp = function() {
+		
+		$("#input_text_prop").hide();
+		$("#textarea_text_prop").hide();
+		
+		
+		return $(this).addClass('changed');
+		}
+
+		
+		})(jQuery);
+		
 
 

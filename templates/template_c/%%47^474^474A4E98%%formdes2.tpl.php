@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-07-08 10:57:01
+<?php /* Smarty version 2.6.28, created on 2014-07-08 19:26:21
          compiled from formdes/formdes2.tpl */ ?>
 <!DOCTYPE html>
 <html>
@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="css/designer.css" >
 <link rel="stylesheet" type="text/css" href="js/src/fancyfields.css" >
 <meta charset="UTF-8">
-<title>Formdes pokus</title>	
+<title>Form Designer</title>	
 
 
 </head>
@@ -26,9 +26,19 @@
 <div id="designerPlace">
 <form id="desForm">Design area:</form>
 </div>
-<div id="propertiesPlace"><h1>Properties for:</h1>
+<div id="propertiesPlace"><h1>Properties for:</h1><hr/>
 <form id="formProps">
-
+<div id="input_text_prop">
+<div><div class="properties_key_val">IDF:</div><div><input type="text" id="input_text_idf"></div></div>
+<div><div class="properties_key_val">Label name:</div><div><input type="text" id="input_text_label"></div></div>
+<div><div class="properties_key_val">Width:</div><div><input type="text" id="input_text_width"></div></div>
+<!-- <div><div class="properties_key_val">Height:</div><div><input type="text" id="input_text_height"></div></div> -->
+<div><div class="properties_key_val">Text:</div><div><input type="text" id="input_text_text"></div></div>
+<div><div class="properties_key_val">Column name:</div><div><input type="text" id="input_text_column_name"></div></div>
+<div><div class="properties_key_val">Column size:</div><div><input type="text" id="input_text_column_size"></div></div>
+<!-- <div><div class="properties_key_val">Items:</div><div><input type="text" id="input_text_items"></div></div> -->
+</div>
+<div id="textarea_text_prop">
 <div><div class="properties_key_val">IDF:</div><div><input type="text" id="input_text_idf"></div></div>
 <div><div class="properties_key_val">Label name:</div><div><input type="text" id="input_text_label"></div></div>
 <div><div class="properties_key_val">Width:</div><div><input type="text" id="input_text_width"></div></div>
@@ -36,7 +46,9 @@
 <div><div class="properties_key_val">Text:</div><div><input type="text" id="input_text_text"></div></div>
 <div><div class="properties_key_val">Column name:</div><div><input type="text" id="input_text_column_name"></div></div>
 <div><div class="properties_key_val">Column size:</div><div><input type="text" id="input_text_column_size"></div></div>
-<div><div class="properties_key_val">Items:</div><div><input type="text" id="input_text_items"></div></div>
+<!--  <div><div class="properties_key_val">Items:</div><div><input type="text" id="input_text_items"></div></div> -->
+</div>
+
 
 </form>
 
