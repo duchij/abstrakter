@@ -36,13 +36,13 @@
 <!-- <div><div class="properties_key_val">Items:</div><div><input type="text" id="input_text_items"></div></div> -->
 </div>
 <div id="textarea_text_prop">
-<div><div class="properties_key_val">IDF:</div><div><input type="text" id="input_text_idf"></div></div>
-<div><div class="properties_key_val">Label name:</div><div><input type="text" id="input_text_label"></div></div>
-<div><div class="properties_key_val">Width:</div><div><input type="text" id="input_text_width"></div></div>
-<div><div class="properties_key_val">Height:</div><div><input type="text" id="input_text_height"></div></div>
-<div><div class="properties_key_val">Text:</div><div><input type="text" id="input_text_text"></div></div>
-<div><div class="properties_key_val">Column name:</div><div><input type="text" id="input_text_column_name"></div></div>
-<div><div class="properties_key_val">Column size:</div><div><input type="text" id="input_text_column_size"></div></div>
+<div><div class="properties_key_val">IDF:</div><div><input type="text" id="textarea_idf"></div></div>
+<div><div class="properties_key_val">Label name:</div><div><input type="text" id="textarea_label"></div></div>
+<div><div class="properties_key_val">Width:</div><div><input type="text" id="textarea_width"></div></div>
+<div><div class="properties_key_val">Height:</div><div><input type="text" id="textarea_height"></div></div>
+<div><div class="properties_key_val">Text:</div><div><input type="text" id="textarea_text"></div></div>
+<div><div class="properties_key_val">Column name:</div><div><input type="text" id="textarea_column_name"></div></div>
+<!--  <div><div class="properties_key_val">Column size:</div><div><input type="text" id="input_text_column_size"></div></div>-->
 <!--  <div><div class="properties_key_val">Items:</div><div><input type="text" id="input_text_items"></div></div> -->
 </div>
 

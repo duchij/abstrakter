@@ -28,6 +28,7 @@ $(document).ready(function() {
 		var count = countObj(elements);
 		$inputText = '<div id="input_text_'+count+'"><label for="label_text_'+count+'" id="label_text_'+count+'">Label_'+count+'</label>: <input type="text" id="input_text_'+count+'" value="" style="width:100px;"/> <a href="#" class="removeObj"><strong>X</strong></a></div>';
 		$("#desForm").append($inputText);
+		
 		elements["input_text_"+count] = {
 			label_text:"label_"+count,
 			input_text_width:100,
@@ -37,12 +38,25 @@ $(document).ready(function() {
 			column_size:255,
 			
 		};
-		console.log(elements);
+		//console.log(elements);
 	});
 	
 	$("#TextArea").click(function(e){
 		var count = countObj(elements);
-		$("#desForm").append('<div id="textarea_text_'+count+'">Textarea: <textarea id="text_duch" name="lolos"></textarea></div>');
+		$("#desForm").append('<div id="textarea_'+count+'">Textarea: <textarea id="textarea_'+count+'"></textarea><a href="#" class="removeObj"><strong>X</strong></a></div>');
+		
+		elements["textarea_"+count] = {
+				label_text:"label_"+count,
+				textarea_width:100,
+				textarea_height:100,
+				textarea_idf:"input_text_"+count,
+				textarea_text:"",
+				column_name:"input_text_"+count,
+				column_size:255,
+				
+			};
+		console.log(elements);
+		
 	});
 	
 	/*removal of selected object*/
@@ -54,21 +68,21 @@ $(document).ready(function() {
 		console.log(elements);
 	});
 	
-	$("#desForm").focus(function(e){
-		
-		console.log("halo");
-});
-	
+	//hide all properties when outside od the forms
+	$("#desForm").on('blur','*',function(){
+		$("body").hideAllProp();
+	});
+	//display properties after selected form element
 	$("#desForm").on('focus','*',function(){
+		
 		var id = $(this).attr("id");
 		selectedObj = id;
+		console.log("tuu.."+id);
 	
 		if (id.indexOf("input_text_") != -1)
 		{
 			$("#input_text_prop").show();
 			
-			$("#input_text_items").attr('readonly',true);
-			$("#input_text_height").attr('readonly',true);
 			$("#input_text_idf").val(id);
 			$("#input_text_label").val(elements[id].label_text);
 			$("#input_text_width").val(elements[id].input_text_width);
@@ -76,9 +90,18 @@ $(document).ready(function() {
 			$("#input_text_column_size").val(elements[id].column_size);
 			
 		}
-		else if (id.indexOf("textarea_text_") != -1)
+		else if (id.indexOf("textarea_") != -1)
 		{
 			$("#textarea_text_prop").show();
+			
+			$("#textarea_idf").val(id);
+			$("#textarea_label").val(elements[id].label_text);
+			$("#textarea_width").val(elements[id].textarea_width);
+			$("#textarea_height").val(elements[id].textarea_height);
+			$("#textarea_column_name").val(elements[id].column_name);
+			//$("#textarea_column_size").val(elements[id].column_size);
+			
+			
 		}
 		else
 		{
