@@ -18,6 +18,7 @@
 <form>
 <button name="TextBox" id="TextBox" type="button">TextBox</button>
 <button name="TextArea" id="TextArea" type="button">TextArea</button>
+<button name="SelectList" id="SelectList" type="button">SelectList</button>
 </form>
 
 <div id="designerPlace">
@@ -37,11 +38,21 @@
 </div>
 <div id="textarea_text_prop">
 <div><div class="properties_key_val">IDF:</div><div><input type="text" id="textarea_idf"></div></div>
-<div><div class="properties_key_val">Label name:</div><div><input type="text" id="textarea_label"></div></div>
+<div><div class="properties_key_val">Textarea label:</div><div><input type="text" id="textarea_label"></div></div>
 <div><div class="properties_key_val">Width:</div><div><input type="text" id="textarea_width"></div></div>
 <div><div class="properties_key_val">Height:</div><div><input type="text" id="textarea_height"></div></div>
 <div><div class="properties_key_val">Text:</div><div><input type="text" id="textarea_text"></div></div>
 <div><div class="properties_key_val">Column name:</div><div><input type="text" id="textarea_column_name"></div></div>
+<!--  <div><div class="properties_key_val">Column size:</div><div><input type="text" id="input_text_column_size"></div></div>-->
+<!--  <div><div class="properties_key_val">Items:</div><div><input type="text" id="input_text_items"></div></div> -->
+</div>
+<div id="selectList_prop">
+<div><div class="properties_key_val">IDF:</div><div><input type="text" id="selectlist_idf"></div></div>
+<div><div class="properties_key_val">Textarea label:</div><div><input type="text" id="selectlist_label"></div></div>
+<div><div class="properties_key_val">Width:</div><div><input type="text" id="selectlist_width"></div></div>
+<!-- <div><div class="properties_key_val">Height:</div><div><input type="text" id="textarea_height"></div></div> -->
+<div><div class="properties_key_val">Item/Value:</div><div><textarea id="selectlist_items" style="width:200px;height:100px;"> </textarea><button name="CreateList" id="CreateList" type="button">Create List</button></div></div>
+<div><div class="properties_key_val">Column name:</div><div><input type="text" id="selectlist_column_name"></div></div>
 <!--  <div><div class="properties_key_val">Column size:</div><div><input type="text" id="input_text_column_size"></div></div>-->
 <!--  <div><div class="properties_key_val">Items:</div><div><input type="text" id="input_text_items"></div></div> -->
 </div>
