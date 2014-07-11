@@ -59,7 +59,7 @@
 
 
 </form>
-
+<button name="send" id="sendData" type="button">Send</button>
 </div>
 {literal}
 <script type="text/javascript" src="js/myfnc.js"></script>

@@ -77,8 +77,8 @@ class app {
 	{
 		$datum  = date("dmY");
 		$fp = fopen("./log/{$datum}.log","a+");
-		
-		$str = date("d.m.Y H.i.s")."..........>{$debug} \r\n";
+		$str = "==========================================================================";
+		$str .= date("d.m.Y H.i.s")."..........>{$debug} \r\n";
 		$str .= var_export($what,true);
 		
 		fwrite($fp,$str);

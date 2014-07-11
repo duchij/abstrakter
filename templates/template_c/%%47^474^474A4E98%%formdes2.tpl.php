@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-07-11 05:05:49
+<?php /* Smarty version 2.6.28, created on 2014-07-11 11:43:05
          compiled from formdes/formdes2.tpl */ ?>
 <!DOCTYPE html>
 <html>
@@ -62,7 +62,7 @@
 
 
 </form>
-
+<button name="send" id="sendData" type="button">Send</button>
 </div>
 <?php echo '
 <script type="text/javascript" src="js/myfnc.js"></script>

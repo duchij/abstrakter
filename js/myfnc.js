@@ -62,10 +62,10 @@ $(document).ready(function()
 	
 	$("#SelectList").click(function(e){
 		var count = countObj(elements);
-		$("#desForm").append('<div id="div_selectList_'+count+'"><label for="selectList_label_'+count+'" id="selectList_label_'+count+'">Select list:</label> <select id="selectList_'+count+'" style="width:200px;"></select> <a href="#" class="removeObj"><strong>X</strong></a></div>');
+		$("#desForm").append('<div id="div_selectList_'+count+'"><label for="selectList_label_'+count+'" id="selectList_label_'+count+'">select list_'+count+':</label> <select id="selectList_'+count+'" style="width:200px;"></select> <a href="#" class="removeObj"><strong>X</strong></a></div>');
 		
 		elements["selectList_"+count] = {
-				label_text:"label_"+count,
+				label_text:"selectlist_"+count,
 				selectlist_width:200,
 				selectlist_idf:"input_text_"+count,
 				selectlist_items:{},
@@ -77,7 +77,28 @@ $(document).ready(function()
 		
 	});
 	
-	
+	$("#sendData").click(function(e){
+		e.preventDefault();
+		//alert("tu");
+		
+		$.ajax({
+			url:"app.php",
+			type:"post",
+			data:{'include':"formDes",'fform_fnc':"desf",'formDesDataFnc':elements},
+			
+			success:function(result)
+			{
+				alert(result);
+			},
+			
+			error:function(xhr, desc, err) {
+		        console.log(xhr);
+		        console.log("Details: " + desc + "\nError:" + err);
+			}
+			
+		});
+		
+	});
 	
 	
 	/*removal of selected object*/
@@ -117,11 +138,11 @@ $(document).ready(function()
 		{
 			$("#selectList_prop").show();
 			
-			$("#selectList_idf").val(id);
-			$("#selectList_label").val(elements[id].label_text);
-			$("#selectList_width").val(elements[id].textarea_width);
-			$("#selectList_height").val(elements[id].textarea_height);
-			$("#selectList_column_name").val(elements[id].column_name);
+			$("#selectlist_idf").val(id);
+			$("#selectlist_label").val(elements[id].label_text);
+			$("#selectlist_width").val(elements[id].selectlist_width);
+			$("#selectlist_height").val(elements[id].selectlist_height);
+			$("#selectlist_column_name").val(elements[id].column_name);
 		}
 		else if (id.indexOf("textarea_") != -1)
 		{
@@ -173,8 +194,34 @@ $(document).ready(function()
 		}
 		if (id === 'selectlist_label')
 		{
-		
+			$("#selectList_label_"+tmp[1]).html($("#selectlist_label").val());
+			elements[selectedObj].label_text = $("#selectlist_label").val();
 		}
+		if (id === 'selectlist_width')
+		{
+			$("#"+selectedObj).css("width",$("#selectlist_width").val()+"px");
+			elements[selectedObj].selectlist_width = $("#selectlist_width").val();
+		}
+		if (id === 'selectlist_column_name')
+			{
+			var idf = new RegExp('[^a-z0-9_$]','ig');
+			var strTmp = $("#selectlist_column_name").val();
+			//console.log(strTmp);
+			//console.log(idf.test(strTmp));
+			if (idf.test(strTmp)){
+				alert("Povolene su len pismena,cisla a _ !!!!!");
+				setTimeout(function()
+								{
+									$("#selectlist_column_name").val(); 
+									$('#selectlist_column_name').focus();}, 1);
+				
+				//$('#input_text_column_name').preventDefault();
+			}
+			else
+			{
+				elements[selectedObj].column_name = $("#selectlist_column_name").val();
+			}
+			}
 		
 		/*textarea conditions*/
 		if (id === "textarea_label")

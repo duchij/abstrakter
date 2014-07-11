@@ -12,6 +12,9 @@ class abstracter extends app {
 	
 	public function startPage($data)
 	{
+		//var_dump($data);
+		//echo $data;
+		
 		
 		if ($_SESSION['abstrakter']['session_id'] != session_id())
 		{
@@ -150,7 +153,7 @@ class abstracter extends app {
 	
 	public function fform_fnc($id, $data)
 	{
-		$this->forms->fform_fnc(); //calls formdes.class.php and uses this class for creating of simple formulars 
+		$this->forms->fform_fnc($data); //calls formdes.class.php and uses this class for creating of simple formulars 
 	}
 	
 	public function insertKongres_fnc($id, $data)

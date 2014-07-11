@@ -12,10 +12,27 @@ class FormDes extends app {
 
 
 	
-	function fform_fnc()
+	function fform_fnc($data)
 	{
+		
+		
+		
 		$app = new app();				
 		$this->fforms = $app->app_init();
+		
+		if ($data['include'] == 'formDes' && isset($data['include']))
+		{
+			//echo is_array($data['formDesDataFnc']);
+				
+			$this->showForm($data['formDesDataFnc']);
+			
+		}
+		else
+		{
+			//$this->fforms->smarty->assign("data",$forms);
+			
+			$this->fforms->smarty->display('formdes/formdes2.tpl');
+		}
 		
 		//$this->smarty->display('admin/form_templater.tpl');
 		
@@ -26,9 +43,54 @@ class FormDes extends app {
 		textarea;Adresa;100;20;adresa;;text
 string;
 		
-		$this->parseString(trim($string));
+		//$this->parseString(trim($string));
 		//var_dump($this->parseString($string));
 		
+	}
+	
+	function showForm($form)
+	{
+		$this->fforms->app->logData($form,666);
+		$defForm = array();
+		$i=0;
+		if (is_array($form))
+		{
+			foreach ($form as $row)
+			{
+				foreach($row as $key=>$value)
+				{
+					$arrTmp = array();
+					
+					if (!empty($row[$key]))
+					{
+					
+						if (strpos($key,"input_text_") !== FALSE)
+						{
+							$arrTmp = array(
+									"type"		=>"input_text",
+									"label"		=>$row['label_text'],
+									"width"		=>$row['input_text_width'],
+									//"height"	=>$tmp[3],
+									"field"		=>$row['column_name'],
+									"value"		=>$row['input_text'],
+									"variable"	=>'text',
+									"size"		=>$row['column_size']
+									
+									);
+							array_push($defForm,$arrTmp);
+							$i++;
+						}
+					}
+					
+				}
+			}
+			$this->fforms->app->logData($defForm,777);
+			$this->fforms->app->logData($i,888);
+			$this->fforms->smarty->assign("data",$defForm);
+			
+			$this->fforms->smarty->display('formdes/formdes.tpl');
+			exit;
+		}
 	}
 	
 	function parseString($string)
