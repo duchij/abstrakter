@@ -27,7 +27,7 @@ $(document).ready(function()
 	$("#TextBox").click(function(e){
 		
 		var count = countObj(elements);
-		$inputText = '<div id="input_text_'+count+'"><label for="label_text_'+count+'" id="label_text_'+count+'">Label_'+count+'</label>: <input type="text" id="input_text_'+count+'" value="" style="width:100px;"/> <a href="#" class="removeObj"><strong>X</strong></a></div>';
+		$inputText = '<div id="div_input_text_'+count+'"><label for="label_text_'+count+'" id="label_text_'+count+'">Label_'+count+'</label>: <input type="text" id="input_text_'+count+'" value="" style="width:100px;"/> <a href="#" class="removeObj"><strong>X</strong></a></div>';
 		$("#desForm").append($inputText);
 		
 		elements["input_text_"+count] = {
@@ -62,15 +62,14 @@ $(document).ready(function()
 	
 	$("#SelectList").click(function(e){
 		var count = countObj(elements);
-		$("#desForm").append('<div id="div_selectList_'+count+'"><label for="selectList_label_'+count+'" id="selectList_label_'+count+'">Select list:</label> <select id="selectList_'+count+'" style="width:200px;"/> <a href="#" class="removeObj"><strong>X</strong></a></div>');
+		$("#desForm").append('<div id="div_selectList_'+count+'"><label for="selectList_label_'+count+'" id="selectList_label_'+count+'">Select list:</label> <select id="selectList_'+count+'" style="width:200px;"></select> <a href="#" class="removeObj"><strong>X</strong></a></div>');
 		
 		elements["selectList_"+count] = {
 				label_text:"label_"+count,
-				textarea_width:200,
-				textarea_height:100,
-				textarea_idf:"input_text_"+count,
-				textarea_text:"",
-				column_name:"input_text_"+count,
+				selectlist_width:200,
+				selectlist_idf:"input_text_"+count,
+				selectlist_items:{},
+				column_name:"selectlist_"+count,
 				column_size:255,
 				
 			};
@@ -146,21 +145,35 @@ $(document).ready(function()
 		var id = $(this).attr("id");
 		var tmp = selectedObj.split("_");
 		console.log([id,selectedObj]);
+		
+		/*selectlist design and properties*/
 		if (id === 'selectlist_items')
 		{
 			var str = $("#selectlist_items").val();
 			
+			$("#"+selectedObj).remove();
 			
 			var tmp1 = str.split("\n");
 			var cnt = tmp1.length;
-			
+			var sl = '<label for="selectList_label_'+tmp[1]+'" id="selectList_label_'+tmp[1]+'">Select list:</label> <select id="'+selectedObj+'" style="width:200px;">';
+	
 			for (var i=0; i<cnt; i++)
 			{
 				var tmp2 = [];
 				tmp2 = tmp1[i].split(";");
 				console.log(tmp2);
-				$("#selectList_"+tmp[1]).append($("<option/>").attr("value",tmp2[1])).html(tmp2[0]);
+				sl += '<option value="'+tmp2[1]+'">'+tmp2[0]+'</option>';
+				elements[selectedObj].selectlist_items[tmp2[1]] = tmp2[0];
 			}
+			sl +="</select>";
+			//console.log(sl);
+			$("#div_selectList_"+tmp[1]).html(sl);
+			// = $("#selectlist_items").text();
+			console.log(elements);
+		}
+		if (id === 'selectlist_label')
+		{
+		
 		}
 		
 		/*textarea conditions*/

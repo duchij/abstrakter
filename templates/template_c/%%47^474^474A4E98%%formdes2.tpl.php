@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-07-10 13:33:14
+<?php /* Smarty version 2.6.28, created on 2014-07-11 05:05:49
          compiled from formdes/formdes2.tpl */ ?>
 <!DOCTYPE html>
 <html>
@@ -51,7 +51,7 @@
 </div>
 <div id="selectList_prop">
 <div><div class="properties_key_val">IDF:</div><div><input type="text" id="selectlist_idf"></div></div>
-<div><div class="properties_key_val">Textarea label:</div><div><input type="text" id="selectlist_label"></div></div>
+<div><div class="properties_key_val">Selectlist label:</div><div><input type="text" id="selectlist_label"></div></div>
 <div><div class="properties_key_val">Width:</div><div><input type="text" id="selectlist_width"></div></div>
 <!-- <div><div class="properties_key_val">Height:</div><div><input type="text" id="textarea_height"></div></div> -->
 <div><div class="properties_key_val">Item/Value:</div><div><textarea id="selectlist_items" style="width:200px;height:100px;"> </textarea><button name="CreateList" id="CreateList" type="button">Create List</button></div></div>
