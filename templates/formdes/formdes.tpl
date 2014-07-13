@@ -28,6 +28,10 @@
 	</tr>
 	{/if}
 	
+	{if $row.type == 'selectlist'}
+	
+	{/if}
+	
 		
 
 {/foreach}

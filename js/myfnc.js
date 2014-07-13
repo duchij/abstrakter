@@ -68,7 +68,7 @@ $(document).ready(function()
 				label_text:"selectlist_"+count,
 				selectlist_width:200,
 				selectlist_idf:"input_text_"+count,
-				selectlist_items:{},
+				selectlist_items:'',
 				column_name:"selectlist_"+count,
 				column_size:255,
 				
@@ -174,22 +174,23 @@ $(document).ready(function()
 			
 			$("#"+selectedObj).remove();
 			
-			var tmp1 = str.split("\n");
+			var tmp1 = str.split(";");
 			var cnt = tmp1.length;
 			var sl = '<label for="selectList_label_'+tmp[1]+'" id="selectList_label_'+tmp[1]+'">Select list:</label> <select id="'+selectedObj+'" style="width:200px;">';
 	
 			for (var i=0; i<cnt; i++)
 			{
 				var tmp2 = [];
-				tmp2 = tmp1[i].split(";");
+				tmp2 = tmp1[i].split(",");
 				console.log(tmp2);
 				sl += '<option value="'+tmp2[1]+'">'+tmp2[0]+'</option>';
-				elements[selectedObj].selectlist_items[tmp2[1]] = tmp2[0];
+				//elements[selectedObj].selectlist_items[tmp2[1]] = tmp2[0];
 			}
 			sl +="</select>";
 			//console.log(sl);
 			$("#div_selectList_"+tmp[1]).html(sl);
 			// = $("#selectlist_items").text();
+			elements[selectedObj].selectlist_items = $("#selectlist_items").val();
 			console.log(elements);
 		}
 		if (id === 'selectlist_label')

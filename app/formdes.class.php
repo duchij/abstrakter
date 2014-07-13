@@ -14,9 +14,6 @@ class FormDes extends app {
 	
 	function fform_fnc($data)
 	{
-		
-		
-		
 		$app = new app();				
 		$this->fforms = $app->app_init();
 		
@@ -55,35 +52,65 @@ string;
 		$i=0;
 		if (is_array($form))
 		{
-			foreach ($form as $row)
+			foreach($form as $key=>$value)
 			{
-				foreach($row as $key=>$value)
+				$arrTmp = array();
+				
+				if (!empty($form[$key]))
 				{
-					$arrTmp = array();
-					
-					if (!empty($row[$key]))
+				
+					if (strpos($key,"input_text_") !== FALSE)
 					{
-					
-						if (strpos($key,"input_text_") !== FALSE)
-						{
-							$arrTmp = array(
-									"type"		=>"input_text",
-									"label"		=>$row['label_text'],
-									"width"		=>$row['input_text_width'],
-									//"height"	=>$tmp[3],
-									"field"		=>$row['column_name'],
-									"value"		=>$row['input_text'],
-									"variable"	=>'text',
-									"size"		=>$row['column_size']
-									
-									);
-							array_push($defForm,$arrTmp);
-							$i++;
-						}
+						$arrTmp = array(
+								"type"		=>"input_text",
+								"label"		=>$form[$key]['label_text'],
+								"width"		=>$form[$key]['input_text_width'],
+								//"height"	=>$tmp[3],
+								"field"		=>$form[$key]['column_name'],
+								"value"		=>$form[$key]['input_text'],
+								"variable"	=>'text',
+								"size"		=>$form[$key]['column_size']
+								
+								);
+						array_push($defForm,$arrTmp);
+						$i++;
 					}
 					
+					if (strpos($key,"textarea_") !== FALSE)
+					{
+						$arrTmp = array(
+								"type"		=>"textarea",
+								"label"		=>$form[$key]['label_text'],
+								"width"		=>$form[$key]['textarea_width'],
+								"height"	=>$form[$key]['textarea_width'],
+								"field"		=>$form[$key]['column_name'],
+								"value"		=>$form[$key]['textarea_text'],
+								"variable"	=>'longtext',
+								//"size"		=>$form[$key]['column_size']
+								);
+						array_push($defForm,$arrTmp);
+					}
+					
+					if (strpos($key,"selectList_") !== FALSE)
+					{
+							$arrTmp = array(
+								"type"		=>"selectlist",
+								"label"		=>$form[$key]['label_text'],
+								"width"		=>$form[$key]['selectlist_width'],
+								"height"	=>$form[$key]['selectlist_width'],
+								"field"		=>$form[$key]['column_name'],
+								"value"		=>$this->makeItemValues_selectList($form[$key]['selectlist_items']),
+								"variable"	=>'longtext',
+								//"size"		=>$form[$key]['column_size']
+								);
+						array_push($defForm,$arrTmp);
+					}
+					
+							
 				}
+				
 			}
+			
 			$this->fforms->app->logData($defForm,777);
 			$this->fforms->app->logData($i,888);
 			$this->fforms->smarty->assign("data",$defForm);
@@ -91,6 +118,23 @@ string;
 			$this->fforms->smarty->display('formdes/formdes.tpl');
 			exit;
 		}
+	}
+	
+	function makeItemValues_selectList($text)
+	{
+		$tmpArr1 = array();
+		$tmpArr1 = explode(";",$text);
+		$cnt = count($tmpArr1);
+		$result = array();
+		
+		for ($i=0; $i<$cnt; $i++)
+		{
+			$tmpArr2 = explode(",",$row[$i])
+			$result[$tmpArr2[0]] = $tmpArr2[1];
+		} 
+		
+		$this->fforms->app->logData($result,3333);
+		
 	}
 	
 	function parseString($string)

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-03-13 19:59:29
+<?php /* Smarty version 2.6.28, created on 2014-07-13 09:33:45
          compiled from formdes/formdes.tpl */ ?>
 <form action="app.php" method="post">
 <input type="hidden" name="fform_parse_string" value="">
@@ -42,6 +42,10 @@
 " value="<?php echo $this->_tpl_vars['row']['value']; ?>
 "></td>
 	</tr>
+	<?php endif; ?>
+	
+	<?php if ($this->_tpl_vars['row']['type'] == 'selectlist'): ?>
+	
 	<?php endif; ?>
 	
 		
