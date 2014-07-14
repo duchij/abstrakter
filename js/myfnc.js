@@ -8,6 +8,23 @@ function countObj(obj)
 	return i;
 }
 
+function getEnumObj(elements)
+{
+	result = {};
+	for (var obj in elements)
+	{
+		if (obj.indexOf('radio_') != -1)
+		{
+			if (result[elements[obj].radio_group] == undefined)
+			{
+				result[elements[obj].radio_group] = [];
+			}
+			result[elements[obj].radio_group].push(elements[obj].radio_value);
+		}
+	}
+	return result;
+}
+
 
 
 $(document).ready(function() 
@@ -18,6 +35,7 @@ $(document).ready(function()
 	$("body").hideAllProp();
 	
 	var elements = {};
+	var enumsObj = {};
 	var $inputText = '';
 	var selectedObj = '';
 	
@@ -56,9 +74,31 @@ $(document).ready(function()
 				column_size:255,
 				
 			};
-		//console.log(elements);
+	});
+	
+	$("#RadioButton").click(function(e){
+		//console.log("radio");
+		var count = countObj(elements);
+		$("#desForm").append('<div id="div_radio_'+count+'"><input type="radio" name="group" value="" id="radio_'+count+'" value="radio_'+count+'"> : <label for="radio_label_'+count+'" id="radio_label_'+count+'">Radio_'+count+':</label>&nbsp&nbsp<a href="#" class="removeObj" title="Removes selected object"><strong>X</strong></a></div>');
+		
+		elements["radio_"+count] = {
+				label_text:"radio_"+count,
+				//textarea_width:200,
+				//textarea_height:100,
+				radio_idf:"radio_"+count,
+				radio_group: "group",
+				radio_value: "radio_"+count,
+				//textarea_text:"",
+				column_name:"radio_"+count,
+				column_size:255,
+				
+			};
+		
 		
 	});
+	//console.log(elements);
+		
+
 	
 	$("#SelectList").click(function(e){
 		var count = countObj(elements);
@@ -80,15 +120,16 @@ $(document).ready(function()
 	$("#sendData").click(function(e){
 		e.preventDefault();
 		//alert("tu");
-		
+		$("#definitiveForm").html();
 		$.ajax({
 			url:"app.php",
 			type:"post",
-			data:{'include':"formDes",'fform_fnc':"desf",'formDesDataFnc':elements},
+			data:{'include':"formDes",'fform_fnc':"desf",'formDesDataFnc':elements,'enumObj':getEnumObj(elements)},
 			
 			success:function(result)
 			{
-				alert(result);
+				//alert(result);
+				$("#definitiveForm").html(result);
 			},
 			
 			error:function(xhr, desc, err) {
@@ -121,8 +162,7 @@ $(document).ready(function()
 		
 		var id = $(this).attr("id");
 		selectedObj = id;
-		console.log("tuu.."+id);
-	
+	//	console.log("tuu.."+id);
 		if (id.indexOf("input_text_") != -1)
 		{
 			$("#input_text_prop").show();
@@ -133,6 +173,18 @@ $(document).ready(function()
 			$("#input_text_column_name").val(elements[id].column_name);
 			$("#input_text_column_size").val(elements[id].column_size);
 			
+		}
+		else if  (id.indexOf("radio_") != -1)
+		{
+			$("#radioButton_prop").show();
+			
+			$("#radio_idf").val(id);
+			$("#radio_label").val(elements[id].label_text);
+			$("#radio_group").val(elements[id].radio_group);
+			$("#radio_value").val(elements[id].radio_value);
+			$("#radio_column_name").val(elements[id].column_name);
+						
+			//$("#input_text_column_size").val(elements[id].column_size);
 		}
 		else if (id.indexOf("selectList_") != -1)
 		{
@@ -166,6 +218,41 @@ $(document).ready(function()
 		var id = $(this).attr("id");
 		var tmp = selectedObj.split("_");
 		console.log([id,selectedObj]);
+		
+		/*radio design and properties*/
+		if (id === 'radio_group')
+		{
+			var grp = $("#radio_group").val();
+			$("#"+selectedObj).attr("name",grp);
+			elements[selectedObj].radio_group = $("#radio_group").val();
+			
+		}
+		if (id === "radio_label")
+		{
+			$("#radio_label_"+tmp[1]).html($("#radio_label").val());
+			elements[selectedObj].label_text = $("#radio_label").val();
+		}
+		if (id === 'radio_column_name')
+		{
+			var idf = new RegExp('[^a-z0-9_$]','ig');
+			var strTmp = $("#radio_column_name").val();
+			//console.log(strTmp);
+			//console.log(idf.test(strTmp));
+			if (idf.test(strTmp)){
+				alert("Povolene su len pismena,cisla a _ !!!!!");
+				setTimeout(function()
+								{
+									$("#radio_column_name").val(); 
+									$('#radio_column_name').focus();}, 1);
+				
+				//$('#input_text_column_name').preventDefault();
+			}
+			else
+			{
+				elements[selectedObj].column_name = $("#radio_column_name").val();
+			}
+		}
+		
 		
 		/*selectlist design and properties*/
 		if (id === 'selectlist_items')
@@ -204,25 +291,22 @@ $(document).ready(function()
 			elements[selectedObj].selectlist_width = $("#selectlist_width").val();
 		}
 		if (id === 'selectlist_column_name')
-			{
+		{
 			var idf = new RegExp('[^a-z0-9_$]','ig');
 			var strTmp = $("#selectlist_column_name").val();
 			//console.log(strTmp);
 			//console.log(idf.test(strTmp));
 			if (idf.test(strTmp)){
 				alert("Povolene su len pismena,cisla a _ !!!!!");
-				setTimeout(function()
-								{
-									$("#selectlist_column_name").val(); 
-									$('#selectlist_column_name').focus();}, 1);
-				
-				//$('#input_text_column_name').preventDefault();
-			}
-			else
-			{
-				elements[selectedObj].column_name = $("#selectlist_column_name").val();
-			}
-			}
+				setTimeout(function(){
+					$("#selectlist_column_name").val(); 
+					$('#selectlist_column_name').focus();}, 1);
+				}
+				else
+				{
+					elements[selectedObj].column_name = $("#selectlist_column_name").val();
+				}
+		}
 		
 		/*textarea conditions*/
 		if (id === "textarea_label")
@@ -294,19 +378,21 @@ $(document).ready(function()
 	});
 });
 
-(function($) {	
+(function($) 
+{	
 	$.fn.hideAllProp = function() {
 		
 		$("#input_text_prop").hide();
 		$("#textarea_text_prop").hide();
 		$("#selectList_prop").hide();
+		$("#radioButton_prop").hide();
 		
 		
 		return $(this).addClass('changed');
 		}
 
 		
-		})(jQuery);
+})(jQuery);
 		
 
 

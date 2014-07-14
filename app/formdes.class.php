@@ -5,6 +5,8 @@ class FormDes extends app {
 	
 	var $fforms;
 	
+	var $enumObj = array();
+	
 	function __construct()
 	{
 		//parent::__construct();
@@ -17,11 +19,11 @@ class FormDes extends app {
 		$app = new app();				
 		$this->fforms = $app->app_init();
 		
-		if ($data['include'] == 'formDes' && isset($data['include']))
+		if (isset($data['include'])&& $data['include'] == 'formDes')
 		{
 			//echo is_array($data['formDesDataFnc']);
 				
-			$this->showForm($data['formDesDataFnc']);
+			$this->showForm($data);
 			
 		}
 		else
@@ -45,9 +47,17 @@ string;
 		
 	}
 	
-	function showForm($form)
+	function showForm($data)
 	{
-		$this->fforms->app->logData($form,666);
+		$sqlArr = array(0=>"CREATE TABLE [test] (");
+		$this->fforms->app->logData($data,666);
+		
+		$form = $data['formDesDataFnc'];
+		$enumObj = $data['enumObj'];
+		
+		$this->fforms->app->logData($enumObj,666);
+		
+		
 		$defForm = array();
 		$i=0;
 		if (is_array($form))
@@ -73,6 +83,8 @@ string;
 								
 								);
 						array_push($defForm,$arrTmp);
+						$colSize = intval($form[$key]['column_size']);
+						array_push($sqlArr,"[{$form[$key]['column_name']}] TEXT({$colSize}) COLLATE 'utf8_general_ci' NULL,");
 						$i++;
 					}
 					
@@ -82,13 +94,14 @@ string;
 								"type"		=>"textarea",
 								"label"		=>$form[$key]['label_text'],
 								"width"		=>$form[$key]['textarea_width'],
-								"height"	=>$form[$key]['textarea_width'],
+								"height"	=>$form[$key]['textarea_height'],
 								"field"		=>$form[$key]['column_name'],
 								"value"		=>$form[$key]['textarea_text'],
 								"variable"	=>'longtext',
 								//"size"		=>$form[$key]['column_size']
 								);
 						array_push($defForm,$arrTmp);
+						array_push($sqlArr,"[{$form[$key]['column_name']}] LONGTEXT COLLATE 'utf8_general_ci' NULL,");
 					}
 					
 					if (strpos($key,"selectList_") !== FALSE)
@@ -99,42 +112,89 @@ string;
 								"width"		=>$form[$key]['selectlist_width'],
 								"height"	=>$form[$key]['selectlist_width'],
 								"field"		=>$form[$key]['column_name'],
-								"value"		=>$this->makeItemValues_selectList($form[$key]['selectlist_items']),
-								"variable"	=>'longtext',
+								"value"		=>$this->parseKeyItem($form[$key]['selectlist_items']),
+								"variable"	=>'enum',
 								//"size"		=>$form[$key]['column_size']
 								);
+							
+							$this->enumObj[$key] = $this->parseKeyItem($form[$key]['selectlist_items']);
+							
+							
 						array_push($defForm,$arrTmp);
 					}
-					
+					if (strpos($key,"radio_") !== FALSE)
+					{
+						$arrTmp = array(
+								"type"		=>"radio",
+								"label"		=>$form[$key]['label_text'],
+								//"width"		=>$form[$key]['selectlist_width'],
+								//"height"	=>$form[$key]['selectlist_width'],
+								"group"		=>$form[$key]['radio_group'],
+								"value"		=>$form[$key]['radio_value'],
+								"variable"	=>'enum',
+								//"size"		=>$form[$key]['column_size']
+						);
+						//$this->enumObj[$key] = array()
+						array_push($defForm,$arrTmp);
+						if (isset($enumObj[$form[$key]['radio_group']]))
+						{
+							$eStr =$this->makeEnumStr($enumObj[$form[$key]['radio_group']]); 
 							
+							array_push($sqlArr,"[{$form[$key]['radio_group']}] ENUM ({$eStr}) COLLATE 'utf8_general_ci' NULL,");
+							unset($enumObj[$form[$key]['radio_group']]);
+						}
+					}
+					
 				}
-				
 			}
+			array_push($sqlArr,") COMMENT='' ENGINE='InnoDB' COLLATE 'utf8_general_ci'");
 			
-			$this->fforms->app->logData($defForm,777);
-			$this->fforms->app->logData($i,888);
+			$sqlStr = implode("\r\n",$sqlArr);
+			//$this->fforms->app->logData($defForm,777);
+			//$this->fforms->app->logData($i,888);
+			
 			$this->fforms->smarty->assign("data",$defForm);
-			
+			$this->fforms->smarty->assign("sqlStr",$sqlStr);
 			$this->fforms->smarty->display('formdes/formdes.tpl');
 			exit;
 		}
 	}
 	
-	function makeItemValues_selectList($text)
+	function makeEnumStr($arr)
 	{
-		$tmpArr1 = array();
-		$tmpArr1 = explode(";",$text);
-		$cnt = count($tmpArr1);
-		$result = array();
-		
+		$cnt = count($arr);
+		$result = "";
 		for ($i=0; $i<$cnt; $i++)
 		{
-			$tmpArr2 = explode(",",$row[$i])
-			$result[$tmpArr2[0]] = $tmpArr2[1];
-		} 
+			$arr[$i] = "'{$arr[$i]}'";
+		}
+		$result = implode(",",$arr);
 		
-		$this->fforms->app->logData($result,3333);
+		return $result;
+	}
+	
+	function parseKeyItem($text)
+	{
+		$tmpArr1 = array();
+		$tmpArr2 = array();
+		$result = array();
+		if (strpos($text,";") !== FALSE)
+		{
+			$tmpArr1 = explode(";",$text);
+			$cnt = count($tmpArr1);
+			
+			for ($i=0; $i<$cnt; $i++)
+			{
+				if (strpos($tmpArr1[$i],",") !== FALSE)
+				{
+					$tmpArr2 = explode(",",$tmpArr1[$i]);
+					$result[trim($tmpArr2[0])] = trim($tmpArr2[1]);
+				}
+			} 
+		}
 		
+		//$this->fforms->app->logData($result,3333);
+		return $result;
 	}
 	
 	function parseString($string)

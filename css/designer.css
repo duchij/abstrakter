@@ -4,15 +4,37 @@
 #designerPlace {
 	width:60%;
 	border:1px solid black;
-float:left;
+	float:left;
+	padding:4px;
 
 }
 #propertiesPlace {
 	width:35%;
+	height:200px;
 	border:1px solid black;
-	
-	float:left;
+	float:right;
+	padding:4px;
 }
+#definitiveForm{
+	position:relative;
+	left:0px;
+	float:left;
+	padding:4px;
+}
+#activeArea {
+	width:100%;	
+	float:left;
+	padding:4px;
+}
+
+#wrapper {
+	width:95%;
+	height:auto;
+	margin:0 auto;
+border:0px none;
+	/*border:4px solid black;*/
+}
+
 
 .properties_key_val{
 	width:100px;
