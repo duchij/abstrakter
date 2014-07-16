@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-07-15 20:31:14
+<?php /* Smarty version 2.6.28, created on 2014-07-16 21:04:08
          compiled from formdes/formdes2.tpl */ ?>
 <!DOCTYPE html>
 <html>
@@ -84,9 +84,7 @@
 
 </form>
 </div>
-	<div id="tableProperties">
-		<h1>Table name</h1>
-	</div>
+	
 	
 	
 </div>
@@ -94,6 +92,14 @@
 <div id="createdForm"><h1>Form preview</h1>
 	<div id="definitiveForm"></div>
 </div>
+
+<div id="tableProperties">
+		<h1>Table, Congress & Other:</h1><hr/>
+		<strong>For naming of your table</strong> use only letters, numbers or _. Other character will be not accepted !!!!<br/><br/>
+		Table name:<input type="text" id="tableName"/><br/><br/>
+		Your avaible Congress to associate with your form:<br/><select></select><br>
+		<button name="assocTableCongress" id="assocTable" type="button" title="Simple textbox">Assoc table with selected congress</button>
+	</div>
 
 
 

@@ -155,6 +155,30 @@ $(document).ready(function()
 	$("#desForm").on('blur','*',function(){
 		//$("body").hideAllProp();
 	});
+	
+	//fire focus on case of other browsers
+	$("#desForm").on('change',':input',function(){
+		var id = $(this).attr("id");
+		selectedObj = id;
+		console.log("tuu.."+id);
+		
+		if  (id.indexOf("radio_") != -1)
+		{
+			$("#radioButton_prop").show();
+			
+			$("#radio_idf").val(id);
+			$("#radio_label").val(elements[id].label_text);
+			$("#radio_group").val(elements[id].radio_group);
+			$("#radio_value").val(elements[id].radio_value);
+			$("#radio_column_name").val(elements[id].column_name);
+						
+			//$("#input_text_column_size").val(elements[id].column_size);
+		}
+		
+		
+	});
+	
+	
 	//display properties after selected form element
 	$("#desForm").on('focus',':input',function(){
 		
@@ -162,7 +186,7 @@ $(document).ready(function()
 		
 		var id = $(this).attr("id");
 		selectedObj = id;
-	//	console.log("tuu.."+id);
+		console.log("tuu.."+id);
 		if (id.indexOf("input_text_") != -1)
 		{
 			$("#input_text_prop").show();
