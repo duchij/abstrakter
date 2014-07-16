@@ -76,11 +76,24 @@
 	<!--  <div><div class="properties_key_val">Column size:</div><div><input type="text" id="input_text_column_size"></div></div>-->
 	<!--  <div><div class="properties_key_val">Items:</div><div><input type="text" id="input_text_items"></div></div> -->
 	</div>
+	
+	
 
 </form>
 </div>
+	<div id="tableProperties">
+		<h1>Table name</h1>
+	</div>
+	
+	
 </div>
-<div id="definitiveForm"></div>
+
+<div id="createdForm"><h1>Form preview</h1>
+	<div id="definitiveForm"></div>
+</div>
+
+
+
 
 
 </div>

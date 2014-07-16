@@ -73,19 +73,40 @@ class app {
 	}
 	
 	
-	function logData($what,$debug)
+	function logData($what,$debug="LOG",$error=false)
 	{
-		$datum  = date("dmY");
-		$fp = fopen("./log/{$datum}.log","a+");
-		$str = "==========================================================================";
-		$str .= date("d.m.Y H.i.s")."..........>{$debug} \r\n";
-		$str .= var_export($what,true);
+		if ($error == false)
+		{
+			$datum  = date("dmY");
+			$fp = fopen("./log/{$datum}.log","a+");
+			
+			$str = date("d.m.Y H.i.s")."..........>{$debug}";
+			$str .= "==========================================================================".PHP_EOL;
+			$str .= print_r($what,true).PHP_EOL;
+			
+			$str = str_replace(array("\r", "\n"), array('', "\r\n"), $str);
 		
-		fwrite($fp,$str);
-		fclose($fp);
-		
-		
+			fwrite($fp,$str);
+			fclose($fp);
+		}
+		else
+		{
+			$datum  = date("dmY");
+			$fp = fopen("./log/{$datum}_error.log","a+");
+			
+			$str = date("d.m.Y H.i.s")."..........>{$debug}";
+			$str .= "==========================================================================".PHP_EOL;
+			$str .= print_r($what,true).PHP_EOL;
+			
+			$str = str_replace(array("\r", "\n"), array('', "\r\n"), $str);
+			
+			fwrite($fp,$str);
+			fclose($fp);
+		}
 	}
+		
+	
+	
 		
 	public function run_app($request,$caller)
 	{

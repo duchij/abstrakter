@@ -1,5 +1,4 @@
 <?php 
-//require_once 'db.php';
 
 class db {
 	
@@ -22,15 +21,56 @@ class db {
 		return str_replace($what,"`",$sql);
 	}
 	
+	
+	function logData($what,$debug="LOG",$error=false)
+	{
+		if ($error == false)
+		{
+			$datum  = date("dmY");
+			$fp = fopen("./log/{$datum}.log","a+");
+			
+			$str = date("d.m.Y H.i.s")."..........>{$debug}";
+			$str .= "==========================================================================".PHP_EOL;
+			$str .= print_r($what,true).PHP_EOL;
+			
+			$str = str_replace(array("\r", "\n"), array('', "\r\n"), $str);
+		
+			fwrite($fp,$str);
+			fclose($fp);
+		}
+		else
+		{
+			$datum  = date("dmY");
+			$fp = fopen("./log/{$datum}_error.log","a+");
+			
+			$str = date("d.m.Y H.i.s")."..........>{$debug}";
+			$str .= "==========================================================================".PHP_EOL;
+			$str .= print_r($what,true).PHP_EOL;
+			
+			$str = str_replace(array("\r", "\n"), array('', "\r\n"), $str);
+			
+			fwrite($fp,$str);
+			fclose($fp);
+		}
+		
+	
+	}
+	
+	
 	public function sql_execute($sql)
 	{
 		$res = true;
 		$sql = $this->modifStr($sql);
+		
+		
 		$tmp = $this->mysqli->real_query($sql);
+		$this->logData($sql,'');
 		
 		if (!$tmp)
 		{
-			trigger_error('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error, E_USER_ERROR);
+			//trigger_error('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error, E_USER_ERROR);
+			$this->logData('Chyba SQL: ' . $sql .'  Error: ' . $this->mysqli->error,000,true);
+			
 			$res = false;
 		}
 		
@@ -46,6 +86,7 @@ class db {
 		
 		if ($tmp = $this->mysqli->query($sql))
 		{
+			$this->logData($sql);
 			$num_rows =$tmp->num_rows;
 			
 			for ($i=0; $i<$tmp->num_rows; $i++)
@@ -63,6 +104,9 @@ class db {
 			//trigger_error('Chyba SQL: <p>' . $sql . '</p> Error: ' . $this->mysqli->error);
 			$result['status'] = false;
 			$result['error'] = "SQL:<p>{$sql}</p>, error:<p>{$this->mysqli->error}</p>";
+			
+			$this->logData('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error,000,true);
+			
 			//$tmp->free_result();
 		}
 		
@@ -77,6 +121,7 @@ class db {
 		$sql = $this->modifStr($sql);
 		if ($tmp = $this->mysqli->query($sql))
 		{
+			$this->logData($sql);
 			$result['rows'] = $tmp->num_rows;
 			
 		}
@@ -84,6 +129,7 @@ class db {
 		{
 			trigger_error('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error, E_USER_ERROR);
 			$result['error'] = "Error SQL: {$sql}, ".$this->mysqli->error;
+			$this->logData('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error,000,true);
 		}
 		
 		//print_r($result);
@@ -98,6 +144,7 @@ class db {
 		$tmp = $this->mysqli->query($sql);
 		if ($tmp)
 		{
+			$this->logData($sql);
 			$row = $tmp->fetch_assoc();
 			if (is_array($row))
 			{
@@ -111,6 +158,7 @@ class db {
 		{
 			trigger_error("Error SQL: {$sql} <br> ".$this->mysqli->error);
 			$result['error'] = "Error SQL: {$sql}<br> ".$this->mysqli->error;
+			$this->logData('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error,000,true);
 		}
 		$tmp->free_result();
 		//print_r($result);
@@ -145,11 +193,13 @@ class db {
 		if (!mysqli_query($this->dbLink,$sql))
 		{
 			$this->write_page('error',$sql."-".mysqli_error());
+			$this->logData('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error,000,true);
 			$this->closeDb();
 			return FALSE;
 		}
 		else
 		{
+			$this->logData($sql);
 			$this->closeDb();
 			return TRUE;
 		}
@@ -193,11 +243,13 @@ class db {
 		if (!$tmp = $this->mysqli->query($sql))
 		{
 			$result['error'] = trigger_error('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error, E_USER_ERROR);
+			$this->logData('Chyba SQL: ' . $sql . ' Error: ' . $this->mysqli->error,000,true);
 			$result['status'] = FALSE;
 			//$this->closeDb();
 		}
 		else
 		{
+			$this->logData($sql);
 			$result['status'] = TRUE;
 			$result['last_id'] = $this->mysqli->insert_id;
 			//$this->closeDb();

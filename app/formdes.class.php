@@ -49,13 +49,16 @@ string;
 	
 	function showForm($data)
 	{
-		$sqlArr = array(0=>"CREATE TABLE [test] (");
-		$this->fforms->app->logData($data,666);
+		$this->fforms->db->sql_execute('DROP TABLE IF EXISTS [test]');
+		
+		$sqlStart = "CREATE TABLE [test] (";
+		$sqlArr = array();
+		//$this->fforms->app->logData($data,666);
 		
 		$form = $data['formDesDataFnc'];
 		$enumObj = $data['enumObj'];
 		
-		$this->fforms->app->logData($enumObj,666);
+		//$this->fforms->app->logData($enumObj,666);
 		
 		
 		$defForm = array();
@@ -84,7 +87,7 @@ string;
 								);
 						array_push($defForm,$arrTmp);
 						$colSize = intval($form[$key]['column_size']);
-						array_push($sqlArr,"[{$form[$key]['column_name']}] TEXT({$colSize}) COLLATE 'utf8_general_ci' NULL,");
+						array_push($sqlArr,"[{$form[$key]['column_name']}] TEXT({$colSize}) COLLATE 'utf8_general_ci' NULL");
 						$i++;
 					}
 					
@@ -101,7 +104,7 @@ string;
 								//"size"		=>$form[$key]['column_size']
 								);
 						array_push($defForm,$arrTmp);
-						array_push($sqlArr,"[{$form[$key]['column_name']}] LONGTEXT COLLATE 'utf8_general_ci' NULL,");
+						array_push($sqlArr,"[{$form[$key]['column_name']}] LONGTEXT COLLATE 'utf8_general_ci' NULL");
 					}
 					
 					if (strpos($key,"selectList_") !== FALSE)
@@ -118,9 +121,8 @@ string;
 								);
 							
 							$this->enumObj[$key] = $this->parseKeyItem($form[$key]['selectlist_items']);
-							
-							
 						array_push($defForm,$arrTmp);
+						array_push($sqlArr,"[{$form[$key]['column_name']}] TEXT(255) COLLATE 'utf8_general_ci' NULL");
 					}
 					if (strpos($key,"radio_") !== FALSE)
 					{
@@ -140,21 +142,22 @@ string;
 						{
 							$eStr =$this->makeEnumStr($enumObj[$form[$key]['radio_group']]); 
 							
-							array_push($sqlArr,"[{$form[$key]['radio_group']}] ENUM ({$eStr}) COLLATE 'utf8_general_ci' NULL,");
+							array_push($sqlArr,"[{$form[$key]['radio_group']}] ENUM ({$eStr}) COLLATE 'utf8_general_ci' NULL");
 							unset($enumObj[$form[$key]['radio_group']]);
 						}
 					}
 					
 				}
 			}
-			array_push($sqlArr,") COMMENT='' ENGINE='InnoDB' COLLATE 'utf8_general_ci'");
 			
-			$sqlStr = implode("\r\n",$sqlArr);
-			//$this->fforms->app->logData($defForm,777);
-			//$this->fforms->app->logData($i,888);
+			$sqlMid = implode(",",$sqlArr);
+			$sqlEnd =") COMMENT='' ENGINE='InnoDB' COLLATE 'utf8_general_ci'";
+			
+			$sqlStr = $sqlStart.$sqlMid.$sqlEnd;
 			
 			$this->fforms->smarty->assign("data",$defForm);
-			$this->fforms->smarty->assign("sqlStr",$sqlStr);
+			//$this->fforms->smarty->assign("sqlStr",$sqlStr);
+			$this->fforms->db->sql_execute($sqlStr);
 			$this->fforms->smarty->display('formdes/formdes.tpl');
 			exit;
 		}
