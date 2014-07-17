@@ -156,6 +156,49 @@ $(document).ready(function()
 		//$("body").hideAllProp();
 	});
 	
+	$("#tableName").change(function (e){
+		
+		e.preventDefault();
+		
+		var str = $("#tableName").val();
+		var idf = new RegExp('[^a-z0-9_$]','ig');
+		
+		if (idf.test(str)){
+			alert("Povolene su len pismena,cisla a _ !!!!!");
+			setTimeout(function()
+							{
+								$("#tableName").val(); 
+								$("#tableName").focus();}, 1);
+			
+			//$('#input_text_column_name').preventDefault();
+		}
+		else
+		{
+			//elements[selectedObj].column_name = $("#radio_column_name").val();
+			$.ajax({
+				url:"app.php",
+				type:"post",
+				data:{'include':"setTableName",'fform_fnc':"desf",'tableName':str},
+				
+				success:function(result)
+				{
+					//alert(result);
+					//$("#definitiveForm").html(result);
+					alert(result);
+				},
+				
+				error:function(xhr, desc, err) {
+			        console.log(xhr);
+			        console.log("Details: " + desc + "\nError:" + err);
+				}
+				
+			});
+			
+		}
+		
+		
+	});
+	
 	//fire focus on case of other browsers
 	$("#desForm").on('change',':input',function(){
 		var id = $(this).attr("id");

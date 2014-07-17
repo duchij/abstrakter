@@ -76,13 +76,8 @@
 	<!--  <div><div class="properties_key_val">Column size:</div><div><input type="text" id="input_text_column_size"></div></div>-->
 	<!--  <div><div class="properties_key_val">Items:</div><div><input type="text" id="input_text_items"></div></div> -->
 	</div>
-	
-	
-
 </form>
 </div>
-	
-	
 	
 </div>
 
@@ -94,7 +89,14 @@
 		<h1>Table, Congress & Other:</h1><hr/>
 		<strong>For naming of your table</strong> use only letters, numbers or _. Other character will be not accepted !!!!<br/><br/>
 		Table name: <input type="text" id="tableName"/><br/><br/>
-		Your avaible Congress to associate with your form:<br/><select></select><br>
+		Your avaible Congress to associate with your form:<br/>
+		<select>
+		
+		{foreach from=$congress  key=k item=row}
+				<option val="{$row.item_id}">{$row.congress_titel} / </option>
+		{/foreach}
+		
+		</select><br>
 		<button name="assocTableCongress" id="assocTable" type="button" title="Simple textbox">Assoc table with selected congress</button>
 	</div>
 </div>

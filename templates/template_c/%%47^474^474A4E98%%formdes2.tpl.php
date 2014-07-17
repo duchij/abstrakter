@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-07-16 21:04:08
+<?php /* Smarty version 2.6.28, created on 2014-07-17 09:03:02
          compiled from formdes/formdes2.tpl */ ?>
 <!DOCTYPE html>
 <html>
@@ -79,13 +79,8 @@
 	<!--  <div><div class="properties_key_val">Column size:</div><div><input type="text" id="input_text_column_size"></div></div>-->
 	<!--  <div><div class="properties_key_val">Items:</div><div><input type="text" id="input_text_items"></div></div> -->
 	</div>
-	
-	
-
 </form>
 </div>
-	
-	
 	
 </div>
 
@@ -96,15 +91,21 @@
 <div id="tableProperties">
 		<h1>Table, Congress & Other:</h1><hr/>
 		<strong>For naming of your table</strong> use only letters, numbers or _. Other character will be not accepted !!!!<br/><br/>
-		Table name:<input type="text" id="tableName"/><br/><br/>
-		Your avaible Congress to associate with your form:<br/><select></select><br>
+		Table name: <input type="text" id="tableName"/><br/><br/>
+		Your avaible Congress to associate with your form:<br/>
+		<select>
+		
+		<?php $_from = $this->_tpl_vars['congress']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['k'] => $this->_tpl_vars['row']):
+?>
+				<option val="<?php echo $this->_tpl_vars['row']['item_id']; ?>
+"><?php echo $this->_tpl_vars['row']['congress_titel']; ?>
+ / </option>
+		<?php endforeach; endif; unset($_from); ?>
+		
+		</select><br>
 		<button name="assocTableCongress" id="assocTable" type="button" title="Simple textbox">Assoc table with selected congress</button>
 	</div>
-
-
-
-
-
 </div>
 
 </body>

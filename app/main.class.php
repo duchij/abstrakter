@@ -214,6 +214,8 @@ class abstracter extends app {
 		$insData['congress_regfrom'] = "{$data['dateOd_Year']}-{$data['dateOd_Month']}-{$data['dateOd_Day']}";
 		$insData['congress_reguntil'] = "{$data['dateDo_Year']}-{$data['dateDo_Month']}-{$data['dateDo_Day']}";
 		
+	
+		
 		$res = $this->db->insert_row('kongressdata',$insData);
 		
 		$today = date("Y-m-d");
@@ -524,6 +526,10 @@ class abstracter extends app {
 		
 		$insData['congress_regfrom'] = "{$data['dateOd_Year']}-{$data['dateOd_Month']}-{$data['dateOd_Day']}";
 		$insData['congress_reguntil'] = "{$data['dateDo_Year']}-{$data['dateDo_Month']}-{$data['dateDo_Day']}";
+		if ($data['public'] === 'active')
+		{
+			$insData['public'] = 'checked';
+		}
 		
 		$res = $this->db->insert_row('kongressdata',$insData);
 		

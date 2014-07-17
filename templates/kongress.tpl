@@ -36,6 +36,7 @@
 					<tr><td colspan="2"><hr></td>
 					<tr><td>Registrácia od:</td><td> {html_select_date prefix='dateOd_' start_year='2014' end_year='2020' time=$data.congress_regfrom}</td></tr>
 					<tr><td>Registrácia do:</td><td> {html_select_date prefix='dateDo_' start_year='2014' end_year='2020' time=$data.congress_reguntil}</td></tr>
+					<tr><td>Verejne viditeľný:</td><td> <input type="checkbox" name="public" value="{$data.public}" {$data.public}></td></tr>
 					
 					
 					<tr><td colspan="2"><input type="submit" value="{$data.buttons.insert_new_kongres}"></td></tr>

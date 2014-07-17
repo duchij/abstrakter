@@ -19,17 +19,28 @@ class FormDes extends app {
 		$app = new app();				
 		$this->fforms = $app->app_init();
 		
-		if (isset($data['include'])&& $data['include'] == 'formDes')
+		$this->fforms->app->logData($_SESSION);
+		
+		if (isset($data['include']))
 		{
-			//echo is_array($data['formDesDataFnc']);
-				
-			$this->showForm($data);
-			
+			if ($data['include'] == 'formDes')
+			{
+				//echo is_array($data['formDesDataFnc']);
+				$this->showForm($data);
+			}
+			if ($data['include'] == 'setTableName')
+			{
+				$this->setTableName($data['tableName']);
+			}
 		}
 		else
 		{
 			//$this->fforms->smarty->assign("data",$forms);
+			$data = array();
+			$tmp =  $this->getUserCongress();
 			
+			$this->fforms->app->logData($tmp,6666);
+			$this->fforms->smarty->assign("congress",$tmp);
 			$this->fforms->smarty->display('formdes/formdes2.tpl');
 		}
 		
@@ -47,8 +58,24 @@ string;
 		
 	}
 	
+	function getUserCongress()
+	{
+		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [user_id]=%d ORDER BY [congress_created] DESC",intval($_SESSION['abstrakter']['user_id']));
+		
+		$tmp = $this->fforms->db->sql_table($sql);
+		$result = array();
+		if ($tmp['status']!=FALSE)
+		{
+			$result = $tmp['table'];
+		}
+		
+		return $result;
+		
+	}
+	
 	function showForm($data)
 	{
+		
 		$this->fforms->db->sql_execute('DROP TABLE IF EXISTS [test]');
 		
 		$sqlStart = "CREATE TABLE [test] (";
@@ -157,7 +184,7 @@ string;
 			
 			$this->fforms->smarty->assign("data",$defForm);
 			//$this->fforms->smarty->assign("sqlStr",$sqlStr);
-			$this->fforms->db->sql_execute($sqlStr);
+			//$this->fforms->db->sql_execute($sqlStr);
 			$this->fforms->smarty->display('formdes/formdes.tpl');
 			exit;
 		}

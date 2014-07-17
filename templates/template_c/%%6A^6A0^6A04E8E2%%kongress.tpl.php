@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.28, created on 2014-03-13 13:33:53
+<?php /* Smarty version 2.6.28, created on 2014-07-17 14:20:26
          compiled from kongress.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'html_select_date', 'kongress.tpl', 34, false),array('modifier', 'date_format', 'kongress.tpl', 53, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'html_select_date', 'kongress.tpl', 34, false),array('modifier', 'date_format', 'kongress.tpl', 54, false),)), $this); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,6 +59,9 @@ unset($_smarty_tpl_vars);
 </td></tr>
 					<tr><td>Registrácia do:</td><td> <?php echo smarty_function_html_select_date(array('prefix' => 'dateDo_','start_year' => '2014','end_year' => '2020','time' => $this->_tpl_vars['data']['congress_reguntil']), $this);?>
 </td></tr>
+					<tr><td>Verejne viditeľný:</td><td> <input type="checkbox" name="public" value="<?php echo $this->_tpl_vars['data']['public']; ?>
+" <?php echo $this->_tpl_vars['data']['public']; ?>
+></td></tr>
 					
 					
 					<tr><td colspan="2"><input type="submit" value="<?php echo $this->_tpl_vars['data']['buttons']['insert_new_kongres']; ?>

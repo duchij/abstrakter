@@ -1,0 +1,7 @@
+ALTER TABLE `kongressdata`
+ADD `public` enum('active') NULL,
+COMMENT='';
+
+ALTER TABLE `kongressdata`
+CHANGE `public` `public` enum('checked') COLLATE 'utf8_slovak_ci' NULL AFTER `congress_created`,
+COMMENT='';
