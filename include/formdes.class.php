@@ -1,6 +1,4 @@
 <?php
-require_once "app.class.php";
-
 class FormDes extends app {
 	
 	var $fforms;

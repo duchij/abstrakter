@@ -1,3 +1,11 @@
+##########Abstrakter
+templates/template_c/*
+local_settings/*
+.htaccess
+gdw/*
+js/jquery*
+tinymce/*
+
 #################
 ## Eclipse
 #################

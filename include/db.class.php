@@ -2,59 +2,50 @@
 
 class db {
 	
-	private $mysqli;
+    var $log;
+    
+    var $mysqli;
 	var $server = '';
 	var $user = '';
 	var $passwd = '';
 	var $dbase ='';
 	//var $conn = new stdClass();
 	
-	function __construct($mysqli)
+	function __construct()
 	{
-		
-		$this->mysqli = $mysqli;
+	    
+	    $this->log = &$GLOBALS["log"];
+	   //var_dump($mysqli);
+	   
+	    $dbData  = require_once CONF_DIR.'mysql.ini.php';
+	    
+		$this->mysqli = $this->initDb($dbData);
+		//$GLOBALS["app"][] = $this->mysqli;
+	}
+	
+	public function initDb($mysqli)
+	{
+	    //var_dump($mysqli);
+	    $this->mysqli = mysqli_connect($mysqli["server"],$mysqli["user"],$mysqli["password"] , $mysqli["db"]);
+	    return $this->mysqli;
 	}
 	
 	private function modifStr($sql)
 	{
-		$what = array("[","]");
-		return str_replace($what,"`",$sql);
+		$patterns = array(
+	                       0=>"#\[([a-z_0-9]+)\.([a-z_0-9]+)\]#",
+	                       1=>"#\[([a-z_0-9]+)\]#"
+	    );
+	    
+	    $replacements = array(
+                           0=>"`$1`.`$2`",
+	                       1=>"`$1`"
+	    );
+	    
+	    $sql =preg_replace($patterns, $replacements, $sql);
+	    return $sql;
 	}
 	
-	
-	function logData($what,$debug="LOG",$error=false)
-	{
-		if ($error == false)
-		{
-			$datum  = date("dmY");
-			$fp = fopen("./log/{$datum}.log","a+");
-			
-			$str = date("d.m.Y H.i.s")."..........>{$debug}";
-			$str .= "==========================================================================".PHP_EOL;
-			$str .= print_r($what,true).PHP_EOL;
-			
-			$str = str_replace(array("\r", "\n"), array('', "\r\n"), $str);
-		
-			fwrite($fp,$str);
-			fclose($fp);
-		}
-		else
-		{
-			$datum  = date("dmY");
-			$fp = fopen("./log/{$datum}_error.log","a+");
-			
-			$str = date("d.m.Y H.i.s")."..........>{$debug}";
-			$str .= "==========================================================================".PHP_EOL;
-			$str .= print_r($what,true).PHP_EOL;
-			
-			$str = str_replace(array("\r", "\n"), array('', "\r\n"), $str);
-			
-			fwrite($fp,$str);
-			fclose($fp);
-		}
-		
-	
-	}
 	
 	
 	public function sql_execute($sql)
@@ -77,7 +68,12 @@ class db {
 		return $res;
 		
 	}
-	
+	/**
+	 * Nacita tabulku
+	 * 
+	 * @param unknown $sql
+	 * @return multitype:boolean multitype: string
+	 */
 	public function sql_table($sql)
 	{
 		$result = array("status"=>TRUE,"table"=>array(),"error"=>'');
@@ -86,7 +82,7 @@ class db {
 		
 		if ($tmp = $this->mysqli->query($sql))
 		{
-			$this->logData($sql);
+			$this->log->logData($sql);
 			$num_rows =$tmp->num_rows;
 			
 			for ($i=0; $i<$tmp->num_rows; $i++)
@@ -121,7 +117,7 @@ class db {
 		$sql = $this->modifStr($sql);
 		if ($tmp = $this->mysqli->query($sql))
 		{
-			$this->logData($sql);
+			$this->log->logData($sql);
 			$result['rows'] = $tmp->num_rows;
 			
 		}
@@ -260,4 +256,5 @@ class db {
 	}
 }
 
+return "db";
 ?>

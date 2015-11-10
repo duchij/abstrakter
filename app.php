@@ -1,6 +1,10 @@
 <?php
-require_once 'app/main.class.php';
+if (!session_start()) die ("stop");
 
-$myApp = new abstracter();
-$myApp->startPage($_REQUEST);
+require_once 'common.php';
+require_once INCLUDE_DIR.'app.class.php';
+
+$app = new app();
+$app->start($_REQUEST);
+
 ?>

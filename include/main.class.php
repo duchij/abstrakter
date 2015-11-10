@@ -1,7 +1,4 @@
 <?php 
-session_start();
-require_once 'app.class.php';
-
 class abstracter extends app {
 	
 	function __construct ()
@@ -101,7 +98,7 @@ class abstracter extends app {
 		}
 		$insData['avakon'] = array();
 			
-		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] > '%s'",$today);
+		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s'",$today);
 		$table = $this->db->sql_table($sql);
 		$insData['avakon'] = $table['table'];
 		
@@ -117,7 +114,7 @@ class abstracter extends app {
 		$insData['avakon'] = array();
 		
 		$today = date("Y-m-d");
-		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] > '%s'",$today);
+		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s'",$today);
 		
 		$table = $this->db->sql_table($sql);
 		$insData['avakon'] = $table['table'];
@@ -144,8 +141,8 @@ class abstracter extends app {
 	public function avabKongres()
 	{
 		$today = date("Y-m-d");
-		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s' AND [congress_reguntil] > '%s' ",$today,$today);
-		//$sql = sprintf("SELECT * FROM `kongressdata` ");
+		//$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s' AND [congress_reguntil] > '%s' ",$today,$today);
+		$sql = sprintf("SELECT * FROM [kongressdata] ");
 		$table = $this->db->sql_table($sql);
 		
 		return $table['table'];
@@ -214,12 +211,19 @@ class abstracter extends app {
 		$insData['congress_regfrom'] = "{$data['dateOd_Year']}-{$data['dateOd_Month']}-{$data['dateOd_Day']}";
 		$insData['congress_reguntil'] = "{$data['dateDo_Year']}-{$data['dateDo_Month']}-{$data['dateDo_Day']}";
 		
-	
+		if ($data['public'] == 'checked')
+		{
+			$insData['public'] = 1;
+		}
+		else
+		{
+			$insData['public'] = 0;
+		}
 		
 		$res = $this->db->insert_row('kongressdata',$insData);
 		
 		$today = date("Y-m-d");
-		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] > '%s'",$today);
+		$sql = sprintf("SELECT * FROM [kongressdata] WHERE [congress_from] >= '%s'",$today);
 		
 		$table = $this->db->sql_table($sql);
 		$insData['avakon'] = $table['table'];
@@ -230,7 +234,16 @@ class abstracter extends app {
 		
 		//$_SESSION['abstrakter']['selected_congress'] = $res['last_id'];
 		//session_commit();
-			
+
+		if ($insdata['public'] == 1)
+		{
+			$insData['public'] = 'checked';
+		}
+		else
+		{
+			$insData['public'] = 0;
+		}
+		
 		$this->smarty->assign('data',$insData);
 		$this->smarty->display('kongress.tpl');
 				
@@ -512,7 +525,7 @@ class abstracter extends app {
 	
 	public function insertKongress($data)
 	{
-		//$this->logData($data,9999);
+		$this->logData($data,9999);
 		
 		$insData['congress_titel'] = $data['congress_titel'];
 		$insData['congress_subtitel'] = $data['congress_subtitel'];
@@ -526,10 +539,16 @@ class abstracter extends app {
 		
 		$insData['congress_regfrom'] = "{$data['dateOd_Year']}-{$data['dateOd_Month']}-{$data['dateOd_Day']}";
 		$insData['congress_reguntil'] = "{$data['dateDo_Year']}-{$data['dateDo_Month']}-{$data['dateDo_Day']}";
-		if ($data['public'] === 'active')
+		
+		if ($data['public'] == 'checked')
 		{
-			$insData['public'] = 'checked';
+			$insData['public'] = 1;
 		}
+		else
+		{
+			$insData['public'] = 0;
+		}
+		
 		
 		$res = $this->db->insert_row('kongressdata',$insData);
 		

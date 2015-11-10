@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2014-07-17 09:03:02
+<?php /* Smarty version 2.6.28, created on 2015-10-06 09:43:56
          compiled from formdes/formdes2.tpl */ ?>
 <!DOCTYPE html>
 <html>
@@ -25,6 +25,7 @@
 <div id="activeArea">
 <div id="designerPlace">
 	<form>
+	<input type="hidden" value="formdes">
 	<button name="TextBox" id="TextBox" type="button" title="Simple textbox">TextBox</button>
 	<button name="TextArea" id="TextArea" type="button" title="Textarea to enter more text">TextArea</button>
 	<button name="SelectList" id="SelectList" type="button" title="Dropdown list with key/value">SelectList</button>

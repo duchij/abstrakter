@@ -1,7 +1,3 @@
 <?php 
-	require_once 'app/login.class.php';
-	
-	$app = new login();
-	$app->start();
-
+	require_once 'app.php';
 ?>

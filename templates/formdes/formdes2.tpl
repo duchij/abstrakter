@@ -22,6 +22,7 @@
 <div id="activeArea">
 <div id="designerPlace">
 	<form>
+	<input type="hidden" value="formdes">
 	<button name="TextBox" id="TextBox" type="button" title="Simple textbox">TextBox</button>
 	<button name="TextArea" id="TextArea" type="button" title="Textarea to enter more text">TextArea</button>
 	<button name="SelectList" id="SelectList" type="button" title="Dropdown list with key/value">SelectList</button>

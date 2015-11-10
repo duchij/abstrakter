@@ -1,47 +1,12 @@
 <?php 
 session_start();
-require_once 'smarty/Smarty.class.php';
-require_once 'mysql.class.php';
-require_once 'phpmailer/class.phpmailer.php';
-require_once 'labels/labels.class.php';
-
-
-
-class login{
+class login extends app{
 	
-	var $includeDir = "./include";
-	var $iniDir = "./local_settings";
-	
-	var $LABELS = array();
 	
 	function __construct()
 	{
 		
-		$_SESSION['abstrakter'] = parse_ini_file("$this->iniDir/settings.ini");
-		
-		
-		$_SESSION['abstrakter']['item_id'] = 0;
-		$_SESSION['abstrakter']['user_email'] = '';
-		$_SESSION['abstrakter']['session_id'] = '';
-		$_SESSION['abstrakter']['is_admin'] = FALSE;
-		$_SESSION['abstrakter']['server_name'] = $_SERVER['HTTP_HOST'];
-		
-		//$_SESSION['abstrakter'] = parse_ini_file("$this->iniDir/database.ini");
-		$this->db = new db(new mysqli($_SESSION['abstrakter']['server'],$_SESSION['abstrakter']['user'], $_SESSION['abstrakter']['password'],$_SESSION['abstrakter']['db']));
-		
-		$this->mail = new PHPMailer();
-		
-		$this->smarty = new Smarty();
-		$this->smarty->template_dir = './templates';
-		$this->smarty->compile_dir = './templates/template_c';
-		$this->smarty->cache_dir = './templates/cache';
-		$this->smarty->config_dir = './templates/configs';
-		
-		$this->_labels = new Labels();		
-		$this->LABELS = $this->_labels->getLabels();
-		
-		$_SESSION['abstrakter']['web_data'] = 	$this->LABELS['web_data'];
-		$_SESSION['abstrakter']['footer'] = 	$this->LABELS['footer'];
+		parent::__construct();
 	}
 	
 	public function start()
@@ -137,7 +102,7 @@ class login{
 				
 				if ($result['account'] === 'admin')
 				{
-					$_SESSION['abstrakter']['is_admin'] = TRUE;
+					$_SESSION['abstrakter'] ['is_admin'] = TRUE;
 				}
 		
 				session_commit();

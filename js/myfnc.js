@@ -29,6 +29,7 @@ function getEnumObj(elements)
 
 $(document).ready(function() 
 {
+	$("#tabs").tabs();
 	
 	/*$("#input_text_prop").hide();
 	$("#textarea_text_prop").hide();*/
